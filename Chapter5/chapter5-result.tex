@@ -8,28 +8,28 @@ This section presents the structural decomposition and organization of the syste
 \subsection[Functional Decomposition]{Functional Decomposition}
 To manage complexity, the system is decomposed into four distinct, logical modules. Each module encapsulates a specific domain of operations, ensuring high cohesion and low coupling.
 
-\subsubsection{Friction Sentry Module}
+\subsubsection{A. Friction Sentry Module}
 \textbf{A. Purpose} \\
 This module is responsible for the ingestion, parsing, and structured interpretation of disruption signals. It serves as the risk-monitoring interface that maps raw event alerts to concrete physical impacts.
 
 \textbf{B. Contribution to Overall System} \\
 It protects the downstream optimization algorithms from dealing with raw text or unstructured data by translating news signals into standardized variables (severity multipliers, location targets, and cost impacts).
 
-\subsubsection{Networked Digital Twin Module}
+\subsubsection{B. Networked Digital Twin Module}
 \textbf{A. Purpose} \\
 This module maintains the in-memory representation of the logistics network (directed graph topology) and models inventory health. It simulates the physical reaction of the supply chain network when a shock is injected.
 
 \textbf{B. Contribution to Overall System} \\
 It computes the real-world impact of delays on safety stock and inventory levels. By calculating stockout risks and daily consumption depletion, it provides the operational context needed to trigger emergency actions.
 
-\subsubsection{Logistics Optimizer Module}
+\subsubsection{C. Logistics Optimizer Module}
 \textbf{A. Purpose} \\
 This module serves as the execution and decision-making engine of the system, responsible for mathematical path routing and orchestrating autonomous LLM agents to resolve supply chain exceptions.
 
 \textbf{B. Contribution to Overall System} \\
-It acts as the system's "brain." It calculates alternate paths bypassing disruptions, coordinates agent tasks (Optimizer, Analyst, and Communicator), and executes corrective replenishment actions to prevent stockouts.
+It acts as the system's ``brain.'' It calculates alternate paths bypassing disruptions, coordinates agent tasks (Optimizer, Analyst, and Communicator), and executes corrective replenishment actions to prevent stockouts.
 
-\subsubsection{Interactive Dashboard Module}
+\subsubsection{D. Interactive Dashboard Module}
 \textbf{A. Purpose} \\
 This module provides the user interface (UI) to visualize the state of the logistics network, display alternate route simulations, and present comparative benchmark metrics.
 
@@ -57,7 +57,7 @@ The system is organized into a modular control hierarchy where responsibilities 
     \end{itemize}
 \end{itemize}
 
-\subsection[Module Interaction Flow]{Module Interaction Flow}
+\section[Module Interaction Flow]{Module Interaction Flow}
 Modules interact asynchronously and sequentially to process disruptions and update the digital twin. Figure~\ref{fig:interaction_flow} depicts the sequential flow of data and control signals across the system components.
 
 \begin{figure}[htbp]
@@ -68,7 +68,7 @@ Modules interact asynchronously and sequentially to process disruptions and upda
 \end{figure}
 
 \begin{itemize}
-    \item \textbf{Triggering of Operations:} System execution is event-triggered, initiated either by a simulated news alert or by the user selecting a strategic preference (cost/time) and clicking "Run Optimization" on the dashboard.
+    \item \textbf{Triggering of Operations:} System execution is event-triggered, initiated either by a simulated news alert or by the user selecting a strategic preference (cost/time) and clicking ``Run Optimization'' on the dashboard.
     \item \textbf{Data Exchange Flow:}
     \begin{enumerate}
         \item The API requests rules parsing.
@@ -101,14 +101,15 @@ Detailed functional descriptions of each core module are provided in this sectio
     \item \textbf{Dependencies:} \texttt{json}, \texttt{re}.
     \item \textbf{Interaction with Other Modules:} Feeds structured shock data directly into the Networked Digital Twin to apply edge changes.
 \end{itemize}
+The logical flow of signal processing and validation within the Friction Sentry is illustrated in Figure~\ref{fig:flow_friction_sentry}.
 
 \subsubsection{Flowchart: Friction Sentry Module}
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[scale=0.85, transform shape, node distance=1.1cm, every node/.style={align=center, font=\small},
-    startstop/.style={rectangle, rounded corners=8pt, minimum width=3.5cm, minimum height=0.8cm, draw=black!80, fill=blue!20},
-    process/.style={rectangle, minimum width=4.5cm, minimum height=0.8cm, draw=black!80, fill=yellow!20},
-    decision/.style={diamond, aspect=2.5, minimum width=4cm, minimum height=0.8cm, draw=black!80, fill=orange!20},
+    startstop/.style={rectangle, rounded corners=8pt, minimum width=3.5cm, minimum height=0.8cm, draw=black!80, fill=gray!10},
+    process/.style={rectangle, minimum width=4.5cm, minimum height=0.8cm, draw=black!80, fill=white},
+    decision/.style={diamond, aspect=2.5, minimum width=4cm, minimum height=0.8cm, draw=black!80, fill=gray!20},
     arrow/.style={->, thick}]
 \node (start) [startstop] {Start: Receive Disruption Signal};
 \node (loc) [process, below=of start] {Resolve Location to Node ID};
@@ -155,9 +156,9 @@ Detailed functional descriptions of each core module are provided in this sectio
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[scale=0.85, transform shape, node distance=1.1cm, every node/.style={align=center, font=\small},
-    startstop/.style={rectangle, rounded corners=8pt, minimum width=3.5cm, minimum height=0.8cm, draw=black!80, fill=blue!20},
-    process/.style={rectangle, minimum width=4.5cm, minimum height=0.8cm, draw=black!80, fill=yellow!20},
-    decision/.style={diamond, aspect=2.5, minimum width=4cm, minimum height=0.8cm, draw=black!80, fill=orange!20},
+    startstop/.style={rectangle, rounded corners=8pt, minimum width=3.5cm, minimum height=0.8cm, draw=black!80, fill=gray!10},
+    process/.style={rectangle, minimum width=4.5cm, minimum height=0.8cm, draw=black!80, fill=white},
+    decision/.style={diamond, aspect=2.5, minimum width=4cm, minimum height=0.8cm, draw=black!80, fill=gray!20},
     arrow/.style={->, thick}]
 \node (start) [startstop] {Start: Receive Shock Payload};
 \node (load) [process, below=of start] {Load Baseline Graph Topology};
@@ -208,9 +209,9 @@ Detailed functional descriptions of each core module are provided in this sectio
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[scale=0.85, transform shape, node distance=1.1cm, every node/.style={align=center, font=\small},
-    startstop/.style={rectangle, rounded corners=8pt, minimum width=3.5cm, minimum height=0.8cm, draw=black!80, fill=blue!20},
-    process/.style={rectangle, minimum width=4.5cm, minimum height=0.8cm, draw=black!80, fill=yellow!20},
-    decision/.style={diamond, aspect=2.5, minimum width=4cm, minimum height=0.8cm, draw=black!80, fill=orange!20},
+    startstop/.style={rectangle, rounded corners=8pt, minimum width=3.5cm, minimum height=0.8cm, draw=black!80, fill=gray!10},
+    process/.style={rectangle, minimum width=4.5cm, minimum height=0.8cm, draw=black!80, fill=white},
+    decision/.style={diamond, aspect=2.5, minimum width=4cm, minimum height=0.8cm, draw=black!80, fill=gray!20},
     arrow/.style={->, thick}]
 \node (start) [startstop] {Start: Receive Shocked Graph};
 \node (dijk) [process, below=of start] {Run Dijkstra's Algorithm\\on Shocked Graph};
@@ -262,9 +263,9 @@ Detailed functional descriptions of each core module are provided in this sectio
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[scale=0.85, transform shape, node distance=1.1cm, every node/.style={align=center, font=\small},
-    startstop/.style={rectangle, rounded corners=8pt, minimum width=3.5cm, minimum height=0.8cm, draw=black!80, fill=blue!20},
-    process/.style={rectangle, minimum width=4.5cm, minimum height=0.8cm, draw=black!80, fill=yellow!20},
-    decision/.style={diamond, aspect=2.5, minimum width=4cm, minimum height=0.8cm, draw=black!80, fill=orange!20},
+    startstop/.style={rectangle, rounded corners=8pt, minimum width=3.5cm, minimum height=0.8cm, draw=black!80, fill=gray!10},
+    process/.style={rectangle, minimum width=4.5cm, minimum height=0.8cm, draw=black!80, fill=white},
+    decision/.style={diamond, aspect=2.5, minimum width=4cm, minimum height=0.8cm, draw=black!80, fill=gray!20},
     arrow/.style={->, thick}]
 \node (start) [startstop] {Start: Dashboard Load};
 \node (map) [process, below=of start] {Render Geospatial Map\\with Baseline Routes};
@@ -328,19 +329,19 @@ The following diagram illustrates the logical relationships between the core ope
 \textbf{Purpose:} Defines physical facilities and processing nodes within the logistics network, as shown in Table \ref{tab:node_structure}
 \begin{table}[htbp]
 \centering
+\caption{Node Entity Structure}
+\label{tab:node_structure}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{|l|l|l|l|}
 \hline
 \textbf{Field Name} & \textbf{Data Type} & \textbf{Constraints} & \textbf{Field Purpose} \\ \hline
 \texttt{id} & String & Primary Key, Unique, Not Null & Unique identifier for the network node (e.g., \texttt{nhava\_sheva}). \\ \hline
 \texttt{type} & String & Enums: \texttt{supplier}, \texttt{port}, \texttt{warehouse}, \texttt{market} & Categorizes the operational nature of the facility. \\ \hline
-\texttt{name} & String & Not Null & User-friendly geographical name (e.g., "Nhava Sheva Port"). \\ \hline
+\texttt{name} & String & Not Null & User-friendly geographical name (e.g., ``Nhava Sheva Port''). \\ \hline
 \texttt{latitude} & Float & Range: $-90.0$ to $90.0$ & Latitude coordinate for geographical mapping. \\ \hline
 \texttt{longitude} & Float & Range: $-180.0$ to $180.0$ & Longitude coordinate for geographical mapping. \\ \hline
 \end{tabular}
 }
-\caption{Node Entity Structure}
-\label{tab:node_structure}
 \end{table}
 
 \subsubsection{Entity: EDGE}
@@ -348,6 +349,8 @@ The following diagram illustrates the logical relationships between the core ope
 
 \begin{table}[htbp]
 \centering
+\caption{Edge Entity Structure}
+\label{tab:edge_structure}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{|l|l|l|l|}
 \hline
@@ -359,8 +362,6 @@ The following diagram illustrates the logical relationships between the core ope
 \texttt{mode} & String & Enums: \texttt{ocean}, \texttt{road}, \texttt{rail} & Transport modality utilized on the lane. \\ \hline
 \end{tabular}
 }
-\caption{Edge Entity Structure}
-\label{tab:edge_structure}
 \end{table}
 
 \subsubsection{Entity: INVENTORY}
@@ -368,6 +369,8 @@ The following diagram illustrates the logical relationships between the core ope
 
 \begin{table}[htbp]
 \centering
+\caption{Inventory Entity Structure}
+\label{tab:inventory_structure}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{|l|l|l|l|}
 \hline
@@ -379,8 +382,6 @@ The following diagram illustrates the logical relationships between the core ope
 \texttt{is\_stockout} & Boolean & True / False & Flag showing whether on-hand inventory is completely depleted. \\ \hline
 \end{tabular}
 }
-\caption{Inventory Entity Structure}
-\label{tab:inventory_structure}
 \end{table}
 
 \subsection[Interface Design]{Interface Design}
@@ -390,7 +391,7 @@ The user interface is designed as an interactive, single-page command-and-contro
 \begin{itemize}
     \item \textbf{Screen Organization:} \\
     The layout is divided into three primary visual zones:
-    \begin{enumerate}
+    \begin{enumerate}[label=\alph*)]
         \item \textbf{Top Banner (Notification Panel):} Renders critical shock alerts (e.g., location, event type, severity multiplier) detected by the Friction Sentry.
         \item \textbf{Left Panel (Geospatial Digital Twin Map):} Displays two visual maps in a split container: the \textit{Baseline Network Map} showing undisrupted transit routes, and the \textit{Optimized Alternate Route Map} highlighting the new routing paths calculated by the system.
         \item \textbf{Right Panel (Control \& Telemetry Panel):} Hosts the strategy configuration controls, optimization triggers, and dynamic performance cards (e.g., Transit Time Delta, Cost Delta, Stockout Alarms, Executive Summaries).
@@ -409,7 +410,7 @@ The user interface is designed as an interactive, single-page command-and-contro
     \end{itemize}
     \item \textbf{Output Displays:}
     \begin{itemize}
-        \item \textbf{Alert Banner:} Dynamic color-coded notifications showing active network shocks (e.g., "Verification Delay: Multiplier 1.35x").
+        \item \textbf{Alert Banner:} Dynamic color-coded notifications showing active network shocks (e.g., ``Verification Delay: Multiplier 1.35x'').
         \item \textbf{Dynamic Map Overlay:} Renders physical nodes (markers) and interactive polylines (dashed gray for baseline routes, bold purple for optimized agent routes).
         \item \textbf{Metric Cards:} Renders computed values for the optimized paths, including \textit{New Transit Days} and \textit{Cost Delta}.
         \item \textbf{Executive Summary:} A dynamic text block generated by the Communicator Agent explaining the reasoning behind the recommended actions.
@@ -496,7 +497,7 @@ This subsection details how incoming requests and disruption signals are parsed 
         \item \textbf{Bounds Verification:} Severity multipliers are checked to ensure they are numeric values $\geq 1.0$.
     \end{itemize}
     \item \textbf{Input Formatting:} \\
-    Incoming raw strings are stripped of whitespace and converted to standardized, lowercase system identifiers. For example, user inputs or news locations (e.g., "Nhava Sheva") are mapped to graph node IDs (e.g., \texttt{nhava\_sheva}).
+    Incoming raw strings are stripped of whitespace and converted to standardized, lowercase system identifiers. For example, user inputs or news locations (e.g., ``Nhava Sheva'') are mapped to graph node IDs (e.g., \texttt{nhava\_sheva}).
     \item \textbf{Data Verification:} \\
     Before executing calculations, the backend verifies that the requested shock location and target market IDs exist in the active \texttt{network\_topology.json} model to prevent reference key errors.
 \end{itemize}
@@ -524,7 +525,9 @@ This subsection details the processing stages executed once inputs are verified:
     \end{itemize}
     \item \textbf{Module Coordination \& Sequence:} \\
     Execution follows a strict sequential pipeline:
-    \[ \text{Friction Ingestion} \rightarrow \text{Graph Shock Calculation} \rightarrow \text{Dijkstra Routing} \rightarrow \text{Agentic Analysis \& Stock Check} \rightarrow \text{Payload Consolidation} \]
+    \begin{equation}
+    \text{Friction Ingestion} \rightarrow \text{Graph Shock Calculation} \rightarrow \text{Dijkstra Routing} \rightarrow \text{Agentic Analysis \& Stock Check} \rightarrow \text{Payload Consolidation}
+    \end{equation}
 \end{itemize}
 
 \subsection[Output Generation Workflow]{Output Generation Workflow}

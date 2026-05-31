@@ -8,7 +8,12 @@ The plagiarism check for this project report was conducted using an approved ant
     % Placeholder for plagiarism report screenshot/scan
     % Replace with: \includegraphics[width=0.9\textwidth]{Figures/plagiarism_report}
     \fbox{\parbox{0.85\textwidth}{\centering \vspace{3cm} \large\textit{[Plagiarism Report Screenshot / Scan to be inserted here]} \vspace{3cm}}}
+    \makeatletter
+    \let\saved@addcontentsline\addcontentsline
+    \renewcommand{\addcontentsline}[3]{}
     \caption{Plagiarism Check Report}
+    \let\addcontentsline\saved@addcontentsline
+    \makeatother
     \label{fig:plagiarism_report}
 \end{figure}
 

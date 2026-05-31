@@ -7,7 +7,9 @@ In classical supply chain theory, inventory management must account for uncertai
 
 \begin{itemize}
     \item \textbf{Safety Stock ($SS$) Equation:}
-    \[SS = z \cdot \sqrt{\bar{L} \cdot \sigma_D^2 + \bar{D}^2 \cdot \sigma_L^2}\]
+    \begin{equation}
+    SS = z \cdot \sqrt{\bar{L} \cdot \sigma_D^2 + \bar{D}^2 \cdot \sigma_L^2}
+    \end{equation}
     where:
     \begin{itemize}
         \item $\bar{L}$ (Average Lead Time): The shocked transit time is calculated dynamically by Dijkstra's algorithm.
@@ -22,7 +24,9 @@ The physical transport network is represented mathematically as a \textbf{Weight
 
 \begin{itemize}
     \item \textbf{Edge Weight Dynamism:} Unlike static routing systems, edge weights are dynamic variables:
-    \[w_{e} = f(\text{baseline\_weight}, \text{shock\_multiplier}, \text{semantic\_rules})\]
+    \begin{equation}
+    w_{e} = f(\text{baseline\_weight}, \text{shock\_multiplier}, \text{semantic\_rules})
+    \end{equation}
     \item \textbf{Dijkstra's Shortest Path Algorithm:} 
     The routing engine is used to solve the single-source shortest path problem to find a path $P$ from Supplier $S$ to Market $M$ that minimises:
     \begin{itemize}
@@ -44,7 +48,9 @@ A comparative baseline is introduced in this project between a \textbf{Human Pla
     \end{itemize}
     \item \textbf{Friction Propagation \& Decay:} 
     Disruptions do not remain isolated; they cascade. This is modelled via cascade multipliers:
-    \[\text{Severity}_{\text{cascaded}} = \text{Severity}_{\text{direct}} \cdot \text{Decay Factor}\]
+    \begin{equation}
+    \text{Severity}_{\text{cascaded}} = \text{Severity}_{\text{direct}} \cdot \text{Decay Factor}
+    \end{equation}
     For instance, a blockade in the Red Sea cascades to port congestions in Western Indian ports (Mundra, Nhava Sheva) with a decay factor (e.g., 0.60).
 \end{itemize}
 

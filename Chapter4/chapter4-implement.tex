@@ -63,16 +63,16 @@ Here are the general design factors rewritten as prescriptive principles and req
 \subsection[Development Methods]{Development Methods}
 This subsection explains the software development methodology adopted for the project. The project follows a 6-week sequential execution timeline, divided into five core modules. Each module corresponds directly to a layer in the system architecture.
 
-Given the deeply interconnected nature of the system components and the requirement for a stable mathematical baseline, the project utilizes a \textbf{Sequential "Waterfall" Handover Strategy}. This model was selected to ensure that each critical layer of the logistics digital twin—from network topology to agentic reasoning—is rigorously validated and "frozen" before downstream logic is applied. This prevents cascading errors in the mathematical optimization engine.
+Given the deeply interconnected nature of the system components and the requirement for a stable mathematical baseline, the project utilizes a \textbf{Sequential ``Waterfall'' Handover Strategy}. This model was selected to ensure that each critical layer of the logistics digital twin—from network topology to agentic reasoning—is rigorously validated and ``frozen'' before downstream logic is applied. This prevents cascading errors in the mathematical optimization engine.
 
 The development methodology is divided into the following phases:
 
 \begin{itemize}
     \item \textbf{Phase 1: Digital Twin Construction (Week 1)}: Mapping global maritime nodes to domestic SME hubs using \texttt{networkx}; establishing baseline edge weights such as transit time and logistics cost.
-    \item \textbf{Phase 2: Domain Logic \& Data Generation (Week 2)}: Quantifying "Grey Zone" friction variables (insurance spikes, port delays) and building the Semantic Mapping Library to link geopolitical keywords to specific graph nodes.
+    \item \textbf{Phase 2: Domain Logic \& Data Generation (Week 2)}: Quantifying ``Grey Zone'' friction variables (insurance spikes, port delays) and building the Semantic Mapping Library to link geopolitical keywords to specific graph nodes.
     \item \textbf{Phase 3: Agentic Intelligence \& Monitoring (Week 3)}: Developing the \textit{Friction Sentry Agent} using LangChain and CrewAI to autonomously ingest unstructured news data and extract critical location and severity metrics.
     \item \textbf{Phase 4: Autonomous Mitigation \& Execution (Weeks 4--5)}: Developing the \textit{Logistics Optimizer Agent}; injecting friction shocks into the graph and executing shortest-path algorithms (Dijkstra's) to calculate optimal rerouting and dynamic buffer stocks.
-    \item \textbf{Phase 5: Visualization \& Baseline Validation (Week 6)}: Calculating the "Human Baseline" using Chopra inventory formulas and deploying an interactive dashboard to visualize AI cost-savings versus manual planning.
+    \item \textbf{Phase 5: Visualization \& Baseline Validation (Week 6)}: Calculating the ``Human Baseline'' using Chopra inventory formulas and deploying an interactive dashboard to visualize AI cost-savings versus manual planning.
 \end{itemize}
 
 To manage this sequential flow effectively within a decoupled architecture, the team adheres to an \textbf{Immutable Handover Protocol}, where each module must pass unit-testing before being consumed by the next:
@@ -96,17 +96,12 @@ React is employed to build the interactive User Interface. For a logistics digit
 \subsection[Future Plans and Scalability]{Future Plans and Scalability}
 This subsection outlines the strategic roadmap for evolving the system from a high-fidelity prototype to a production-grade autonomous logistics engine.
 
-\subsubsection{Transition to Real-Time Data Pipelines}
-While the current framework demonstrates autonomous reasoning on simulated or static historical data, future iterations will integrate \textbf{Live Telemetry Ingestion}. By connecting the \textit{Friction Sentry Agent} to real-time APIs (e.g., Lloyds List for maritime news, port congestion trackers, and satellite Automatic Identification System (AIS) data), the system will move from manual simulation to a "Live Sentry" mode, providing under-60-minute detection-to-mitigation cycles for Exim logistics.
-
-\subsubsection{Multi-Dimensional Friction Modeling}
-The architecture is designed to scale from single-point shocks to \textbf{Compound Risk Scenarios}. Future enhancements will focus on the agent's ability to process and correlate multiple simultaneous friction signals—such as a geopolitical blockade in a chokepoint occurring concurrently with a domestic labor strike. This involves developing cross-impact matrices where agents reason about how separate shocks propagate through the network and amplify total logistics cost.
-
-\subsubsection{Predictive "Friction Forecasting"}
-Leveraging the data captured during the current implementation, future versions could incorporate \textbf{Predictive Analytics Engines}. By training machine learning models on historical friction patterns, the system could transition from being reactive (mitigating current shocks) to proactive (recommending route adjustments based on high-probability future disruptions).
-
-\subsubsection{Cloud-Native Enterprise Scaling}
-To handle global-scale supply chains with thousands of nodes, the system can be migrated to a \textbf{Kubernetes-based Microservices Architecture}. This would allow the agentic swarm to scale horizontally, assigning dedicated agent clusters to specific geographic regions or product categories, ensuring low-latency optimization for multi-national logistics networks.
+\begin{itemize}
+    \item \textbf{Transition to Real-Time Data Pipelines:} While the current framework demonstrates autonomous reasoning on simulated or static historical data, future iterations will integrate \textbf{Live Telemetry Ingestion}. By connecting the \textit{Friction Sentry Agent} to real-time APIs (e.g., Lloyds List for maritime news, port congestion trackers, and satellite Automatic Identification System (AIS) data), the system will move from manual simulation to a ``Live Sentry'' mode, providing under-60-minute detection-to-mitigation cycles for Exim logistics.
+    \item \textbf{Multi-Dimensional Friction Modeling:} The architecture is designed to scale from single-point shocks to \textbf{Compound Risk Scenarios}. Future enhancements will focus on the agent's ability to process and correlate multiple simultaneous friction signals—such as a geopolitical blockade in a chokepoint occurring concurrently with a domestic labor strike. This involves developing cross-impact matrices where agents reason about how separate shocks propagate through the network and amplify total logistics cost.
+    \item \textbf{Predictive ``Friction Forecasting'':} Leveraging the data captured during the current implementation, future versions could incorporate \textbf{Predictive Analytics Engines}. By training machine learning models on historical friction patterns, the system could transition from being reactive (mitigating current shocks) to proactive (recommending route adjustments based on high-probability future disruptions).
+    \item \textbf{Cloud-Native Enterprise Scaling:} To handle global-scale supply chains with thousands of nodes, the system can be migrated to a \textbf{Kubernetes-based Microservices Architecture}. This would allow the agentic swarm to scale horizontally, assigning dedicated agent clusters to specific geographic regions or product categories, ensuring low-latency optimization for multi-national logistics networks.
+\end{itemize}
 
 \section[System Architecture]{System Architecture}
 This section explains the overall architecture and structural organization of the proposed system. A layered block layout is utilized to segregate the presentation, API routing, network optimization, and multi-agent reasoning layers. This division ensures that each component can be developed, tested, and scaled independently.
@@ -117,11 +112,11 @@ The High-Level Design (HLD) diagram as shown in Figure \ref{fig:hldd} illustrate
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{Figures/hldd.png}
-    \caption{High-level design diagram of the proposed system}
+    \caption{System architecture diagram of the proposed system}
     \label{fig:hldd}
 \end{figure}
 
-\subsection[Module Description]{Module Description}
+\subsection[Functional Module Descriptions]{Functional Module Descriptions}
 This subsection provides a detailed functional breakdown of the four core modules that constitute the system architecture.
 
 \subsubsection{Module 1: Friction Sentry (Signal Ingestion Module)}
@@ -174,7 +169,7 @@ This subsection provides a detailed functional breakdown of the four core module
         \item Maps string node IDs to physical coordinates (latitude/longitude).
         \item Computes and overlays Leaflet map layers (dashed lines for baseline routes, solid colored lines for active alternate routes).
         \item Renders alerts, response latency values, and stockout statuses.
-        \item Updates comparative KPIs comparing the human "Cost of Inaction" vs. the AI's optimized strategy.
+        \item Updates comparative KPIs comparing the human ``Cost of Inaction'' vs. the AI's optimized strategy.
     \end{itemize}
     \item \textbf{Output:} An interactive single-page web interface containing real-time map visualizations, data tables, and metrics dashboard cards.
 \end{itemize}
@@ -218,7 +213,7 @@ The Sequence Diagram illustrated in Figure \ref{fig:sequence} shows the chronolo
 \begin{figure}[H]
     \centering
     \makebox[\textwidth][c]{\includegraphics[width=1.1\textwidth]{Figures/sequence diagram.jpg}}
-    \caption{System Sequence Diagram}
+    \caption{Sequence diagram illustrating the message and control flow between system components during shock simulation}
     \label{fig:sequence}
 \end{figure}
 
