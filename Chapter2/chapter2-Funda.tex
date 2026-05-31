@@ -1,77 +1,75 @@
-\chapter{Theoretical Background and Prerequisite Learnings}
-This chapter discusses the theoretical foundations required for building the supply chain digital twin and agentic framework. It covers graph theory as applied to logistics, pathfinding optimization using Dijkstra's algorithm, the architecture of Large Language Model (LLM) agent systems, and inventory replenishment mathematics. Finally, it outlines the software tools used in this project.
+\chapter{Theoretical Foundations and Core Concepts}
 
-\section{Graph Theory in Supply Chain Networks}
-A supply chain can be naturally modeled as a directed graph $G = (V, E)$, where $V$ represents the set of nodes (locations) and $E$ represents the set of directed edges (lanes or shipping routes).
-Nodes are classified into tiers based on their role:
-\begin{equation}
-    V = V_{supplier} \cup V_{chokepoint} \cup V_{port} \cup V_{warehouse} \cup V_{market}
-\end{equation}
-Directed edges represent the flow of physical goods. Each edge $e = (u, v) \in E$ is associated with attributes that determine the logistics weight. In our digital twin, each edge contains:
+The academic and technical foundation for the proposed agentic AI framework is established in this section. The stochastic nature of inventory management under uncertainty is explored, along with the mathematical modelling of logistics networks through graph theory and the mechanics of disruption propagation. Furthermore, the role of multi-agent systems in autonomous orchestration and the conceptual shift towards strategic digital twins for proactive risk management are detailed.
+
+\section{Stochastic Inventory Control (Chopra \& Meindl Framework)}
+In classical supply chain theory, inventory management must account for uncertainty in both demand and supply lead times. This project implements this using the \textbf{Chopra Inventory Model}:
+
 \begin{itemize}
-    \item \textbf{Baseline Transit Time ($T_{base}$):} The average transit days under normal conditions.
-    \item \textbf{Logistics Cost ($C_{base}$):} The freight cost in USD to move cargo across the edge.
-    \item \textbf{Friction Penalty ($FP$):} A multiplier representing inherent vulnerability to delays.
+    \item \textbf{Safety Stock ($SS$) Equation:}
+    \[SS = z \cdot \sqrt{\bar{L} \cdot \sigma_D^2 + \bar{D}^2 \cdot \sigma_L^2}\]
+    where:
+    \begin{itemize}
+        \item $\bar{L}$ (Average Lead Time): The shocked transit time is calculated dynamically by Dijkstra's algorithm.
+        \item $\sigma_L$ (Lead Time Deviation): This is represented as $\sigma_L = \bar{L} \cdot (\text{severity} - 1) \cdot 1.5$, showing how disruption severity directly inflates lead-time volatility.
+        \item $z$ (Service Level Factor): The inverse cumulative distribution function of the standard normal distribution (Z-score). This project locks this at 1.645 for a 95\% service level.
+    \end{itemize}
+    \item \textbf{The Concept:} Traditional systems assume static lead times. This theory proves that as lead time ($\bar{L}$) and lead time uncertainty ($\sigma_L$) grow due to disruptions, the required safety stock increases exponentially to maintain service levels, directly driving up holding costs.
 \end{itemize}
 
-Under normal conditions, the baseline effective weight is calculated as:
-\begin{equation}
-    W_{effective} = W_{base} \times (1 + FP)
-\end{equation}
-By modeling the network as a graph, we can perform complex topological analyses, such as reachability, connectivity, and shortest path calculations, which represent cargo flows.
+\section{Dynamic Network Flow \& Dijkstra's Algorithm}
+The physical transport network is represented mathematically as a \textbf{Weighted Directed Graph} $G = (V, E)$, where $V$ represents nodes (Suppliers, Ports, Warehouses, Markets) and $E$ represents directed routes.
 
-\section{Pathfinding and Route Optimization}
-Route optimization is solved using pathfinding algorithms on the network graph. This project utilizes Dijkstra's algorithm, which finds the shortest path from a single source node to a target node on a weighted graph with non-negative edge weights.
-
-The algorithm maintains a set of visited nodes and a list of tentative distances from the source. At each step, it selects the unvisited node with the smallest tentative distance, updates the distances of its unvisited neighbors (relaxation), and marks it as visited.
-For an edge $e = (u, v)$ with weight $w(u, v)$, the relaxation step is defined as:
-\begin{equation}
-    \text{if } D(u) + w(u, v) < D(v) \text{ then } D(v) = D(u) + w(u, v)
-\end{equation}
-This project optimizes paths based on two separate objectives:
-\begin{enumerate}
-    \item \textbf{Transit Time Minimization:} The edge weight $w(u, v)$ is set to the effective transit time in days.
-    \item \textbf{Logistics Cost Minimization:} The edge weight $w(u, v)$ is set to the effective logistics cost in USD.
-\end{enumerate}
-When a shock is injected, edge weights increase, and Dijkstra's algorithm is run dynamically to find the new optimal path, simulating shipping lines rerouting around congested corridors.
-
-\section{LLM-based Multi-Agent Orchestration}
-Large Language Models (LLMs) have evolved from text-prediction engines to decision-making agents. An agentic AI framework (such as CrewAI) structure LLMs by assigning roles, goals, and backstories, making them act as autonomous team members.
-The key components of an agentic system are:
 \begin{itemize}
-    \item \textbf{Agents:} Autonomous units initialized with specific LLM configurations, system prompts, and tool access.
-    \item \textbf{Tasks:} Concrete assignments given to agents, specifying descriptions, expectations, and output formats.
-    \item \textbf{Tools:} Executable functions (e.g., Python functions) that agents can call to interact with the external environment, such as querying databases or updating files.
-    \item \textbf{Process Workflow:} The execution policy (sequential, hierarchical, or consensual) that determines how tasks are handed over from one agent to another.
+    \item \textbf{Edge Weight Dynamism:} Unlike static routing systems, edge weights are dynamic variables:
+    \[w_{e} = f(\text{baseline\_weight}, \text{shock\_multiplier}, \text{semantic\_rules})\]
+    \item \textbf{Dijkstra's Shortest Path Algorithm:} 
+    The routing engine is used to solve the single-source shortest path problem to find a path $P$ from Supplier $S$ to Market $M$ that minimises:
+    \begin{itemize}
+        \item $\sum_{e \in P} \text{transit\_time}_e$ (when minimising Time)
+        \item $\sum_{e \in P} \text{freight\_cost}_e$ (when minimising Cost)
+    \end{itemize}
+    \item \textbf{The Concept:} Local disruptions (e.g., blockades in the Strait of Hormuz) alter global network paths, shifting bottleneck dynamics to other nodes (like Mundra or Nhava Sheva ports).
 \end{itemize}
-In this project, agents use sequential task execution to pass structured messages (JSON payloads) containing shock calculations, routing solutions, cost deltas, and dashboard triggers.
 
-\section{Inventory Replenishment and Stockout Mathematics}
-To evaluate the impact of logistics delays, the digital twin incorporates an inventory tracking layer at each consumption market node. The primary metric used is Days of Cover ($DoC$), which represents how long current inventory will last under constant demand:
-\begin{equation}
-    DoC = \frac{\text{Current Inventory (Metric Tons)}}{\text{Daily Demand Rate (Metric Tons/Day)}}
-\end{equation}
-When a transit delay ($\Delta_{days}$) occurs on the replenishment lane, the effective lead time increases. If the delay exceeds the days of cover, a stockout occurs:
-\begin{equation}
-    \text{if } \Delta_{days} > DoC \text{ then Stockout = True}
-\end{equation}
-To mitigate stockouts, the system triggers emergency restocking. The emergency cost ($C_{emergency}$) is calculated as a penalty proportional to the deficit:
-\begin{equation}
-    C_{emergency} = \text{Deficit Quantity (MT)} \times \text{Emergency Freight Rate (USD/MT)}
-\end{equation}
-Additionally, we monitor the Bullwhip Effect, which represents the amplification of demand variability as it moves upstream from markets to warehouses and ports.
+\section{Supply Chain Disruption \& ``Cost of Inaction'' (CoI)}
+A comparative baseline is introduced in this project between a \textbf{Human Planner} (static/reactive) and an \textbf{AI Orchestrator} (dynamic/proactive).
 
-\section{Software Tools and Libraries}
-The framework is built using the following open-source software tools:
 \begin{itemize}
-    \item \textbf{Python 3.11:} The core programming language for the backend, optimization, and agent coordination.
-    \item \textbf{NetworkX:} A Python library for the creation, manipulation, and study of complex networks.
-    \item \textbf{CrewAI:} An orchestration framework for setting up and executing multi-agent workflows.
-    \item \textbf{Google Gemini Flash:} The underlying LLM providing linguistic and reasoning capabilities to the agents.
-    \item \textbf{FastAPI:} A modern, fast web framework for building RESTful APIs in Python.
-    \item \textbf{React \& Vite:} A frontend UI library and build tool for rendering the interactive analytics dashboard.
-    \item \textbf{Leaflet:} A JavaScript library for mobile-friendly interactive maps, used to visualize route paths.
+    \item \textbf{Cost of Inaction (CoI):} The financial penalty of not changing routes during a shock is defined to include:
+    \begin{itemize}
+        \item War-risk insurance premiums.
+        \item Congestion surcharges.
+        \item Overtime warehouse labour.
+    \end{itemize}
+    \item \textbf{Friction Propagation \& Decay:} 
+    Disruptions do not remain isolated; they cascade. This is modelled via cascade multipliers:
+    \[\text{Severity}_{\text{cascaded}} = \text{Severity}_{\text{direct}} \cdot \text{Decay Factor}\]
+    For instance, a blockade in the Red Sea cascades to port congestions in Western Indian ports (Mundra, Nhava Sheva) with a decay factor (e.g., 0.60).
 \end{itemize}
+
+\section{Multi-Agent Systems (MAS) \& LLM Orchestration}
+Instead of using traditional rigid coding paradigms to solve exceptions, the project leverages \textbf{Agentic AI} using the \textbf{CrewAI} framework:
+
+\begin{itemize}
+    \item \textbf{Role-Playing Agents:} Labour is divided into isolated, specialised cognitive agents:
+    \begin{itemize}
+        \item[\textbf{(i)}] \textit{Logistics Optimiser (The Solver):} Mathematical routing is performed.
+        \item[\textbf{(ii)}] \textit{Cost \& Strategy Analyst (The Evaluator):} Tactical inventory checks and replenishment are managed.
+        \item[\textbf{(iii)}] \textit{SME Communicator (The Presenter):} Complex telemetry is translated into visual dashboard payloads.
+    \end{itemize}
+    \item \textbf{Prompt Chaining \& Sequential Context:} The outputs of mathematical tools (Dijkstra) are piped sequentially as context to downstream agents. This prevents hallucination by feeding structured JSON outputs directly into the reasoning loop of the next agent.
+\end{itemize}
+
+\section{Strategic Logistics Digital Twin}
+A Digital Twin is a dynamic digital representation of a physical system. In a strategic context, it is used for:
+
+\begin{itemize}
+    \item \textbf{Concept of Strategic Digital Twin:} Unlike operational digital twins that focus on short-term execution, a Strategic Digital Twin is designed for long-term scenario planning and risk assessment. A ``sandboxed'' version of the supply chain network is created to simulate ``What-If'' scenarios---such as geopolitical blockades or sudden maritime congestion.
+    \item \textbf{Application:} By injecting synthetic events (such as the simulated benchmark shocks), the Digital Twin acts as a risk simulation sandbox, allowing managers to visualise the downstream effects on landed costs and stockout timings before they occur in the real world. This transforms supply chain management from a reactive effort into a proactive resilience strategy.
+\end{itemize}
+
+\vspace{0.75cm}
 
 \section{Summary}
-This chapter discussed the theoretical prerequisite concepts, including graph supply chains, Dijkstra's algorithm, agentic AI frameworks, and inventory mathematics. These concepts form the foundation of our 5-layer resilient architecture. The next chapter details the system design, graph schema, and multi-agent setup.
+This chapter provided a comprehensive overview of the five theoretical pillars that form the backbone of the project. By integrating stochastic inventory models with dynamic network flow and agentic orchestration, the framework is designed to address the ``Cost of Inaction'' in volatile maritime corridors. These concepts set the stage for the detailed system design and implementation phases discussed in the following chapters.

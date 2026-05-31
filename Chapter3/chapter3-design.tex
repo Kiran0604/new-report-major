@@ -1,155 +1,74 @@
-\chapter{System Design and Architecture}
+\chapter[Software Requirement Specification]{Software Requirement Specification}
 
-This chapter details the system design and architecture of the Agentic AI-driven Digital Twin framework. It presents the architectural overview structured into five functional layers, explains the network topology graph schema and its node-edge representations, details the autonomous agent orchestration design utilizing CrewAI and Google Gemini, and outlines the mathematical formulation and equations governing the simulation and routing decisions.
+Detailed requirements and specifications of the proposed system are described in this section. The functionalities the system must perform, the performance expectations, operational constraints, and the hardware and software resources required for development and execution are defined herein. The Software Requirement Specification (SRS) serves as a formal reference document for system design, development, testing, deployment, and maintenance.
 
-\section{Five-Layer System Architecture}
-The framework is designed as a modular, five-layer system that separates data ingestion, state management, autonomous intelligence, communication APIs, and presentation. Figure~\ref{c3:fig_arch} conceptually shows this layered representation, and the details of each layer are explained below:
+We provide a clear understanding of the expected behaviour and operational environment of the proposed system in the following sections.
 
-\begin{description}
-    \item[Layer 1: Data Ingestion (Data Inputs):] This layer represents the static and dynamic files that serve as the project's source of truth. It contains:
-    \begin{itemize}
-        \item \texttt{network\_model.json}: The serialized representation of the 14-node, 19-edge EXIM network, frozen after Phase 1.
-        \item \texttt{simulated\_friction\_events.csv}: A historical and hypothetical dataset containing 50 logistics disruption scenarios.
-        \item \texttt{semantic\_mapping\_rules.json}: Predefined rules mapping unstructured signal types to quantitative severity multipliers and propagation decay parameters.
-    \end{itemize}
-    
-    \item[Layer 2: Digital Twin State (In-Memory Graphs):] This layer maintains the virtual representation of the supply chain using two NetworkX directed graphs (\texttt{DiGraph}):
-    \begin{itemize}
-        \item \textit{Baseline Graph:} An immutable graph representing normal operating conditions, loaded once at system startup.
-        \item \textit{Shocked Graph:} A dynamic deep copy of the baseline graph. Upon shock injection, the Friction Sentry agent mutates the edge weights of this graph to simulate real-time delays and cost spikes.
-    \end{itemize}
-    
-    \item[Layer 3: Autonomous Agent Layer (CrewAI Orchestration):] This layer contains the four specialized CrewAI agents (Friction Sentry, Logistics Optimizer, Cost Analyst, and SME Communicator). Powered by Google Gemini, they execute sequential tasks to analyze shocks, run routing algorithms, check inventory levels, and generate management recommendations.
-    
-    \item[Layer 4: API and Orchestration Layer (FastAPI Backend):] A high-performance FastAPI server serves as the system's integration hub. It exposes REST API endpoints that receive disruption signals from the frontend, trigger the multi-agent crew, read and update the digital twin state, and return the aggregated JSON payload back to the dashboard.
-    
-    \item[Layer 5: Presentation and Analytics Layer (React Dashboard):] A responsive React/Vite frontend dashboard provides an interactive control panel for human managers. It includes Leaflet maps for visual path rendering, real-time alert logs, comparison panels for cost/time deltas, and indicators of agent decision confidence.
-\end{description}
+\section[Overall Description]{Overall Description}
 
-\begin{figure}[htb]
-\centering
-\begin{tabular}{|p{12cm}|}
-\hline
-\textbf{Layer 5: Presentation \& Analytics} (React/Vite Dashboard, Leaflet Map Visualization) \\
-\hline
-\centering$\downarrow$ HTTP JSON Requests / Responses \\
-\hline
-\textbf{Layer 4: API \& Orchestration} (FastAPI Server, REST Endpoints, CORS Support) \\
-\hline
-\centering$\downarrow$ CrewAI Task Execution \& Tool Triggers \\
-\hline
-\textbf{Layer 3: Autonomous Agents} (CrewAI Orchestration: Sentry $\to$ Optimizer $\to$ Analyst $\to$ SME) \\
-\hline
-\centering$\downarrow$ In-Memory Graph Updates \& Queries \\
-\hline
-\textbf{Layer 2: Digital Twin State} (NetworkX dual-graph: Baseline and Shocked states) \\
-\hline
-\centering$\downarrow$ Data Loading \& Reading \\
-\hline
-\textbf{Layer 1: Data Ingestion} (\texttt{network\_model.json}, \texttt{simulated\_friction\_events.csv}, Rules) \\
-\hline
-\end{tabular}
-\caption{Conceptual block representation of the 5-Layer architecture}
-\label{c3:fig_arch}
-\end{figure}
+The proposed Agentic AI framework is designed as a proactive decision-support and execution system for Indian Small and Medium Enterprises (SMEs) engaged in global trade. The overall system provides a bridge between high-level geopolitical disruptions and ground-level logistics operations. By integrating unstructured data signals with a mathematical digital twin, the system enables SMEs to visualize risk and execute mitigation strategies—such as rerouting shipments or adjusting safety stocks—that were previously only accessible to large-scale enterprises with massive logistics departments.
 
-\section{Network Topology and Graph Schema}
-The digital twin represents the supply chain network as a directed graph $G = (V, E)$. The topology consists of 14 nodes ($V$) and 19 edges ($E$), representing key physical supply locations, international maritime corridors, Indian entry ports, distribution warehouses, and consumption markets.
+The system is structured as a modular pipeline that begins with the \textbf{Friction Sentry}, which continuously parses and quantifies unstructured signals from news and maritime alerts. These quantified shocks are then injected into the \textbf{Networked Digital Twin}, which uses graph-theoretic algorithms like Dijkstra's to calculate the propagation of friction across the supply chain. The \textbf{Logistics Optimizer}, powered by a multi-agent orchestration layer (CrewAI), evaluates these impacts to generate actionable recovery plans. Finally, the \textbf{Interactive Dashboard} provides a geospatial interface for users to review these plans and perform "What-If" simulations. This comprehensive approach ensures that Indian SMEs can maintain operational continuity and cost-competitiveness even in the face of significant maritime chokepoint disruptions.
 
-\subsection{Node Classification}
-Nodes are categorized into four distinct functional tiers, each having specialized properties:
-\begin{enumerate}
-    \item \textbf{Tier 1: Suppliers (6 Nodes):} Supply origins located in the Persian Gulf region. These nodes represent production facilities and load ports. The nodes are Saudi Arabia (\texttt{saudi\_arabia}), UAE (\texttt{uae}), Qatar (\texttt{qatar}), Kuwait (\texttt{kuwait}), Iraq (\texttt{iraq}), and Oman (\texttt{oman}). Suppliers possess a \texttt{production\_rate\_mt\_day} and a \texttt{min\_export\_lot\_mt}.
-    \item \textbf{Tier 2: Maritime Chokepoints (3 Nodes):} Critical international sea lanes. These nodes do not hold inventory and are transit-only. The nodes are the Red Sea Corridor (\texttt{red\_sea}), the Strait of Hormuz (\texttt{strait\_hormuz}), and the Cape of Good Hope Bypass (\texttt{cape\_good\_hope}). Chokepoints have high \texttt{disruption\_sensitivity} values (e.g., 0.90 to 0.95).
-    \item \textbf{Tier 3: Entry Ports (4 Nodes):} Indian maritime gateways where import containers are unloaded and processed. The nodes are Mundra Port (\texttt{mundra\_port}), Nhava Sheva (\texttt{nhava\_sheva}), Cochin Port (\texttt{cochin\_port}), and Chennai Port (\texttt{chennai\_port}). Ports have a \texttt{throughput\_capacity\_mt\_day} attribute.
-    \item \textbf{Tier 4: Warehouses (3 Nodes):} Inland distribution hubs where stock is stored and managed under an $(s, Q)$ inventory policy. The nodes are Mumbai Warehouse (\texttt{mumbai\_warehouse}), Ahmedabad Warehouse (\texttt{ahmedabad\_warehouse}), and Hyderabad Warehouse (\texttt{hyderabad\_warehouse}).
-    \item \textbf{Tier 5: SME Markets (4 Nodes):} Regional consumption centers where small and medium enterprises generate daily demand. The nodes are Pune Market (\texttt{pune\_sme\_market}), Surat Market (\texttt{surat\_sme\_market}), Bengaluru Market (\texttt{bengaluru\_sme\_market}), and Chennai Market (\texttt{chennai\_sme\_market}).
-\end{enumerate}
+\subsection{Product Perspective}
 
-\subsection{Edge Attributes}
-Directed edges represent sea lanes, road corridors, or rail links between nodes. Each edge contains the following attributes:
+The proposed system is an agentic, event-driven Logistics Digital Twin and Decision Support System (DSS) designed to simulate real-world supply chain shocks, such as military blockades, customs backlogs, and weather delays. It utilizes cooperative Large Language Model (LLM) agents to dynamically calculate optimal alternative shipping routes and manage safety stock. Built as a modular, integrated client-server application, the system consists of a React-based frontend dashboard, a FastAPI backend service, an optimization engine powered by NetworkX, and an agentic orchestration layer using CrewAI and Google Gemini.
+
+In terms of external interactions, the system utilizes the Google Gemini API as its primary LLM endpoint for parsing shocks, evaluating inventory states, and generating intelligent recommendations. For geospatial representation, it interacts with mapping services including OpenStreetMap and CartoDB via Leaflet to render spatial shipping routes. The operational environment is defined by a Python runtime (v3.10 or higher) on the backend and modern web browsers like Chrome, Edge, and Firefox for the React (Vite) single-page application frontend. Within the broader domain, the system fits into modern Supply Chain Risk Management (SCRM) by bridging the gap between traditional mathematical logistics routing and cognitive decision-making, allowing SMEs to proactively bypass global chokepoint delays.
+
+\subsection{Product Functions}
+
+The core functionalities of the system include:
 \begin{itemize}
-    \item \texttt{route\_name}: Descriptive label of the route.
-    \item \texttt{transport\_mode}: Mode of transit (e.g., ocean, road, rail).
-    \item \texttt{baseline\_transit\_time} ($T_{base}$): Estimated transit time in days under normal conditions.
-    \item \texttt{logistics\_cost} ($C_{base}$): Base shipping cost in USD per Metric Ton (MT).
-    \item \texttt{friction\_penalty} ($FP$): Vulnerability multiplier (0 to 1) representing standard delays.
+    \item \textbf{Shock Signal Parsing \& Translation:} Translates raw textual or unstructured disruption notifications (e.g., news alerts) into structured, quantitative shock parameters such as location, mode, and severity multipliers using semantic mapping rules.
+    \item \textbf{Dynamic Dijkstra Route Optimization:} Re-evaluates the directed graph topology under a shocked state to calculate the mathematically shortest path based on specific cost or time preferences.
+    \item \textbf{Real-time Inventory Monitoring:} Tracks the daily inventory status, consumption rates, and Days of Cover ($DoC$) for target SME markets within the networked digital twin.
+    \item \textbf{Autonomous Stockout Prevention:} Detects impending stockouts during transit delays and automatically executes simulated emergency restocking procedures.
+    \item \textbf{Human vs. AI Comparative Benchmarking:} Runs deterministic pipelines comparing a reactive human baseline (subject to the "Cost of Inaction") against the proactive agentic AI response, exporting comparative datasets for business intelligence.
+    \item \textbf{Geospatial Route Visualization:} Renders baseline routes alongside AI-recommended alternate paths on an interactive geographical dashboard.
+\end{itemize}
+\section[Specific Requirements]{Specific Requirements}
+This section describes the detailed requirements of the proposed system, detailing both the functional capabilities needed to support autonomous logistics decision-making and the non-functional criteria required for system reliability. The specifications detailed here serve as a technical blueprint for the subsequent architecture and database design phases.
+\subsection[Functional Requirements]{Functional Requirements}
+\begin{itemize}
+\item \textbf{FR1: Knowledge Graph Construction}: The system must allow the creation of a directed graph mapping international ports to inland Indian SME hubs using NetworkX, supporting dynamic updates to edge weights.
+\item \textbf{FR2: Geopolitical Signal Ingestion (Friction Sentry)}: The system must utilize an LLM agent to ingest unstructured text and extract specific disruption parameters: Location, Severity Level, and Estimated Delay.
+\item \textbf{FR3: Friction Propagation}: The system must inject extracted delay parameters into the network graph to simulate a "shock" and calculate the cascading downstream impact on SME inventory.
+\item \textbf{FR4: Autonomous Optimization}: Upon detecting a critical friction threshold, the Logistics Optimizer agent must autonomously execute a shortest-path algorithm to output a specific, actionable alternative route.
+\item \textbf{FR5: Comparative Baseline Calculation}: The system must mathematically compute the "AI Landed Cost" and compare it against a pre-programmed "Human Baseline Cost" (using Chopra inventory formulas) to quantify savings.
+\end{itemize}
+\subsection[Non-Functional Requirements]{Non-Functional Requirements}
+\begin{itemize}
+\item \textbf{NFR1: Performance}: Graph traversal and alternate route calculations should execute with minimal latency to provide real-time decision support.
+\item \textbf{NFR2: Scalability}: The multi-agent pipeline must be decoupled from the graph engine, ensuring the system can scale to include more ports or swap out LLM models.
+\item \textbf{NFR3: Usability}: The final dashboard must be highly intuitive, designed specifically for SME managers lacking enterprise data infrastructure.
+\end{itemize}
+\subsection[Software Requirements]{Software Requirements}
+\begin{itemize}
+    \item \textbf{Operating System}: Windows 10/11, macOS, or Linux (Ubuntu 20.04+).
+    \item \textbf{Programming Language}: Python 3.9 or higher
+    \item \textbf{AI \& LLM Services}: Google Gemini API (for core natural language reasoning and agent logic).
+    \item \textbf{Agentic Frameworks}: CrewAI and LangChain (for orchestrating the multi-agent system and tool calling).
+    \item \textbf{Mathematical \& Graph Modeling}: NetworkX (for building the Multi-Tier Logistics Digital Twin), alongside Pandas and NumPy for data structuring.
+    \item \textbf{Visualization}: Tableau (for the interactive ``What-If'' scenario dashboard).
+    \item \textbf{Development Environment (IDE)}: Visual Studio Code (VS Code)
+    \item \textbf{Frontend tools}: React (v19.x), Axios (v1.x), Leaflet \& React-Leaflet (v5.x)
+    \item \textbf{Version Control}: Git and GitHub
 \end{itemize}
 
-\section{Multi-Agent CrewAI Orchestration Design}
-The agentic layer is organized as a sequential process involving four agents, each assigned a specific role, goal, backstory, and set of tools. This setup ensures that unstructured data is systematically processed into mathematical parameters, solved, audited, and summarized.
-
-\subsection{Friction Sentry (The Watcher)}
-The Friction Sentry monitors the logistics environment. It receives unstructured or semi-structured disruption alerts (e.g., "verification delay at Bab-el-Mandeb due to container checks") and performs semantic parsing. It queries \texttt{semantic\_mapping\_rules.json} to extract the appropriate mapping rules and converts the textual disruption severity (low, medium, high, critical) into a quantitative \texttt{severity\_multiplier}.
-
-\subsection{Logistics Optimizer (The Solver)}
-The Logistics Optimizer is the mathematical heart of the crew. It takes the updated edge weight matrices (transit times and costs) calculated by the Friction Sentry and runs Dijkstra's pathfinding algorithm on the shocked in-memory graph. It computes candidate paths from the active supplier nodes to the target SME markets, comparing the baseline path metrics against the newly optimized alternatives.
-
-\subsection{Cost and Strategy Analyst (The Evaluator)}
-The Cost and Strategy Analyst reviews the routes proposed by the Logistics Optimizer and makes strategic recommendations. It has access to custom inventory tools:
+\subsection[Hardware Requirements]{Hardware Requirements}
 \begin{itemize}
-    \item \texttt{CheckInventoryTool}: Checks the current stock levels and days of cover at a target node.
-    \item \texttt{NetworkInventorySnapshotTool}: Provides a network-wide inventory health summary.
-    \item \texttt{EmergencyRestockTool}: Triggers emergency restocking of inventory.
+    \item \textbf{Processor}: Intel Core i5 / AMD Ryzen 5 or equivalent (Minimum); Intel Core i7 / Apple M1/M2 or higher (Recommended for faster multi-tier graph computations).
+\item \textbf{RAM}: 8 GB (Minimum); 16 GB or higher (Recommended for handling large NetworkX logistics graphs and local multi-agent processing simultaneously).
+\item \textbf{Storage}: 256 GB SSD (Minimum) to store datasets, Python environments, and project files.
+\item \textbf{Network}: High-speed, stable internet connection (Crucial for continuous, low-latency API calls to Google Gemini and real-time data ingestion).
 \end{itemize}
-The Cost Analyst evaluates the trade-offs: if a delay is short, it may recommend staying on the baseline route to avoid high rerouting costs. If the delay will exceed the market's days of cover and cause a stockout, the analyst triggers an emergency restock via air-freight and recommends rerouting.
+\section[Summary]{Summary}
+This chapter established the Software Requirement Specification for the Agentic AI framework, detailing both functional and non-functional requirements. It provided a comprehensive overview of the hardware and software stack necessary for building a resilient logistics digital twin. These specifications serve as the baseline for the high-level and detailed design phases that follow.
 
-\subsection{SME Communicator (The Presenter)}
-The SME Communicator acts as the bridge between technical models and human operators. It collects the outputs of the previous agents and generates a unified dashboard trigger. This payload contains the natural language recommendation, alert severity level, delta costs and times, and visual flags indicating which nodes to highlight and which route line to draw on the Leaflet map.
 
-\section{Mathematical Formulation and Equations}
-This section presents the equations that govern weight updates, pathfinding, and inventory checks.
 
-\subsection{Effective Weight Calculation}
-For any directed edge $e = (u, v) \in E$, the baseline effective transit time ($T_{eff}$) and baseline effective cost ($C_{eff}$) under normal operations are computed as:
-\begin{equation}
-    T_{eff} = T_{base} \times (1 + FP)
-\end{equation}
-\begin{equation}
-    C_{eff} = C_{base} \times (1 + FP)
-\end{equation}
 
-\subsection{Shock Propagation and Decay}
-When a disruption event is active at a specific source node $s_{shock}$ with a severity multiplier $M$, the shock propagates downstream. Let $u$ be the source node of edge $e = (u, v)$:
-\begin{itemize}
-    \item If $u$ is the direct target of the shock ($u = s_{shock}$), the shock multiplier applied is $M_{direct} = M$.
-    \item If $u$ is a cascade neighbor downstream from the shock ($u \in \text{cascade\_nodes}$), the shock multiplier applied is:
-    \begin{equation}
-        M_{cascade} = 1.0 + (M - 1.0) \times D_{decay}
-    \end{equation}
-    where $D_{decay} \in [0, 1]$ represents the cascade multiplier decay factor (defined in rules).
-    \item Otherwise, the shock multiplier $M_{other} = 1.0$.
-\end{itemize}
-The shocked effective weight ($W_{shocked}$) for the optimization criteria is:
-\begin{equation}
-    W_{shocked}(u, v) = W_{eff}(u, v) \times M_{shock}(u)
-\end{equation}
 
-\subsection{Dijkstra Pathfinding Optimization}
-Dijkstra's algorithm finds the path $P^* = (v_0, v_1, \dots, v_n)$ from a set of suppliers $S \subset V$ to a fixed market destination $d \in V$ that minimizes the cumulative weight:
-\begin{equation}
-    P^* = \arg\min_{P \in \mathcal{P}(S, d)} \sum_{(u, v) \in P} W_{shocked}(u, v)
-\end{equation}
-where $W_{shocked}$ represents either $T_{shocked}$ (for transit time optimization) or $C_{shocked}$ (for logistics cost optimization).
 
-\subsection{Inventory and Stockout Evaluation}
-Each market node $m$ has a safety stock level $I_{safety}$ and a daily demand rate $D_{daily}$. The Days of Cover ($DoC_m$) is calculated as:
-\begin{equation}
-    DoC_m = \frac{I_{current, m} - I_{safety, m}}{D_{daily, m}}
-\end{equation}
-If the inbound replenishment path experiences a transit time increase of $\Delta_{days} = T_{shocked}^* - T_{eff}^*$, the inventory manager checks for stockout risk:
-\begin{equation}
-    \text{If } \Delta_{days} > DoC_m \implies \text{Stockout = True}
-\end{equation}
-The quantity of unmet demand ($Q_{unmet}$) during the stockout period is:
-\begin{equation}
-    Q_{unmet} = (\Delta_{days} - DoC_m) \times D_{daily, m}
-\end{equation}
-The financial penalty due to emergency air-freight restocking is:
-\begin{equation}
-    C_{emergency} = Q_{unmet} \times C_{premium}
-\end{equation}
-where $C_{premium}$ represents the additional freight premium in USD/MT.
 
-\section{Summary}
-This chapter detailed the five-layer system architecture, the structural classifications of the 14-node EXIM graph, the sequential CrewAI multi-agent orchestration, and the mathematical formulations for graph shocks and inventory stockouts. These designs allow the system to simulate and respond to disruptions. The next chapter details the implementation of these concepts in code.

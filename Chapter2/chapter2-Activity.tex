@@ -1,38 +1,76 @@
-\chapter{Activities of the Department}
+\chapter{Theoretical Foundations and Core Concepts of Mitigating Logistics Friction in Global Chokepoints:
+An Agentic AI Framework for Indian Export-Import
+Resilience}
 
-Overview of the Functional Unit: In this chapter, students should describe the specific department or team they were embedded in during the internship. While Chapter 1 focused on the entire company, this section focuses on the immediate work environment.
+This chapter establishes the academic and technical foundation for the proposed agentic AI framework. It explores the stochastic nature of inventory management under uncertainty, the mathematical modeling of logistics networks through graph theory, and the mechanics of disruption propagation. Furthermore, it details the role of multi-agent systems in autonomous orchestration and the conceptual shift towards strategic digital twins for proactive risk management.
 
-\section{Departmental Role and Objectives}
-Define the primary purpose of your department (e.g., Embedded Systems Team, VLSI Design Group, or Quality Assurance). Explain how this department contributes to the company’s overall product lifecycle.
+\section{Stochastic Inventory Control (Chopra \& Meindl Framework)}
+In classical supply chain theory, inventory management must account for uncertainty in both demand and supply lead times. This project implements this using the \textbf{Chopra Inventory Model}:
 
-\section{Technical Infrastructure} 
-Describe the tools, hardware, and software environment used within the department. Mention specific lab equipment, servers, or proprietary software frameworks utilized by the team.
+\begin{itemize}
+    \item \textbf{Safety Stock ($SS$) Equation:}
+    \[SS = z \cdot \sqrt{\bar{L} \cdot \sigma_D^2 + \bar{D}^2 \cdot \sigma_L^2}\]
+    where:
+    \begin{itemize}
+        \item $\bar{L}$ (Average Lead Time): The shocked transit time calculated dynamically by Dijkstra.
+        \item $\sigma_L$ (Lead Time Deviation): Represented as $\sigma_L = \bar{L} \cdot (\text{severity} - 1) \cdot 1.5$, showing how disruption severity directly inflates lead-time volatility.
+        \item $z$ (Service Level Factor): The inverse cumulative distribution function of the standard normal distribution (Z-score). Your project locks this at 1.645 for a 95\% service level.
+    \end{itemize}
+    \item \textbf{The Concept:} Traditional systems assume static lead times. This theory proves that as lead time ($\bar{L}$) and lead time uncertainty ($\sigma_L$) grow due to disruptions, the required safety stock increases exponentially to maintain service levels, directly driving up holding costs.
+\end{itemize}
 
-\section{Workflow and Methodologies} 
-Detail the operational processes followed, such as the Software Development Life Cycle (SDLC), Agile Sprints, or hardware testing protocols.
+\section{Dynamic Network Flow \& Dijkstra’s Algorithm}
+The physical transport network is represented mathematically as a \textbf{Weighted Directed Graph} $G = (V, E)$, where $V$ represents nodes (Suppliers, Ports, Warehouses, Markets) and $E$ represents directed routes.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% NOTE: This section is meant to teach how to use "Acronyms" and "Glossaries" in the report. 
-% 		So Remove or comment the following section and it's content entirely.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Use of Acronyms and Glossaries}
-Acronyms are nothing but the short form of regular repeated word. Say for example, you have a repeat word "Integrated Circuits" and you want to use a short form for it as "IC". For which you have to first define the word and use it wherever you wanted to refer it.
+\begin{itemize}
+    \item \textbf{Edge Weight Dynamism:} Unlike static routing systems, edge weights are dynamic variables:
+    \[w_{e} = f(\text{baseline\_weight}, \text{shock\_multiplier}, \text{semantic\_rules})\]
+    \item \textbf{Dijkstra’s Shortest Path Algorithm:} 
+    The routing engine solves the single-source shortest path problem to find a path $P$ from Supplier $S$ to Market $M$ that minimizes:
+    \begin{itemize}
+        \item $\sum_{e \in P} \text{transit\_time}_e$ (when minimizing Time)
+        \item $\sum_{e \in P} \text{freight\_cost}_e$ (when minimizing Cost)
+    \end{itemize}
+    \item \textbf{The Concept:} Local disruptions (e.g., blockades in the Strait of Hormuz) alter global network paths, shifting bottleneck dynamics to other nodes (like Mundra or Nhava Sheva ports).
+\end{itemize}
 
-First, let's look at the definition, which has to be entered in \texttt{Glossaries.tex} under \texttt{CoverPages} directory.
-\begin{verbatim}
-	%\newacronym{<Ref>}{<Short-Form>}{<Expanded word>}
-	\newacronym{ic}{IC}{Integrated Circuits}
-\end{verbatim}
-In order to use the defined acronym, use the commands \verb|\gls{<Ref>}| as shown below
+\section{Supply Chain Disruption \& "Cost of Inaction" (CoI)}
+This project introduces a comparative baseline between a \textbf{Human Planner} (static/reactive) and an \textbf{AI Orchestrator} (dynamic/proactive).
 
-%As an example, call the definition with \verb|\gls{ic}| and the outcome of it is reflected as, \gls{ic}.
+\begin{itemize}
+    \item \textbf{Cost of Inaction (CoI):} The financial penalty of not changing routes during a shock. It includes:
+    \begin{itemize}
+        \item War-risk insurance premiums.
+        \item Congestion surcharges.
+        \item Overtime warehouse labor.
+    \end{itemize}
+    \item \textbf{Friction Propagation \& Decay:} 
+    Disruptions do not remain isolated; they cascade. The project models this via cascade multipliers:
+    \[\text{Severity}_{\text{cascaded}} = \text{Severity}_{\text{direct}} \cdot \text{Decay Factor}\]
+    For instance, a blockade in the Red Sea cascades to port congestions in Western Indian ports (Mundra, Nhava Sheva) with a decay factor (e.g., 0.60).
+\end{itemize}
 
-Note: For the First time, the expanded form appears along with the Short-form definition inside parenthesis. But when the \verb|\gls{}| is repeated, only Short-form appears inside the parenthesis.
+\section{Multi-Agent Systems (MAS) \& LLM Orchestration}
+Instead of using traditional rigid coding paradigms to solve exceptions, the project leverages \textbf{Agentic AI} using the \textbf{CrewAI} framework:
 
-Now, let's look at the definition of symbols. Follow the syntax to define the symbol first, inside \texttt{Glossaries.tex} under \texttt{CoverPages} directory.
-\begin{verbatim}
-	%\newglossaryentry{<Ref>}{name=<Symbol>, description={<description about the symbol>}, type=<List type>}
-	\newglossaryentry{rc}{name=$\tau$, description={Time constant}, type=symbolList}
-\end{verbatim}
+\begin{itemize}
+    \item \textbf{Role-Playing Agents:} Dividing labor into isolated, specialized cognitive agents:
+    \begin{enumerate}
+        \item \textit{Logistics Optimizer (The Solver):} Mathematical routing.
+        \item \textit{Cost \& Strategy Analyst (The Evaluator):} Tactical inventory checks and replenishment.
+        \item \textit{SME Communicator (The Presenter):} Translation of complex telemetry into visual dashboard payloads.
+    \end{enumerate}
+    \item \textbf{Prompt Chaining \& Sequential Context:} The outputs of mathematical tools (Dijkstra) are piped sequentially as context to downstream agents. This prevents hallucination by feeding structured JSON outputs directly into the reasoning loop of the next agent.
+\end{itemize}
 
-%As an example, the rate of change is defined with \verb|\gls{rc}| and the outcome of it is reflected as, the rate of change is defined with \gls{rc}.
+\section{Strategic Logistics Digital Twin}
+A Digital Twin is a dynamic digital representation of a physical system. In a strategic context, it is used for:
+
+\begin{itemize}
+    \item \textbf{Concept of Strategic Digital Twin:} Unlike operational digital twins that focus on short-term execution, a Strategic Digital Twin is designed for long-term scenario planning and risk assessment. It creates a "sandboxed" version of the supply chain network to simulate "What-If" scenarios—such as geopolitical blockades or sudden maritime congestion.
+    \item \textbf{Application:} By injecting synthetic events (such as the simulated benchmark shocks), the Digital Twin acts as a risk simulation sandbox, allowing managers to visualize the downstream effects on landed costs and stockout timings before they occur in the real world. This transforms supply chain management from a reactive effort into a proactive resilience strategy.
+\end{itemize}
+
+\vspace{0.75cm}
+
+This chapter provided a comprehensive overview of the five theoretical pillars that form the backbone of the project. By integrating stochastic inventory models with dynamic network flow and agentic orchestration, the framework addresses the "Cost of Inaction" in volatile maritime corridors. These concepts set the stage for the detailed system design and implementation phases discussed in the following chapters.

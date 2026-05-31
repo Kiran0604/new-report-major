@@ -17,6 +17,9 @@ Remove-Item -Path *.aux, *.bbl, *.blg, *.lof, *.log, *.lot, *.out, *.toc, *.run.
 Write-Host "Step 2/4: Running pdflatex (First pass)..." -ForegroundColor Cyan
 pdflatex -interaction=nonstopmode MajorProjectReport.tex | Out-Null
 
+Write-Host "Running makeglossaries-lite..." -ForegroundColor Cyan
+makeglossaries-lite MajorProjectReport | Out-Null
+
 Write-Host "Step 3/4: Running BibTeX..." -ForegroundColor Cyan
 bibtex MajorProjectReport | Out-Null
 

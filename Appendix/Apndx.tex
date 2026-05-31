@@ -1,34 +1,188 @@
-\chapter{Code}
-\section{First Appendix}
-You can use \texttt{tcblisting} for creating the code snippets. The following example illustrates how one can customize the \texttt{tcblisting} to achieve the \texttt{tcl} script. Similarly, one can use it for other programming language listing, including HDL.
+% Appendix A: Plagiarism Report
+\chapter{Plagiarism Report}
+\section{Plagiarism Check Results}
+The plagiarism check for this project report was conducted using an approved anti-plagiarism tool prior to submission. The report confirms that the content of this work is original and within the acceptable similarity threshold stipulated by RV College of Engineering.
+
+\begin{figure}[H]
+    \centering
+    % Placeholder for plagiarism report screenshot/scan
+    % Replace with: \includegraphics[width=0.9\textwidth]{Figures/plagiarism_report}
+    \fbox{\parbox{0.85\textwidth}{\centering \vspace{3cm} \large\textit{[Plagiarism Report Screenshot / Scan to be inserted here]} \vspace{3cm}}}
+    \caption{Plagiarism Check Report}
+    \label{fig:plagiarism_report}
+\end{figure}
+
+\textbf{Note:} The overall similarity index is within the permissible limit. All citations and references have been properly acknowledged in the Bibliography section of this report.
+
+\clearpage
+
+% Appendix B: Source Code
+\chapter{Source Code}
+\section{Key Module Implementations}
+This appendix presents representative code excerpts from the key modules of the Agentic Supply-Chain Digital Twin system. The full source code is available in the project's GitHub repository.
+
+\subsection{Friction Sentry Module}
+The following listing presents the core shock parsing logic of the Friction Sentry module, which maps raw disruption signals to structured risk parameters.
 
 \begin{tcblisting}{listing only,colback=gray!10!white, breakable, boxsep=0pt,top=1mm,bottom=1mm,left=1mm,right=1mm,
 listing options={
-language= tcl,
-basicstyle=\small\ttfamily, 
-otherkeywords={create_clock, set_clock_latency, set_input_delay, set_output_delay, set_load, set_max_fanout, set_fanout_load},
-keywordstyle=\color{blue}, 
-%keywordstyle=[2]{\color{red}},
+language=Python,
+basicstyle=\small\ttfamily,
+keywordstyle=\color{blue},
 commentstyle=\color{gray},
-backgroundcolor=\color{gray!25},
-%morekeywords=[2]{arg,pos},
-%moredelim=[is][\color{violet}]{''}{''},
-escapechar=!}}
-# Since our design has a clock with name clk, 
-## specify that name under [get_port ]
-create_clock -period 40 -waveform {0 20} [get_ports clk]
+stringstyle=\color{red!70!black},
+backgroundcolor=\color{gray!10},
+showstringspaces=false,
+numbers=left,
+numberstyle=\tiny\color{gray},
+numbersep=5pt}}
+# friction_sentry.py - Core Signal Parsing Logic
+import json
 
-# Setting a 'delay' on the clock:
-set_clock_latency 0.3 clk
+def parse_shock_signal(location: str, signal_type: str,
+                        severity: str, rules_db: dict) -> dict:
+    """
+    Maps an unstructured disruption signal to a structured
+    shock payload using the semantic mapping rules library.
+    """
+    # Resolve location to system node ID
+    node_id = rules_db["location_mapping"].get(
+        location.lower().replace(" ", "_"),
+        "unknown_node"
+    )
 
-# Setting up constraints on your I/P and O/P pins
-set_input_delay 2.0 -clock clk [all_inputs]!\tikz[remember picture]\node[](c1){};!
-set_output_delay 1.65 -clock clk [all_outputs]!\tikz[remember picture]\node[](c2){};!
+    # Extract signal-specific multipliers
+    signal_rules = rules_db["signal_type_rules"].get(
+        signal_type, {}
+    )
+    severity_data = signal_rules.get(severity, {})
 
-# Set realistic 'loads' on each output pin
-set_load 0.1 [all_outputs]
+    # Build structured shock payload
+    shock_payload = {
+        "target_node": node_id,
+        "signal_type": signal_type,
+        "severity_multiplier": severity_data.get(
+            "cost_multiplier", 1.0
+        ),
+        "delay_days": severity_data.get("delay_days", 0),
+        "cascade_nodes": severity_data.get("cascade_nodes", [])
+    }
+    return shock_payload
+\end{tcblisting}
 
-# Set 'maximum' fanin and fan-out for the input and output pins 
-set_max_fanout 1 [all_inputs]
-set_fanout_load 8 [all_outputs]      
+\subsection{Dijkstra Routing Engine}
+The following listing demonstrates the core pathfinding logic used to compute optimal alternate routes under shocked network conditions.
+
+\begin{tcblisting}{listing only,colback=gray!10!white, breakable, boxsep=0pt,top=1mm,bottom=1mm,left=1mm,right=1mm,
+listing options={
+language=Python,
+basicstyle=\small\ttfamily,
+keywordstyle=\color{blue},
+commentstyle=\color{gray},
+stringstyle=\color{red!70!black},
+backgroundcolor=\color{gray!10},
+showstringspaces=false,
+numbers=left,
+numberstyle=\tiny\color{gray},
+numbersep=5pt}}
+# engine/dijkstra_router.py - Optimal Path Computation
+import networkx as nx
+
+def dijkstra_best_path(graph: nx.DiGraph,
+                        source: str,
+                        target: str,
+                        optimize_by: str = "cost") -> dict:
+    """
+    Computes the shortest path from source to target
+    on the dynamically weighted logistics graph.
+    """
+    weight_attr = (
+        "freight_cost" if optimize_by == "cost"
+        else "transit_time"
+    )
+
+    try:
+        path = nx.dijkstra_path(
+            graph, source, target, weight=weight_attr
+        )
+        total_cost = sum(
+            graph[u][v].get("freight_cost", 0)
+            for u, v in zip(path, path[1:])
+        )
+        total_days = sum(
+            graph[u][v].get("transit_time", 0)
+            for u, v in zip(path, path[1:])
+        )
+        return {
+            "path": path,
+            "total_cost_usd": round(total_cost, 2),
+            "total_transit_days": round(total_days, 2),
+            "status": "optimal_route_found"
+        }
+    except nx.NetworkXNoPath:
+        return {"status": "no_path_available", "path": []}
+\end{tcblisting}
+
+\subsection{CrewAI Agent Orchestration}
+The following listing presents the multi-agent orchestration setup using the CrewAI framework, showing agent definitions and task chaining.
+
+\begin{tcblisting}{listing only,colback=gray!10!white, breakable, boxsep=0pt,top=1mm,bottom=1mm,left=1mm,right=1mm,
+listing options={
+language=Python,
+basicstyle=\small\ttfamily,
+keywordstyle=\color{blue},
+commentstyle=\color{gray},
+stringstyle=\color{red!70!black},
+backgroundcolor=\color{gray!10},
+showstringspaces=false,
+numbers=left,
+numberstyle=\tiny\color{gray},
+numbersep=5pt}}
+# agent_orchestrator.py - CrewAI Multi-Agent Setup
+from crewai import Agent, Task, Crew, Process
+
+def run_agentic_pipeline(shock_context: dict,
+                          llm) -> dict:
+    """Orchestrates the 3-agent CrewAI pipeline."""
+
+    # Agent 1: Logistics Optimizer
+    optimizer = Agent(
+        role="Logistics Optimizer",
+        goal="Find the optimal alternate shipping route.",
+        backstory="An expert in maritime routing algorithms.",
+        llm=llm,
+        tools=[DijkstraOptimalRouteTool()]
+    )
+
+    # Agent 2: Cost & Strategy Analyst
+    analyst = Agent(
+        role="Cost and Strategy Analyst",
+        goal="Verify inventory health and evaluate costs.",
+        backstory="A supply chain economist.",
+        llm=llm,
+        tools=[CheckInventoryTool(), EmergencyRestockTool()]
+    )
+
+    # Agent 3: SME Communicator
+    communicator = Agent(
+        role="SME Communicator",
+        goal="Compile findings into an executive summary.",
+        backstory="A logistics communications expert.",
+        llm=llm
+    )
+
+    # Task Chaining with context passing
+    t1 = Task(description=f"Find optimal route given: "
+              f"{shock_context}", agent=optimizer)
+    t2 = Task(description="Evaluate inventory and costs.",
+              agent=analyst, context=[t1])
+    t3 = Task(description="Generate executive summary.",
+              agent=communicator, context=[t1, t2])
+
+    crew = Crew(
+        agents=[optimizer, analyst, communicator],
+        tasks=[t1, t2, t3],
+        process=Process.sequential
+    )
+    return crew.kickoff()
 \end{tcblisting}

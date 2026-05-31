@@ -1,0 +1,175 @@
+\chapter[Software Testing]{Software Testing}
+
+The testing and validation process carried out for the proposed system is presented here. The purpose of software testing is to ensure that the implemented system functions correctly, satisfies the specified requirements, and performs reliably under different operating conditions.
+
+
+\section[Testing Process]{Testing Process}
+This section describes the testing methodologies and verification workflows carried out for the system. Testing is divided into distinct, progressive phases to validate components in isolation before validating integrated behaviors. The unit and integration test strategies are described in the following subsections.
+\subsection[Unit Testing]{Unit Testing}
+This subsection details the unit testing methodology, scope, and validation criteria implemented to verify the backend modules and custom agentic tools of the Digital Twin system.
+
+\subsubsection{Modules and Components Tested Individually}
+Unit testing target modules are divided into three primary categories:
+\begin{itemize}
+    \item \textbf{FastAPI Endpoints (API Layer):} Structural validation and data integrity checks on backend service endpoints such as network topology (\texttt{/api/topology}), inventory management (\texttt{/api/inventory}), and operational restock pipelines.
+    \item \textbf{Agentic Tools (Tool Layer):} Isolation tests for custom CrewAI helper classes that interface directly with the digital twin's environment, including the \texttt{DijkstraOptimalRouteTool}, \texttt{CheckInventoryTool}, and \texttt{EmergencyRestockTool}.
+    \item \textbf{Helper Utilities:} Core text processing functions such as \texttt{\_parse\_agent\_json}, used to clean and extract JSON payloads from LLM responses.
+\end{itemize}
+
+\subsubsection{Testing Methodology Adopted}
+\begin{itemize}
+    \item \textbf{Framework:} The testing suite is built using the \texttt{pytest} framework, enabling automated, assertions-driven validation of test suites.
+    \item \textbf{Simulation of HTTP Clients:} The FastAPI \texttt{TestClient} class is used to make mock requests to the application layer. This tests headers, routes, status codes, and JSON responses in-memory, without spinning up an actual network listener.
+    \item \textbf{Isolated Tool Execution:} Rather than running full multi-agent CrewAI instances, the unit tests instantiate the underlying Python classes of the tools and invoke their methods directly with deterministic parameters.
+\end{itemize}
+
+\subsubsection{Input Conditions \& Expected Outputs}
+The test suite validates both nominal operation (happy paths) and robust error handling:
+
+\begin{table}[htbp]
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{Component Under Test} & \textbf{Input Conditions (Test Cases)} & \textbf{Expected Outputs / Post-conditions} \\ \hline
+    \textbf{Topology Endpoint} & HTTP GET \texttt{/api/topology} & \texttt{200 OK} status; JSON matching schema rules. \\ \hline
+    \textbf{Inventory Restocking} & HTTP POST \texttt{/api/inventory/restock} & \texttt{200 OK} with updated stock levels. \\ \hline
+    \textbf{Dijkstra Tool} & Path computation requests & Correct routing nodes and accumulated costs. \\ \hline
+    \textbf{Helper Functions} & Markdown-wrapped JSON blocks & Properly parsed Python dictionaries. \\ \hline
+    \end{tabular}
+    }
+    \caption{Unit Test Input Conditions and Expected Outputs}
+    \label{tab:unit_tests}
+\end{table}
+
+\subsubsection{Validation of Module Behavior}
+Module validation is verified using declarative assertions covering:
+\begin{itemize}
+    \item \textbf{Schema \& Structural Correctness:} Ensuring keys such as transport mode and coordinates conform to specifications (e.g., latitude remains between $-90^\circ$ and $+90^\circ$).
+    \item \textbf{State Persistence:} Asserting that restock operations correctly mutate states.
+    \item \textbf{Robustness:} Confirming the API gracefully rejects bad inputs with appropriate HTTP error codes.
+\end{itemize}
+
+\subsection[Integration Testing]{Integration Testing}
+This subsection describes the testing performed to verify that individual system modules function correctly when connected.
+
+\subsubsection{Integration Methodology}
+The integration testing was performed manually by running the complete end-to-end application. The modules (Friction Sentry, Networked Digital Twin, Logistics Optimizer, and Interactive Dashboard) were launched and monitored concurrently to observe active linkages:
+\begin{itemize}
+    \item \textbf{FastAPI Backend \& Frontend Communication:} Verified that REST API requests initiated by the React+Leaflet frontend successfully hit the FastAPI endpoints, and JSON responses populated the frontend maps, alerts, and graphs.
+    \item \textbf{Agentic Framework to Graph Engine Linkage:} Checked that the \texttt{CrewAI} agents successfully imported and executed the custom Dijkstra, Snapshot, and Restocking tools, exchanging structural node/edge data dynamically.
+\end{itemize}
+
+\subsubsection{Validation Criteria}
+\begin{itemize}
+    \item \textbf{Communication Between Modules:} Confirmed HTTP-level integrity and WebSocket connections between the client and server.
+    \item \textbf{Data Exchange Correctness:} Ensured inventory updates triggered in the frontend interface or computed by the LLM optimizer correctly altered the underlying digital twin memory state.
+    \item \textbf{Workflow Consistency:} Verified that simulating a physical supply chain shock immediately propagated warnings to the UI dashboard and triggered optimization agents.
+\end{itemize}
+
+\section[System Testing]{System Testing}
+This section details the system-level tests conducted to ensure that all modules work together to satisfy the core functional and operational requirements. The system testing covers end-to-end workflows, boundary conditions, input/output validation checks, and performance benchmarks under stress.
+\subsection[Functional Testing]{Functional Testing}
+This subsection details the functional validation of the fully integrated Agentic Supply-Chain Digital Twin.
+
+\subsubsection{Features Tested}
+\begin{itemize}
+    \item \textbf{Geographic Network Rendering:} Map visualization of suppliers, transshipment hubs (ports, warehouses), and SME retail markets with Leaflet overlays.
+    \item \textbf{Dynamic Shock Propagation:} Ingestion and processing of logistics friction alerts (severity multipliers on lead time/cost).
+    \item \textbf{Agentic Orchestration:} CrewAI-based collaborative execution of the Analyst and Coordinator agents to resolve disruptions.
+    \item \textbf{Emergency Restocking Controls:} Manual and AI-driven restocking actions that increment target node inventory.
+\end{itemize}
+
+\subsubsection{Functional Workflows Validated}
+\begin{itemize}
+    \item \textbf{Disruption Optimization Cycle:} An alert is simulated $\rightarrow$ Friction Sentry records the entry $\rightarrow$ Digital Twin inflates path weights $\rightarrow$ Logistics Optimizer computes alternate routes $\rightarrow$ Dashboard displays the updated supply routes.
+    \item \textbf{Inventory Safety Monitoring:} Depleting inventory below Safety Stock limits triggers warnings and automates replenishment.
+\end{itemize}
+
+\subsubsection{Requirement Verification}
+\begin{itemize}
+    \item \textbf{Shortest-Path Correctness:} Validated that computed routing options strictly follow network links and correspond to correct Dijkstra outputs.
+    \item \textbf{Cost-of-Inaction Mitigation:} Confirmed that the agent optimization workflow successfully reduces overall cost and stockout risks compared to static baselines.
+\end{itemize}
+
+\subsubsection{User Interaction Testing}
+Tested page responsive behaviors, interactive tooltips showing node stock statistics, dynamic form inputs for restock orders, and real-time visualization changes on route selection.
+
+\subsection[Input and Output Validation Testing]{Input and Output Validation Testing}
+This subsection explains the validation steps performed on incoming data payloads and system-generated outputs.
+
+\subsubsection{Input Validation Testing}
+\begin{itemize}
+    \item \textbf{REST Payload Constraints:} FastAPI's \texttt{Pydantic} schema models validate incoming parameters. For instance, testing with negative values (e.g., restock amount = $-5.0$) yields a \texttt{422 Unprocessable Entity} response.
+    \item \textbf{Strict String Sanitization:} The disruption severity multiplier input is sanitized to guarantee it remains a valid numeric multiplier $\ge 1.0$.
+\end{itemize}
+
+\subsubsection{Output Correctness Verification}
+\begin{itemize}
+    \item \textbf{JSON Serialization Safety:} Outputs containing mathematical operations are checked to ensure they do not write infinite values (\texttt{Infinity} or \texttt{NaN}) to output APIs.
+    \item \textbf{Path Validation:} Every calculated route sequence is verified to ensure it represents a continuous chain from a valid supplier to the target market.
+\end{itemize}
+
+\subsubsection{Error Message Validation}
+\begin{itemize}
+    \item Tested client exceptions for invalid resource paths (e.g., \texttt{/api/inventory/nonexistent\_node} returns \texttt{404} with a detailed "Node not found" JSON response).
+    \item Handled fallback responses when the AI parser encounters unexpected non-JSON text from LLM completions.
+\end{itemize}
+
+\subsubsection{Boundary Condition Testing}
+Tested the behavior of the routing engine under severe shocks where paths become completely blocked (infinite weight). The system correctly falls back to alternate routes or logs a disconnected state instead of entering an infinite loop.
+
+\subsection[Performance and Reliability Testing]{Performance and Reliability Testing}
+This subsection evaluates system metrics under stressed conditions using performance data compiled during benchmarking.
+
+\subsubsection{Response Time}
+\begin{itemize}
+    \item \textbf{API Queries:} Local graph queries and inventory reads execute in \textbf{$< 15\text{ ms}$}.
+    \item \textbf{Agent Optimization Loop:} The optimization cycle (involving CrewAI task chains and Google Gemini API calls) exhibits a response latency of \textbf{$8\text{ to }15\text{ seconds}$} per shock scenario, which matches design expectations for strategic decision-making.
+\end{itemize}
+
+\subsubsection{Reliability}
+Tested system operations across 10 sequential execution passes in \texttt{benchmark\_pipeline.py}. To prevent memory leaks or state drift, the global inventory manager instance is programmatically reset between test runs.
+
+\subsubsection{Concurrent Access Handling}
+FastAPI is configured to run blocking agent routines using synchronous worker threads, allowing concurrent client connections to query active topology datasets and inventory states without blocking the server loop.
+
+\subsubsection{Resource Utilization}
+Memory footprint remains stable at \textbf{$< 120\text{ MB}$} for the backend process, with minimal CPU utilization when idle. Peak CPU utilization occurs briefly during Dijkstra computations and agent planning.
+
+\subsection[System Test Case Tables]{System Test Case Tables}
+The end-to-end system testing results generated programmatically by the benchmarking suite in \texttt{benchmark\_pipeline.py} are summarized in Table~\ref{tab:system_test_results}.
+
+Table~\ref{tab:system_test_results} outlines the six critical system-level test cases (SYS-001 through SYS-006) executed to validate the operational readiness of the Agentic Supply-Chain Digital Twin. The test cases cover a diverse set of simulated real-world scenarios, including geopolitical disruptions (Hormuz Shock and Saudi Quota), climate events (Oman Weather), infrastructure bottlenecks (Nhava Congestion and Mundra Backlog), and core system data integrity (Output Integrity).
+
+The benchmark execution demonstrates that in all test cases, the system behaved exactly as expected:
+\begin{itemize}
+    \item For the \textbf{Hormuz Shock (SYS-001)}, the system successfully bypassed the Strait of Hormuz to avoid the high severity multiplier, successfully preventing downstream stockouts in target markets.
+    \item For the \textbf{Oman Weather (SYS-002)} and \textbf{Nhava Congestion (SYS-004)} scenarios, the system dynamically rerouted maritime traffic via alternate routes and neighboring ports (such as Mundra), saving up to 1.8 days of transit delay compared to the static baseline.
+    \item Under resource quotas like the \textbf{Saudi Quota (SYS-003)}, the Logistics Optimizer triggered the \texttt{EmergencyRestockTool} to execute automatic restocking, thereby maintaining days of inventory cover above critical safety thresholds.
+    \item In the \textbf{Mundra Backlog (SYS-005)} test, the system correctly calculated land-routing alternatives to bypass port congestion.
+    \item Finally, the \textbf{Output Integrity (SYS-006)} test verified that all execution telemetry was successfully logged in a structured CSV format for analysis.
+\end{itemize}
+All six test cases achieved a status of \textbf{Passed}, validating that the multi-agent framework functions reliably as a unified system under diverse operational shocks.
+
+\begin{table}[htbp]
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{|l|l|l|l|l|}
+    \hline
+    \textbf{ID} & \textbf{Test Description} & \textbf{Expected Output} & \textbf{Actual Output} & \textbf{Result} \\ \hline
+    SYS-001 & \textbf{Hormuz Shock:} 1.25 Severity. & AI finds optimal route; cost minimized. & AI bypassed Hormuz; prevented stockout. & \textbf{Passed} \\ \hline
+    SYS-002 & \textbf{Oman Weather:} 1.08 Severity. & AI minimizes transit latency. & Selected alternate maritime route. & \textbf{Passed} \\ \hline
+    SYS-003 & \textbf{Saudi Quota:} 1.30 Severity. & AI executes emergency restock. & Restock order initiated; cover maintained. & \textbf{Passed} \\ \hline
+    SYS-004 & \textbf{Nhava Congestion:} 1.18 Severity. & AI reroutes through alternate port. & Rerouted via Mundra; saved $1.8$ days. & \textbf{Passed} \\ \hline
+    SYS-005 & \textbf{Mundra Backlog:} 1.14 Severity. & AI selects overland/maritime alt. & Land-routing alternatives calculated. & \textbf{Passed} \\ \hline
+    SYS-006 & \textbf{Output Integrity:} File check. & CSV contains 10 rows of telemetry. & CSV written with full telemetry. & \textbf{Passed} \\ \hline
+    \end{tabular}
+    }
+    \caption{System-Level Benchmark Execution Results}
+    \label{tab:system_test_results}
+\end{table}
+\section[Summary]{Summary}
+This chapter outlined the comprehensive testing strategy employed to validate the Agentic Digital Twin, including unit, integration, and system-level tests. The results from the benchmarking suite confirmed that the system correctly identifies disruptions, calculates optimal rerouting, and maintains inventory health across various maritime shock scenarios. The performance metrics demonstrate a high degree of reliability and functional correctness, setting the stage for the results analysis in the next chapter.
+
+
