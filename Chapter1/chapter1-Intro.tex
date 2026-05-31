@@ -7,147 +7,33 @@ Global trade is increasingly defined by \textit{Logistics Friction}---a composit
 While large-scale enterprises employ sophisticated risk-modelling tools, Indian Small and Medium Enterprises (SMEs) remain exposed to the \textit{Bullwhip Effect}---a supply chain phenomenon wherein small fluctuations in consumer demand at the retail level cause progressively larger fluctuations upstream, at the wholesale, distributor, and manufacturer levels. This vulnerability is compounded by sudden shifts in transit verification procedures, insurance premium spikes, and port congestion, all of which can render manual planning processes wholly inadequate.
 
 The emergence of Agentic Artificial Intelligence (AI) and Large Language Model (LLM)-based multi-agent frameworks presents a transformative opportunity to bridge this gap. By enabling autonomous detection, analysis, and execution of logistics mitigation strategies, these technologies can equip Indian SMEs with capabilities previously reserved for multinational corporations. This project, therefore, proposes a novel \textit{Agentic Supply-Chain Digital Twin}---an integrated framework capable of detecting disruption signals, quantifying their impact on supply networks, and autonomously executing optimised routing and inventory management strategies to protect Indian EXIM resilience.
-
-\subsection[Terminology and Definitions]{\textbf{Terminology and Definitions}}
-
-This section defines the key technical terms, abbreviations, and domain-specific concepts used throughout this report.
-\begin{table}[H]
-\centering
-\caption{Terminology and Definitions}
-\label{tab:terminology}
-\resizebox{\textwidth}{!}{
-\begin{tabular}{|p{4cm}|p{11cm}|}
-\hline
-\textbf{Term} & \textbf{Definition} \\
-\hline
-\textbf{Shock Location / Disruption Node} & A specific geographical point or transit corridor (e.g., chokepoint, port, road link) experiencing supply chain friction, congestion, or security threats. \\
-\hline
-\textbf{Signal Type} & The classification of the disruption or external risk factor triggering a supply-chain alert. \\
-\hline
-\textbf{Severity Multiplier} & A coefficient that scales baseline time and cost variables to simulate the intensity of a disruption.\\
-\hline
-\textbf{Strategic Preference} & The trade-off priority chosen by a logistics manager (or agent) to optimise the supply network. \\
-\hline
-\textbf{Landed Cost} & The total cumulative cost of buying, transporting, insuring, and storing inventory until it reaches its final destination market. \\
-\hline
-\textbf{Transit Days} & The lead time (in days) required for cargo to travel along the chosen path from the supplier to the destination market. \\
-\hline
-\textbf{Response Latency} &  The decision-making time elapsed between detecting a supply chain shock and implementing a mitigation strategy (such as rerouting or restocking). \\
-\hline
-\textbf{\gls{TEU}} & A standardised unit of measurement for container capacity in maritime shipping, equivalent to one 20-foot container. Used to measure vessel capacity and cargo volume. \\
-\hline
-\textbf{Bunker Cost} & The cost of marine fuel (bunker oil) required to power a vessel during transit. Bunker costs fluctuate based on global oil prices and significantly impact overall shipping expenses. \\
-\hline
-\textbf{\gls{SME}} & Small and Medium Enterprises---businesses that maintain revenues, assets, or a number of employees below certain thresholds. In this report, the term refers specifically to Indian firms engaged in export-import trade. \\
-\hline
-\textbf{\gls{MAS}} & Multi-Agent System---a system composed of multiple interacting intelligent agents that cooperate to solve complex problems. \\
-\hline
-\textbf{\gls{LLM}} & Large Language Model---a deep learning model trained on vast textual corpora to understand and generate human language. \\
-\hline
-\textbf{\gls{DT}} & Digital Twin---a virtual, real-time representation of a physical system used for simulation, monitoring, and decision support. \\
-\hline
-\end{tabular}
-}
-\end{table}
-
-\section[Overview of the Project Topic]{\textbf{Overview of the Project Topic}}
-
 The domain of this project resides at the intersection of Agentic Artificial Intelligence and Maritime Logistics, a sector critical to global trade. In modern systems, the ability to automate complex decision-making through autonomous agents has become a cornerstone of supply chain resilience. Recent advancements in \gls{LLM}s and multi-agent systems have moved the field beyond static predictive models toward dynamic, goal-oriented frameworks capable of independent reasoning. This evolution holds immense academic and industrial relevance, as it directly addresses the persistent challenge of logistics friction within highly volatile maritime chokepoints.
 
 By integrating real-time data ingestion with agent-driven optimisation, the proposed technology plays a vital role in mitigating the Bullwhip Effect and reducing transit uncertainties. For Indian enterprises, particularly \gls{SME}s, this framework offers a robust mechanism for maintaining export-import competitiveness, transforming reactive crisis management into proactive, intelligent resilience against global trade shocks. The project thus contributes to the growing body of work demonstrating that agentic AI is no longer merely a conceptual framework, but a practical design pattern for autonomous logistics governance.
 
-\subsection[Global Scenario]{\textbf{Global Scenario}}
+\subsection[Terminology and Definitions]{\textbf{Terminology and Definitions}}
 
-Technological developments in global trade are increasingly pivoting toward AI-driven resilience. Organisations such as the World Trade Organization (\gls{WTO}) and major shipping conglomerates are prioritising logistics friction mitigation to stabilise global maritime trade. Recent innovations include predictive risk-modelling and decentralised logistics orchestration, yet the worldwide demand for autonomous execution frameworks remains high. Global supply chains, particularly those passing through maritime chokepoints such as the Red Sea or the Suez Canal, face escalating vulnerabilities to geopolitical and administrative shocks.
-
-While advanced economies are integrating multi-agent systems to handle these disruptions, a significant technological gap persists in transit corridors affecting developing markets. The maritime industry is currently shifting from simple problem detection to agent-driven real-time optimisation, with international research trends focusing on goal-oriented autonomous frameworks. This global demand highlights the significance of projects that create scalable, intelligent solutions for international trade stability, particularly for economies such as India, where EXIM resilience is intrinsically linked to the prosperity of the SME sector.
-
-\subsection[Societal Relevance]{\textbf{Societal Relevance}}
-
-This project carries significant societal relevance by safeguarding the livelihoods dependent on India's export-import sector. Small and Medium Enterprises form the backbone of the Indian economy, yet they are disproportionately impacted by the Bullwhip Effect when maritime disruptions occur. By providing these enterprises with accessible, agentic AI tools, the project promotes economic equity and industrial sustainability. It transforms complex, manual logistics processes into automated, efficient workflows, reducing the financial strain caused by sudden insurance spikes or port congestion.
-
-Furthermore, the framework supports national economic resilience by ensuring the steady flow of essential commodities such as crude oil and LNG. Societally, this leads to price stabilisation and increased security within manufacturing and trading communities. By empowering smaller industrial players with technology previously accessible only to large corporations, the project contributes to a more robust and equitable national economy, aligning with the broader objectives of India's Digital India and Atmanirbhar Bharat initiatives.
-
-\subsection[Problem Area]{\textbf{Problem Area}}
-
-The core problem area is the critical gap between detection and autonomous execution in current logistics management systems. Existing maritime systems are predominantly reactive and manual, leaving Indian SMEs vulnerable to rapid disruptions at maritime chokepoints. When a transit delay occurs, these organisations often lack the data infrastructure and risk-modelling capabilities required to implement proactive mitigation strategies. Furthermore, most modern AI solutions are designed for data-rich environments, creating a data-infrastructure gap for SMEs operating in data-sparse, developing-economy contexts.
-
-If left unaddressed, minor transit delays escalate into severe domestic supply chain failures and unmanageable landed costs. This problem requires immediate attention because traditional manual intervention is insufficient to manage the cascading effects of modern geopolitical shocks. An intelligent framework capable of independent reasoning and rapid response is therefore necessary to mitigate logistics friction and protect Indian EXIM operations from irreversible disruption.
-
-\section[Specific Details of the Project Topic]{\textbf{Specific Details of the Project Topic}}
-
-This section provides a detailed technical breakdown of the proposed Agentic AI framework, encompassing the core concepts, technological stack, and architectural design principles.
-
-\subsection{Technical Concepts}
-The project integrates several advanced domains to create a robust supply-chain solution:
+This section defines the key technical terms, abbreviations, and domain-specific concepts used throughout this report.
 \begin{itemize}
-    \item \textbf{Digital Twin:} A virtual, real-time representation of the physical supply-chain network---covering suppliers, ports, chokepoints, and warehouses---is used to simulate shocks and test responses.
-    \item \textbf{Agentic Orchestration:} Multi-agent workflows are employed wherein specialised LLM-based autonomous agents collaborate via role-playing and prompt chaining to solve complex routing problems.
-    \item \textbf{Graph Theory \& Network Optimisation:} Logistics lanes are modelled as directed graphs and \textbf{Dijkstra's Algorithm} is applied to calculate optimal paths based on dynamic weights such as transit days and landed costs.
-    \item \textbf{Stochastic Inventory Management:} The \textbf{Chopra Safety Stock Equation} is implemented to model lead-time variability and calculate buffer stocks required to avoid stockouts during shocks.
+    \item \textbf{Shock Location / Disruption Node}: A specific geographical point or transit corridor (e.g., chokepoint, port, road link) experiencing supply chain friction, congestion, or security threats.
+    \item \textbf{Signal Type}: The classification of the disruption or external risk factor triggering a supply-chain alert.
+    \item \textbf{Severity Multiplier}: A coefficient that scales baseline time and cost variables to simulate the intensity of a disruption.
+    \item \textbf{Strategic Preference}: The trade-off priority chosen by a logistics manager (or agent) to optimise the supply network.
+    \item \textbf{Landed Cost}: The total cumulative cost of buying, transporting, insuring, and storing inventory until it reaches its final destination market.
+    \item \textbf{Transit Days}: The lead time (in days) required for cargo to travel along the chosen path from the supplier to the destination market.
+    \item \textbf{Response Latency}: The decision-making time elapsed between detecting a supply chain shock and implementing a mitigation strategy (such as rerouting or restocking).
+    \item \textbf{\gls{TEU}}: A standardised unit of measurement for container capacity in maritime shipping, equivalent to one 20-foot container. Used to measure vessel capacity and cargo volume.
+    \item \textbf{Bunker Cost}: The cost of marine fuel (bunker oil) required to power a vessel during transit. Bunker costs fluctuate based on global oil prices and significantly impact overall shipping expenses.
+    \item \textbf{\gls{SME}}: Small and Medium Enterprises---businesses that maintain revenues, assets, or a number of employees below certain thresholds. In this report, the term refers specifically to Indian firms engaged in export-import trade.
+    \item \textbf{\gls{MAS}}: Multi-Agent System---a system composed of multiple interacting intelligent agents that cooperate to solve complex problems.
+    \item \textbf{\gls{LLM}}: Large Language Model---a deep learning model trained on vast textual corpora to understand and generate human language.
+    \item \textbf{\gls{DT}}: Digital Twin---a virtual, real-time representation of a physical system used for simulation, monitoring, and decision support.
 \end{itemize}
-
-\subsection{Technologies, Tools, and Frameworks}
-The implementation leverages a modern, high-performance technology stack:
-\begin{itemize}
-    \item \textbf{Backend:} Python (FastAPI) for high-performance REST APIs and asynchronous processing.
-    \item \textbf{Orchestration Framework:} \textbf{CrewAI} for agent role definition and task delegation, powered by \textbf{Gemini-Flash} LLMs via the Google AI Studio API.
-    \item \textbf{Graph Modelling:} The \texttt{networkx} library for building and managing the directed graph of the global logistics network.
-    \item \textbf{Frontend:} React (Vite) for a glassmorphism dashboard, using \textbf{Leaflet} (\texttt{react-leaflet}) for interactive, geospatial visualisation of routing paths.
-\end{itemize}
-
-\subsection{System Architecture and Working Principle}
-The system operates as a reactive closed-loop pipeline where external shock events trigger a multi-stage response. First, the Friction Sentry maps unstructured signals to quantitative shock parameters. Second, the Agentic Optimiser uses specialised agents (Logistics Optimiser and Cost Analyst) to identify alternate routes and check inventory levels. Finally, the Communicator Agent compiles an actionable JSON payload to update the React frontend dashboard with optimised routing and financial metrics.
-
-\subsection{Major Modules / Components}
-The framework is divided into several specialised functional modules:
-\begin{itemize}
-    \item \textbf{Friction Sentry:} Raw event signals are received and translated into structured risk variables such as insurance spikes and port congestion indicators.
-    \item \textbf{Execution \& Routing Engine:} The directed graph topology is maintained and network routing algorithms are executed under both normal and shocked states.
-    \item \textbf{Dynamic Inventory Manager:} Stock levels are tracked, daily demand depletion is calculated, and simulated emergency replenishment is handled.
-    \item \textbf{Agentic Solver (CrewAI):} The core intelligence unit comprising the Logistics Optimiser, Cost/Strategy Analyst, and SME Communicator agents.
-    \item \textbf{Digital Twin UI:} An interactive geospatial React application that displays baseline versus optimised routes alongside financial and operational performance cards.
-\end{itemize}
-
-\subsection{Real-World Applications}
-Practical applications of this framework include dynamic rerouting of cargo to avoid high-risk maritime zones (e.g., bypassing the Red Sea via the Cape of Good Hope) and port congestion mitigation by automatically switching destination ports (e.g., from Nhava Sheva to Mundra). Most significantly, Indian SMEs are empowered with automated inventory protection strategies that are typically only accessible to large multinational corporations.
-
-\section[Purpose and Motivation]{\textbf{Purpose and Motivation}}
-
-The primary purpose of this project is to bridge the critical gap between disruption detection and autonomous response in maritime logistics. As global trade becomes increasingly volatile, the practical need for a system that can not only predict shocks but also execute mitigation strategies independently has become paramount. This work is inspired by the necessity to protect vulnerable economic actors, such as Indian SMEs, from the cascading effects of geopolitical instability.
-
-The motivation for this work stems from several fundamental challenges identified in existing systems:
-\begin{itemize}
-    \item \textbf{Neglect of Upstream Maritime Shocks:} Existing predictive systems have been found to focus predominantly on downstream retail inventory and e-commerce environments, failing to account for critical upstream disruptions at maritime chokepoints such as the Suez Canal or the Red Sea.
-    \item \textbf{The Detection-to-Action Gap:} Current multi-agent frameworks have been observed to excel at producing analytical reports from global signals, yet still require manual human execution to implement responses, leading to costly delays.
-    \item \textbf{Reliance on Historical Data:} Modern replenishment models are known to depend heavily on historical datasets, leaving them unable to simulate or mitigate unpredictable, real-time geopolitical transit shocks that have no historical precedent.
-    \item \textbf{Underutilisation of Agentic Tool Coordination:} While autonomous supply chain models have been proposed in the literature, they have often been found to fail in leveraging the full power of Agentic AI to coordinate diverse toolkits for the automated execution of complex user tasks, such as simultaneous rerouting and inventory restocking.
-\end{itemize}
-
-By addressing these limitations, this project holds immense industrial and societal importance, transforming traditional reactive supply chain management into a proactive, agent-driven digital twin capable of ensuring global trade resilience.
-
-\section[Problem Statement]{\textbf{Problem Statement}}
-Indian Small and Medium Enterprises engaged in global export-import operations are highly susceptible to maritime supply chain disruptions arising from geopolitical tensions, port congestion, and chokepoint blockades. In the absence of automated, real-time mitigation systems, these enterprises resort to manual, reactive logistics management, which is characterised by significant response latency, inflated safety stock requirements, and escalating landed costs. The prevailing gap between disruption detection and autonomous execution is therefore identified as the primary impediment to SME logistics resilience. This project proposes an Agentic AI framework to bridge this gap by autonomously detecting, quantifying, and mitigating logistics friction in data-scarce, volatility-prone Indian EXIM environments.
-
-\section[Objectives]{\textbf{Objectives}}
-The objectives of this project, formulated to directly address the identified problem statement, are as follows:
-\begin{itemize}
-    \item[\textbf{(i)}] \textbf{To design and implement a Multi-Agent System (\gls{MAS})} using CrewAI that autonomously ingests unstructured geopolitical signals and quantifies them into measurable Logistics Friction variables within maritime chokepoint corridors, thereby eliminating the latency inherent in manual disruption detection.
-    \item[\textbf{(ii)}] \textbf{To construct and validate a Logistics Digital Twin} by mapping a multi-tier maritime and inland supply network using NetworkX, enabling the visualisation and quantification of shock propagation from international nodes to domestic Indian SME warehouses.
-    \item[\textbf{(iii)}] \textbf{To enable autonomous one-click mitigation execution} by deploying AI agents capable of generating actionable recommendations---including alternate maritime routing, dynamic buffer-stock adjustments, and emergency restocking---that transition the system from analytical reporting to executable action.
-    \item[\textbf{(iv)}] \textbf{To validate the framework's economic and operational efficacy} by establishing a rigorous mathematical baseline and demonstrating significant, measurable reductions in landed cost and response latency compared to traditional, manual SME logistics planning processes.
-\end{itemize}
-
-\section[Scope and Relevance]{\textbf{Scope and Relevance}}
-
-The scope of this project is concentrated on the development of an agentic digital twin for maritime logistics, specifically addressing upstream disruptions at global chokepoints. The scope includes real-time disruption parsing (Friction Sentry), autonomous multi-agent optimisation using CrewAI, and geospatial visualisation for Indian EXIM routes. The system incorporates dynamic inventory management using the Chopra equation and Dijkstra-based rerouting. The project scope excludes the orchestration of physical last-mile delivery fleets and does not integrate real-time satellite imagery for hardware-level port monitoring, relying instead on structured semantic signals.
-
-The project holds high industrial relevance by offering SMEs technological tools previously reserved for multinational corporations, reducing the financial impact of the Bullwhip Effect. Academically, it contributes to the evolving field of agentic AI by demonstrating goal-oriented tool coordination for complex problem-solving. Societally, it fosters economic resilience through stabilised export-import flows, ensuring that vital supply chains remain operational despite geopolitical shocks.
 
 \section[Literature Review]{\textbf{Literature Review}}
 This section provides a detailed review of existing research, systems, technologies, and methodologies related to the project domain.
 
-\subsection[Literature Survey]{\textbf{Literature Survey}}
+\subsection[Recent Works]{\textbf{Recent Works}}
 
 A body of recent literature has positioned agentic AI as a transformative force in supply chain management, shifting the focus from passive prediction to autonomous execution. The integration of real-time inventory management with agentic systems using distributed cloud architectures has been demonstrated, showing that forecasting can be effectively combined with operational action \cite{Tiwari2025}. In retail contexts, agentic AI has been applied for predictive analytics, autonomous customer interaction, and supply chain automation, particularly where responsiveness and personalisation are essential \cite{Kalisetty2024,KalisettySingireddy2023}. Autonomous decision-making has also been extended to food supply chains, where agentic frameworks are proposed as mechanisms for improving control in complex, time-sensitive environments \cite{Pamisetty2024}.
 
@@ -190,31 +76,101 @@ Based on the review of recent research papers, the following key research gaps h
     \item A need for human-in-the-loop dashboard triggers that present visual recommendations alongside financial and temporal trade-offs has been identified but not fulfilled in the existing literature.
 \end{itemize}
 
-\section[Methodology and Architectural Roadmap]{\textbf{Methodology and Architectural Roadmap}}
+\section[Motivation]{\textbf{Motivation}}
+
+The primary purpose of this project is to bridge the critical gap between disruption detection and autonomous response in maritime logistics. As global trade becomes increasingly volatile, the practical need for a system that can not only predict shocks but also execute mitigation strategies independently has become paramount. This work is inspired by the necessity to protect vulnerable economic actors, such as Indian SMEs, from the cascading effects of geopolitical instability.
+
+The motivation for this work stems from several fundamental challenges identified in existing systems:
+\begin{itemize}
+    \item \textbf{Neglect of Upstream Maritime Shocks:} Existing predictive systems have been found to focus predominantly on downstream retail inventory and e-commerce environments, failing to account for critical upstream disruptions at maritime chokepoints such as the Suez Canal or the Red Sea.
+    \item \textbf{The Detection-to-Action Gap:} Current multi-agent frameworks have been observed to excel at producing analytical reports from global signals, yet still require manual human execution to implement responses, leading to costly delays.
+    \item \textbf{Reliance on Historical Data:} Modern replenishment models are known to depend heavily on historical datasets, leaving them unable to simulate or mitigate unpredictable, real-time geopolitical transit shocks that have no historical precedent.
+    \item \textbf{Underutilisation of Agentic Tool Coordination:} While autonomous supply chain models have been proposed in the literature, they have often been found to fail in leveraging the full power of Agentic AI to coordinate diverse toolkits for the automated execution of complex user tasks, such as simultaneous rerouting and inventory restocking.
+\end{itemize}
+
+By addressing these limitations, this project holds immense industrial and societal importance, transforming traditional reactive supply chain management into a proactive, agent-driven digital twin capable of ensuring global trade resilience.
+
+
+\section[Problem Statement]{\textbf{Problem Statement}}
+Indian Small and Medium Enterprises engaged in global export-import operations are highly susceptible to maritime supply chain disruptions arising from geopolitical tensions, port congestion, and chokepoint blockades. In the absence of automated, real-time mitigation systems, these enterprises resort to manual, reactive logistics management, which is characterised by significant response latency, inflated safety stock requirements, and escalating landed costs. The prevailing gap between disruption detection and autonomous execution is therefore identified as the primary impediment to SME logistics resilience. This project proposes an Agentic AI framework to bridge this gap by autonomously detecting, quantifying, and mitigating logistics friction in data-scarce, volatility-prone Indian EXIM environments.
+
+
+\subsection[Global Scenario]{\textbf{Global Scenario}}
+
+Technological developments in global trade are increasingly pivoting toward AI-driven resilience. Organisations such as the World Trade Organization (\gls{WTO}) and major shipping conglomerates are prioritising logistics friction mitigation to stabilise global maritime trade. Recent innovations include predictive risk-modelling and decentralised logistics orchestration, yet the worldwide demand for autonomous execution frameworks remains high. Global supply chains, particularly those passing through maritime chokepoints such as the Red Sea or the Suez Canal, face escalating vulnerabilities to geopolitical and administrative shocks.
+
+While advanced economies are integrating multi-agent systems to handle these disruptions, a significant technological gap persists in transit corridors affecting developing markets. The maritime industry is currently shifting from simple problem detection to agent-driven real-time optimisation, with international research trends focusing on goal-oriented autonomous frameworks. This global demand highlights the significance of projects that create scalable, intelligent solutions for international trade stability, particularly for economies such as India, where EXIM resilience is intrinsically linked to the prosperity of the SME sector.
+
+\subsection[Societal Relevance]{\textbf{Societal Relevance}}
+
+This project carries significant societal relevance by safeguarding the livelihoods dependent on India's export-import sector. Small and Medium Enterprises form the backbone of the Indian economy, yet they are disproportionately impacted by the Bullwhip Effect when maritime disruptions occur. By providing these enterprises with accessible, agentic AI tools, the project promotes economic equity and industrial sustainability. It transforms complex, manual logistics processes into automated, efficient workflows, reducing the financial strain caused by sudden insurance spikes or port congestion.
+
+Furthermore, the framework supports national economic resilience by ensuring the steady flow of essential commodities such as crude oil and LNG. Societally, this leads to price stabilisation and increased security within manufacturing and trading communities. By empowering smaller industrial players with technology previously accessible only to large corporations, the project contributes to a more robust and equitable national economy, aligning with the broader objectives of India's Digital India and Atmanirbhar Bharat initiatives.
+
+\subsection[Problem Area]{\textbf{Problem Area}}
+
+The core problem area is the critical gap between detection and autonomous execution in current logistics management systems. Existing maritime systems are predominantly reactive and manual, leaving Indian SMEs vulnerable to rapid disruptions at maritime chokepoints. When a transit delay occurs, these organisations often lack the data infrastructure and risk-modelling capabilities required to implement proactive mitigation strategies. Furthermore, most modern AI solutions are designed for data-rich environments, creating a data-infrastructure gap for SMEs operating in data-sparse, developing-economy contexts.
+
+If left unaddressed, minor transit delays escalate into severe domestic supply chain failures and unmanageable landed costs. This problem requires immediate attention because traditional manual intervention is insufficient to manage the cascading effects of modern geopolitical shocks. An intelligent framework capable of independent reasoning and rapid response is therefore necessary to mitigate logistics friction and protect Indian EXIM operations from irreversible disruption.
+
+
+\section[Objectives]{\textbf{Objectives}}
+The objectives of this project, formulated to directly address the identified problem statement, are as follows:
+\begin{itemize}
+    \item[\textbf{(i)}] \textbf{To design and implement a Multi-Agent System (\gls{MAS})} using CrewAI that autonomously ingests unstructured geopolitical signals and quantifies them into measurable Logistics Friction variables within maritime chokepoint corridors, thereby eliminating the latency inherent in manual disruption detection.
+    \item[\textbf{(ii)}] \textbf{To construct and validate a Logistics Digital Twin} by mapping a multi-tier maritime and inland supply network using NetworkX, enabling the visualisation and quantification of shock propagation from international nodes to domestic Indian SME warehouses.
+    \item[\textbf{(iii)}] \textbf{To enable autonomous one-click mitigation execution} by deploying AI agents capable of generating actionable recommendations---including alternate maritime routing, dynamic buffer-stock adjustments, and emergency restocking---that transition the system from analytical reporting to executable action.
+    \item[\textbf{(iv)}] \textbf{To validate the framework's economic and operational efficacy} by establishing a rigorous mathematical baseline and demonstrating significant, measurable reductions in landed cost and response latency compared to traditional, manual SME logistics planning processes.
+\end{itemize}
+
+\section[Assumptions made / Constraints of the project]{\textbf{Assumptions made / Constraints of the project}}
+
+This section provides a detailed technical breakdown of the proposed Agentic AI framework, encompassing the core concepts, technological stack, and architectural design principles.
+
+\subsection{Technical Concepts}
+The project integrates several advanced domains to create a robust supply-chain solution:
+\begin{itemize}
+    \item \textbf{Digital Twin:} A virtual, real-time representation of the physical supply-chain network---covering suppliers, ports, chokepoints, and warehouses---is used to simulate shocks and test responses.
+    \item \textbf{Agentic Orchestration:} Multi-agent workflows are employed wherein specialised LLM-based autonomous agents collaborate via role-playing and prompt chaining to solve complex routing problems.
+    \item \textbf{Graph Theory \& Network Optimisation:} Logistics lanes are modelled as directed graphs and \textbf{Dijkstra's Algorithm} is applied to calculate optimal paths based on dynamic weights such as transit days and landed costs.
+    \item \textbf{Stochastic Inventory Management:} The \textbf{Chopra Safety Stock Equation} is implemented to model lead-time variability and calculate buffer stocks required to avoid stockouts during shocks.
+\end{itemize}
+
+\subsection{Technologies, Tools, and Frameworks}
+The implementation leverages a modern, high-performance technology stack:
+\begin{itemize}
+    \item \textbf{Backend:} Python (FastAPI) for high-performance REST APIs and asynchronous processing.
+    \item \textbf{Orchestration Framework:} \textbf{CrewAI} for agent role definition and task delegation, powered by \textbf{Gemini-Flash} LLMs via the Google AI Studio API.
+    \item \textbf{Graph Modelling:} The \texttt{networkx} library for building and managing the directed graph of the global logistics network.
+    \item \textbf{Frontend:} React (Vite) for a glassmorphism dashboard, using \textbf{Leaflet} (\texttt{react-leaflet}) for interactive, geospatial visualisation of routing paths.
+\end{itemize}
+
+\subsection{System Architecture and Working Principle}
+The system operates as a reactive closed-loop pipeline where external shock events trigger a multi-stage response. First, the Friction Sentry maps unstructured signals to quantitative shock parameters. Second, the Agentic Optimiser uses specialised agents (Logistics Optimiser and Cost Analyst) to identify alternate routes and check inventory levels. Finally, the Communicator Agent compiles an actionable JSON payload to update the React frontend dashboard with optimised routing and financial metrics.
+
+\subsection{Real-World Applications}
+Practical applications of this framework include dynamic rerouting of cargo to avoid high-risk maritime zones (e.g., bypassing the Red Sea via the Cape of Good Hope) and port congestion mitigation by automatically switching destination ports (e.g., from Nhava Sheva to Mundra). Most significantly, Indian SMEs are empowered with automated inventory protection strategies that are typically only accessible to large multinational corporations.
+
+
+
+\section[Scope and Relevance]{\textbf{Scope and Relevance}}
+
+The scope of this project is concentrated on the development of an agentic digital twin for maritime logistics, specifically addressing upstream disruptions at global chokepoints. The scope includes real-time disruption parsing (Friction Sentry), autonomous multi-agent optimisation using CrewAI, and geospatial visualisation for Indian EXIM routes. The system incorporates dynamic inventory management using the Chopra equation and Dijkstra-based rerouting. The project scope excludes the orchestration of physical last-mile delivery fleets and does not integrate real-time satellite imagery for hardware-level port monitoring, relying instead on structured semantic signals.
+
+The project holds high industrial relevance by offering SMEs technological tools previously reserved for multinational corporations, reducing the financial impact of the Bullwhip Effect. Academically, it contributes to the evolving field of agentic AI by demonstrating goal-oriented tool coordination for complex problem-solving. Societally, it fosters economic resilience through stabilised export-import flows, ensuring that vital supply chains remain operational despite geopolitical shocks.
+
+\section[Brief Methodology of the project]{\textbf{Brief Methodology of the project}}
 The methodology for this project is structured into five distinct phases, transitioning from network modelling to autonomous execution and validation.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.65\textwidth]{Figures/methodology}
-    \caption{Proposed methodology}
-    \label{fig:methodology}
-\end{figure}
 
 \begin{itemize}
-    \item \textbf{Phase 1: Network Model Construction \& Baseline Development:} A multi-tier logistics graph is developed using \texttt{NetworkX}, mapping critical nodes from international maritime chokepoints (e.g., Mundra, Dubai) to inland Indian SME clusters. A Manual Human Planner baseline is simultaneously established using Chopra inventory formulas to provide a performance benchmark for traditional, reactive supply chain management.
-    \item \textbf{Phase 2: Multi-Agent Orchestration (Intelligence Layer):} Specialised autonomous agents are designed and deployed using \texttt{LangChain} and \texttt{CrewAI}. This includes a Friction Sentry for real-time monitoring of maritime signals (e.g., verification delays, insurance spikes, or congestion) and a Logistics Optimiser for executing autonomous rerouting and dynamic buffer-stock calculations.
-    \item \textbf{Phase 3: Stress-Testing \& Friction Propagation:} One simulated Friction Shock---ranging from administrative bottlenecks to regional blockades---is injected into the graph model. The agents identify these disruption signals, propagate the impact across the multi-tier supply chain, and evaluate the mathematical trade-offs of various mitigation strategies.
-    \item \textbf{Phase 4: Autonomous Mitigation \& Execution:} The agentic pipeline autonomously selects the most efficient recovery path, such as pivoting to multimodal transport or identifying backup suppliers, to minimise Total Landed Cost and operational downtime. This phase transitions the system from simple detection to executable action.
-    \item \textbf{Phase 5: Visualisation \& Performance Validation:} The agentic output is integrated into an interactive Dashboard for real-time decision support. The framework's effectiveness is validated by comparing its response latency and cost-efficiency against the previously established manual baseline, targeting a measurable reduction in stockouts and overstocking.
+    \item \textbf{Stage 1: Network Model Construction \& Baseline Development:} A multi-tier logistics graph is developed using \texttt{NetworkX}, mapping critical nodes from international maritime chokepoints (e.g., Mundra, Dubai) to inland Indian SME clusters. A Manual Human Planner baseline is simultaneously established using Chopra inventory formulas to provide a performance benchmark for traditional, reactive supply chain management.
+    \item \textbf{Stage 2: Multi-Agent Orchestration (Intelligence Layer):} Specialised autonomous agents are designed and deployed using \texttt{LangChain} and \texttt{CrewAI}. This includes a Friction Sentry for real-time monitoring of maritime signals (e.g., verification delays, insurance spikes, or congestion) and a Logistics Optimiser for executing autonomous rerouting and dynamic buffer-stock calculations.
+    \item \textbf{Stage 3: Stress-Testing \& Friction Propagation:} One simulated Friction Shock---ranging from administrative bottlenecks to regional blockades---is injected into the graph model. The agents identify these disruption signals, propagate the impact across the multi-tier supply chain, and evaluate the mathematical trade-offs of various mitigation strategies.
+    \item \textbf{Stage 4: Autonomous Mitigation \& Execution:} The agentic pipeline autonomously selects the most efficient recovery path, such as pivoting to multimodal transport or identifying backup suppliers, to minimise Total Landed Cost and operational downtime. This phase transitions the system from simple detection to executable action.
+    \item \textbf{Stage 5: Visualisation \& Performance Validation:} The agentic output is integrated into an interactive Dashboard for real-time decision support. The framework's effectiveness is validated by comparing its response latency and cost-efficiency against the previously established manual baseline, targeting a measurable reduction in stockouts and overstocking.
 \end{itemize}
 
-\section[Expected Outcomes]{\textbf{Expected Outcomes}}
-The expected outcomes of this project include:
-\begin{itemize}
-\item A functional multi-agent system using LangChain and CrewAI that transitions from passive monitoring to autonomous execution of mitigation strategies.
-\item A dynamic NetworkX-based supply chain model integrated with a Tableau dashboard for real-time ``What-If'' scenario simulations and risk propagation visualisation.
-\item A validated framework demonstrating reduced operational costs and stock-outs for Indian SMEs compared to traditional manual planning.
-\end{itemize}
 
 \section[Organisation of the Report]{\textbf{Organisation of the Report}}
 The remainder of this report is organised as follows:
