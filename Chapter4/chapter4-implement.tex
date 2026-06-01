@@ -63,16 +63,16 @@ Here are the general design factors rewritten as prescriptive principles and req
 \subsection[Development Methods]{Development Methods}
 This subsection explains the software development methodology adopted for the project. The project follows a 6-week sequential execution timeline, divided into five core modules. Each module corresponds directly to a layer in the system architecture.
 
-Given the deeply interconnected nature of the system components and the requirement for a stable mathematical baseline, the project utilizes a \textbf{Sequential ``Waterfall'' Handover Strategy}. This model was selected to ensure that each critical layer of the logistics digital twin—from network topology to agentic reasoning—is rigorously validated and ``frozen'' before downstream logic is applied. This prevents cascading errors in the mathematical optimization engine.
+Given the deeply interconnected nature of the system components and the requirement for a stable mathematical baseline, the project utilizes a \textbf{Sequential Waterfall Handover Strategy}. This model was selected to ensure that each critical layer of the logistics digital twin—from network topology to agentic reasoning—is rigorously validated and frozen before downstream logic is applied. This prevents cascading errors in the mathematical optimization engine.
 
 The development methodology is divided into the following phases:
 
 \begin{itemize}
-    \item \textbf{Phase 1: Digital Twin Construction (Week 1)}: Mapping global maritime nodes to domestic SME hubs using \texttt{networkx}; establishing baseline edge weights such as transit time and logistics cost.
-    \item \textbf{Phase 2: Domain Logic \& Data Generation (Week 2)}: Quantifying ``Grey Zone'' friction variables (insurance spikes, port delays) and building the Semantic Mapping Library to link geopolitical keywords to specific graph nodes.
-    \item \textbf{Phase 3: Agentic Intelligence \& Monitoring (Week 3)}: Developing the \textit{Friction Sentry Agent} using LangChain and CrewAI to autonomously ingest unstructured news data and extract critical location and severity metrics.
-    \item \textbf{Phase 4: Autonomous Mitigation \& Execution (Weeks 4--5)}: Developing the \textit{Logistics Optimizer Agent}; injecting friction shocks into the graph and executing shortest-path algorithms (Dijkstra's) to calculate optimal rerouting and dynamic buffer stocks.
-    \item \textbf{Phase 5: Visualization \& Baseline Validation (Week 6)}: Calculating the ``Human Baseline'' using Chopra inventory formulas and deploying an interactive dashboard to visualize AI cost-savings versus manual planning.
+    \item \textbf{Stage 1: Digital Twin Construction (Week 1)}: Mapping global maritime nodes to domestic SME hubs using \texttt{networkx}; establishing baseline edge weights such as transit time and logistics cost.
+    \item \textbf{Stage 2: Domain Logic \& Data Generation (Week 2)}: Quantifying ``Grey Zone'' friction variables (insurance spikes, port delays) and building the Semantic Mapping Library to link geopolitical keywords to specific graph nodes.
+    \item \textbf{Stage 3: Agentic Intelligence \& Monitoring (Week 3)}: Developing the \textit{Friction Sentry Agent} using LangChain and CrewAI to autonomously ingest unstructured news data and extract critical location and severity metrics.
+    \item \textbf{Stage 4: Autonomous Mitigation \& Execution (Weeks 4--5)}: Developing the \textit{Logistics Optimizer Agent}; injecting friction shocks into the graph and executing shortest-path algorithms (Dijkstra's) to calculate optimal rerouting and dynamic buffer stocks.
+    \item \textbf{Stage 5: Visualization \& Baseline Validation (Week 6)}: Calculating the ``Human Baseline'' using Chopra inventory formulas and deploying an interactive dashboard to visualize AI cost-savings versus manual planning.
 \end{itemize}
 
 To manage this sequential flow effectively within a decoupled architecture, the team adheres to an \textbf{Immutable Handover Protocol}, where each module must pass unit-testing before being consumed by the next:
@@ -106,8 +106,8 @@ This subsection outlines the strategic roadmap for evolving the system from a hi
 \section[System Architecture]{System Architecture}
 This section explains the overall architecture and structural organization of the proposed system. A layered block layout is utilized to segregate the presentation, API routing, network optimization, and multi-agent reasoning layers. This division ensures that each component can be developed, tested, and scaled independently.
 
-\subsection[High-Level Design Diagram]{High-Level Design Diagram}
-The High-Level Design (HLD) diagram as shown in Figure \ref{fig:hldd} illustrates the multi-layered flow of information through the system, from raw data ingestion to final executive visualization.
+\subsection[High Level System Architecture]{High Level System Architecture}
+The High Level System Architecture as shown in Figure \ref{fig:hldd} illustrates the multi-layered flow of information through the system, from raw data ingestion to final executive visualization.
 
 \begin{figure}[htbp]
     \centering
@@ -116,63 +116,29 @@ The High-Level Design (HLD) diagram as shown in Figure \ref{fig:hldd} illustrate
     \label{fig:hldd}
 \end{figure}
 
-\subsection[Functional Module Descriptions]{Functional Module Descriptions}
-This subsection provides a detailed functional breakdown of the four core modules that constitute the system architecture.
+The framework is designed as a modular, five-layer system that separates data ingestion, state management, autonomous intelligence, communication APIs, and presentation. Figure~\ref{c3:fig_arch} conceptually shows this layered representation, and the details of each layer are explained below:
 
-\subsubsection{Module 1: Friction Sentry (Signal Ingestion Module)}
-\begin{itemize}
-    \item \textbf{Purpose:} Acts as the entry gate for risk events. It ingests raw, unstructured or semi-structured disruption alerts (e.g., weather reports, blockades, news alerts) and translates them into structured, quantitative risk parameters.
-    \item \textbf{Input:} Raw event inputs (event ID, location name, signal type, severity classification) and the static rule database (\texttt{semantic\_mapping\_rules.json}).
-    \item \textbf{Processing Performed:}
+\begin{description}
+    \item[Layer 1: Data Ingestion (Data Inputs):] This layer represents the static and dynamic files that serve as the project's source of truth. It contains:
     \begin{itemize}
-        \item Analyzes the incoming signal type against predefined rule definitions.
-        \item Resolves raw locations to system-valid node IDs.
-        \item Calculates the direct severity multipliers and cascades the disruption to downstream nodes (ports/warehouses) using a decay factor.
-        \item Assigns baseline cost impacts (\$USD/TEU) and delay overheads (days).
+        \item \texttt{network\_model.json}: The serialized representation of the 14-node, 19-edge EXIM network, frozen after Phase 1.
+        \item \texttt{simulated\_friction\_events.csv}: A historical and hypothetical dataset containing 50 logistics disruption scenarios.
+        \item \texttt{semantic\_mapping\_rules.json}: Predefined rules mapping unstructured signal types to quantitative severity multipliers and propagation decay parameters.
     \end{itemize}
-    \item \textbf{Output:} A structured JSON shock event payload specifying target node ID, signal type, severity multiplier, and cascaded propagation rules.
-\end{itemize}
+    
+    \item[Layer 2: Digital Twin State (In-Memory Graphs):] This layer maintains the virtual representation of the supply chain using two NetworkX directed graphs (\texttt{DiGraph}):
+    \begin{itemize}
+        \item \textit{Baseline Graph:} An immutable graph representing normal operating conditions, loaded once at system startup.
+        \item \textit{Shocked Graph:} A dynamic deep copy of the baseline graph. Upon shock injection, the Friction Sentry agent mutates the edge weights of this graph to simulate real-time delays and cost spikes.
+    \end{itemize}
+    
+    \item[Layer 3: Autonomous Agent Layer (CrewAI Orchestration):] This layer contains the four specialized CrewAI agents (Friction Sentry, Logistics Optimizer, Cost Analyst, and SME Communicator). Powered by Google Gemini, they execute sequential tasks to analyze shocks, run routing algorithms, check inventory levels, and generate management recommendations.
+    
+    \item[Layer 4: API and Orchestration Layer (FastAPI Backend):] A high-performance FastAPI server serves as the system's integration hub. It exposes REST API endpoints that receive disruption signals from the frontend, trigger the multi-agent crew, read and update the digital twin state, and return the aggregated JSON payload back to the dashboard.
+    
+    \item[Layer 5: Presentation and Analytics Layer (React Dashboard):] A responsive React/Vite frontend dashboard provides an interactive control panel for human managers. It includes Leaflet maps for visual path rendering, real-time alert logs, comparison panels for cost/time deltas, and indicators of agent decision confidence.
+\end{description}
 
-\subsubsection{Module 2: Networked Digital Twin (Shock Simulation Module)}
-\begin{itemize}
-    \item \textbf{Purpose:} Simulates the real-time physical state of the supply chain network (lanes and warehouses) under the influence of the injected shocks, tracking safety stock margins and predicting stockouts.
-    \item \textbf{Input:} Structured shock event payload (from Friction Sentry), baseline graph topology (\texttt{network\_topology.json}), and current inventory logs.
-    \item \textbf{Processing Performed:}
-    \begin{itemize}
-        \item Re-calculates and inflates graph edge weights (transit times and freight costs) for all impacted routes.
-        \item Executes the \textbf{Chopra Safety Stock Equation} to model the impact of lead-time variance ($\sigma_L$) on holding costs.
-        \item Computes the \textbf{Days of Cover} (DoC) for affected SME markets.
-        \item Evaluates stockout triggers by checking if the delayed transit days exceed the inventory buffer cover.
-    \end{itemize}
-    \item \textbf{Output:} An active, in-memory shocked network graph object and a live network inventory snapshot showing stock level utilization percentages and stockout flags.
-\end{itemize}
-
-\subsubsection{Module 3: Logistics Optimizer (Execution \& Rerouting Module)}
-\begin{itemize}
-    \item \textbf{Purpose:} Resolves shipping bottlenecks by finding mathematically optimal alternate paths and executing emergency inventory replenishments.
-    \item \textbf{Input:} Shocked network graph, destination SME market parameters, and optimization strategy (minimize cost vs. minimize time).
-    \item \textbf{Processing Performed:}
-    \begin{itemize}
-        \item Runs \textbf{Dijkstra's shortest path algorithm} on the dynamically weighted shocked graph to identify alternative paths.
-        \item Orchestrates a multi-agent workflow (via \texttt{CrewAI}) where specialized agents verify route validity, compare costs, check stockout timelines, and call tools (e.g., \texttt{EmergencyRestockTool}) to inject inventory.
-        \item Calculates the cost and time deltas (difference between baseline and shocked routing).
-    \end{itemize}
-    \item \textbf{Output:} An optimized alternate route path (e.g., Oman $\rightarrow$ Nhava Sheva $\rightarrow$ Mumbai $\rightarrow$ Bengaluru), optimized transit days, optimized landed cost, and emergency restocking orders.
-\end{itemize}
-
-\subsubsection{Module 4: Interactive Dashboard (Visualization Module)}
-\begin{itemize}
-    \item \textbf{Purpose:} Acts as the user interface (UI) to display telemetry, map route modifications, and present comparative performance metrics.
-    \item \textbf{Input:} JSON payload from the backend API containing recommended route paths, coordinates, status messages, and cost/time delta comparisons.
-    \item \textbf{Processing Performed:}
-    \begin{itemize}
-        \item Maps string node IDs to physical coordinates (latitude/longitude).
-        \item Computes and overlays Leaflet map layers (dashed lines for baseline routes, solid colored lines for active alternate routes).
-        \item Renders alerts, response latency values, and stockout statuses.
-        \item Updates comparative KPIs comparing the human ``Cost of Inaction'' vs. the AI's optimized strategy.
-    \end{itemize}
-    \item \textbf{Output:} An interactive single-page web interface containing real-time map visualizations, data tables, and metrics dashboard cards.
-\end{itemize}
 \section[Data Flow Diagrams]{Data Flow Diagrams}
 Data Flow Diagrams (DFDs) represent the movement and processing of data within the system. They illustrate how external signals are parsed, how graph states are modified, and how optimized recommendations are transmitted to the dashboard. The following subsections detail the data flow across three distinct levels of abstraction.
 \subsection[Data Flow Diagram Level 0]{Data Flow Diagram Level 0(Context Diagram)}
@@ -180,7 +146,7 @@ The Context Diagram (Level 0) as shown in Figure \ref{fig:dfd0}  represents the 
 
 \begin{figure}[htbp]
     \centering
-    \makebox[\textwidth][c]{\includegraphics[width=1.15\textwidth]{Figures/DFD0.png}}
+    \includegraphics[width=0.9\textwidth]{Figures/DFD0.png}
     \caption{Data Flow Diagram Level 0 (Context Diagram)}
     \label{fig:dfd0}
 \end{figure}
@@ -190,7 +156,7 @@ The Level 1 DFD as shown in Figure \ref{fig:dfd1} decomposes the system into its
 
 \begin{figure}[htbp]
     \centering
-    \makebox[\textwidth][c]{\includegraphics[width=1.26\textwidth]{Figures/DFD1.png}}
+    \includegraphics[width=0.9\textwidth]{Figures/DFD1.png}
     \caption{Data Flow Diagram Level 1}
     \label{fig:dfd1}
 \end{figure}
@@ -200,7 +166,7 @@ The Level 2 DFD provides a granular view of the Autonomous Mitigation process (P
 
 \begin{figure}[htbp]
     \centering
-    \makebox[\textwidth][c]{\includegraphics[width=1.26\textwidth]{Figures/DFD2.png}}
+    \includegraphics[width=0.9\textwidth]{Figures/DFD2.png}
     \caption{Data Flow Diagram Level 2}
     \label{fig:dfd2}
 \end{figure}

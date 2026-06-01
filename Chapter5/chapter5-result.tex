@@ -9,53 +9,33 @@ This section presents the structural decomposition and organization of the syste
 To manage complexity, the system is decomposed into four distinct, logical modules. Each module encapsulates a specific domain of operations, ensuring high cohesion and low coupling.
 
 \subsubsection{A. Friction Sentry Module}
-\textbf{A. Purpose} \\
+\textbf{i. Purpose} \\
 This module is responsible for the ingestion, parsing, and structured interpretation of disruption signals. It serves as the risk-monitoring interface that maps raw event alerts to concrete physical impacts.
 
-\textbf{B. Contribution to Overall System} \\
+\textbf{ii. Contribution to Overall System} \\
 It protects the downstream optimization algorithms from dealing with raw text or unstructured data by translating news signals into standardized variables (severity multipliers, location targets, and cost impacts).
 
 \subsubsection{B. Networked Digital Twin Module}
-\textbf{A. Purpose} \\
+\textbf{i. Purpose} \\
 This module maintains the in-memory representation of the logistics network (directed graph topology) and models inventory health. It simulates the physical reaction of the supply chain network when a shock is injected.
 
-\textbf{B. Contribution to Overall System} \\
+\textbf{ii. Contribution to Overall System} \\
 It computes the real-world impact of delays on safety stock and inventory levels. By calculating stockout risks and daily consumption depletion, it provides the operational context needed to trigger emergency actions.
 
 \subsubsection{C. Logistics Optimizer Module}
-\textbf{A. Purpose} \\
+\textbf{i. Purpose} \\
 This module serves as the execution and decision-making engine of the system, responsible for mathematical path routing and orchestrating autonomous LLM agents to resolve supply chain exceptions.
 
-\textbf{B. Contribution to Overall System} \\
+\textbf{ii. Contribution to Overall System} \\
 It acts as the system's ``brain.'' It calculates alternate paths bypassing disruptions, coordinates agent tasks (Optimizer, Analyst, and Communicator), and executes corrective replenishment actions to prevent stockouts.
 
 \subsubsection{D. Interactive Dashboard Module}
-\textbf{A. Purpose} \\
+\textbf{i. Purpose} \\
 This module provides the user interface (UI) to visualize the state of the logistics network, display alternate route simulations, and present comparative benchmark metrics.
 
-\textbf{B. Contribution to Overall System} \\
+\textbf{ii. Contribution to Overall System} \\
 It makes the complex underlying data understandable to human operators by overlaying geographic routes on a map, displaying stockout warnings, and highlighting the cost and time savings of agentic optimization versus the human baseline.
 
-\subsection[Module Hierarchy]{Module Hierarchy}
-The system is organized into a modular control hierarchy where responsibilities are distributed between the user interface, the API orchestration layer, and local computation engines, as illustrated in Figure~\ref{fig:hierarchy}.
-
-\begin{figure}[htbp]
-    \centering
-    \makebox[\textwidth][c]{\includegraphics[width=1.1\textwidth]{Figures/Module hierarchy.png}}
-    \caption{System Module Hierarchy and Control Structure}
-    \label{fig:hierarchy}
-\end{figure}
-
-\begin{itemize}
-    \item \textbf{Parent-Child Relationships:} The FastAPI Server acts as the central controller orchestration parent. It accepts inputs from the frontend Interactive Dashboard, coordinates signal transformations inside the Friction Sentry, updates network parameters inside the Networked Digital Twin, and executes path-finding inside the Logistics Optimizer.
-    \item \textbf{Control Hierarchy:} Operations are strictly top-down. The user initiates requests from the Interactive Dashboard (Child). The FastAPI Controller (Parent) intercepts the request, routes it sequentially through the computing modules, and returns the unified response.
-    \item \textbf{Distribution of Responsibilities:}
-    \begin{itemize}
-        \item \textbf{Frontend:} Handles user interaction, rendering Leaflet coordinates, and strategy state.
-        \item \textbf{Backend API Layer:} Manages execution flow, processes HTTP inputs, and parses JSON parameters.
-        \item \textbf{Algorithmic/Agentic Engine:} Resolves mathematical routing and handles multi-agent reasoning loops.
-    \end{itemize}
-\end{itemize}
 
 \section[Module Interaction Flow]{Module Interaction Flow}
 Modules interact asynchronously and sequentially to process disruptions and update the digital twin. Figure~\ref{fig:interaction_flow} depicts the sequential flow of data and control signals across the system components.
@@ -434,22 +414,13 @@ The system facilitates module communication via a RESTful API layer managed by F
     \item \textbf{Purpose:} Retrieves the active network shock parsed by the Friction Sentry.
     \item \textbf{Response Format (JSON):}
 \end{itemize}
-\begin{lstlisting}[language=json]
-{
-  "status": "active",
-  "location": "red_sea",
-  "message_type": "Houthi Attack Alert",
-  "severity_multiplier": 1.60,
-  "analysis": "Drone attack alert in the Red Sea corridor directly impacting ocean transit lanes."
-}
-\end{lstlisting}
 
 \textbf{B. Optimization Trigger Endpoint (\texttt{POST /api/optimize})}
 \begin{itemize}
     \item \textbf{Purpose:} Runs the multi-agent optimization sequence based on user preference.
     \item \textbf{Request Body (JSON):}
 \end{itemize}
-\begin{lstlisting}[language=json]
+\begin{lstlisting}[language=json,numbers=none]
 {
   "optimize_by": "cost"
 }
@@ -457,7 +428,7 @@ The system facilitates module communication via a RESTful API layer managed by F
 \begin{itemize}
     \item \textbf{Response Format (JSON):}
 \end{itemize}
-\begin{lstlisting}[language=json]
+\begin{lstlisting}[language=json,numbers=none]
 {
   "recommended_path": "oman -> nhava_sheva -> mumbai_warehouse -> bengaluru_sme_market",
   "total_transit_days": 10.34,
@@ -503,18 +474,17 @@ This subsection details how incoming requests and disruption signals are parsed 
 \end{itemize}
 
 \subsection[Internal Processing Workflow]{Internal Processing Workflow}
-This subsection details the processing stages executed once inputs are verified:
-
+This subsection details the processing stages executed once inputs are verified, as shown by Figure \ref{fig:impl}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Figures/impl.png}
+    \caption{Internal Processing Workflow}
+    \label{fig:impl}
+\end{figure}
 \begin{itemize}
     \item \textbf{Core Processing Stages:} \\
-    The system executes a sequence of logical operations starting from input validation, injecting shock multipliers into the graph model, computing optimized paths via Dijkstra's algorithm, orchestrating the CrewAI reasoning loop, and performing final inventory health checks, as illustrated in Figure~\ref{fig:internal_flow}.
+    The system executes a sequence of logical operations starting from input validation, injecting shock multipliers into the graph model, computing optimized paths via Dijkstra's algorithm, orchestrating the CrewAI reasoning loop, and performing final inventory health checks.
 
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=\textwidth]{Figures/Internal flow.png}
-        \caption{Internal Processing Stages and Logical Workflow}
-        \label{fig:internal_flow}
-    \end{figure}
     
     \item \textbf{Internal Data Movement:}
     \begin{itemize}
@@ -559,7 +529,8 @@ This subsection explains how the system handles operational errors and exception
     \item \textbf{Recovery Mechanisms:}
     \begin{itemize}
         \item \textbf{Agent Route Fallback:} If the \texttt{CrewAI} process fails to output valid route JSON due to parser exceptions, the system activates a fallback handler that returns the mathematically computed Dijkstra path coordinates directly to the frontend.
-        \item \textbf{Graceful API Degradation:} Under API errors, the UI replaces detailed summaries with predefined, simplified alert messages while maintaining graph rendering.
+        \item \textbf{Graceful API Degradation:} Under API errors, the UI replaces detailed summar" status ": " active ",
+ies with predefined, simplified alert messages while maintaining graph rendering.
     \end{itemize}
 \end{itemize}
 

@@ -57,19 +57,11 @@ This subsection evaluates the operational performance and execution efficiency o
 \subsection[Evaluation Metrics]{Evaluation Metrics}
 To assess the performance and business impact of the Logistics Digital Twin system, the following core metrics were selected:
 
-\begin{itemize}
-    \item \textbf{Response Speedup (Latency Reduction):}
-    \begin{itemize}
-        \item \textit{Definition:} Comparison between the time taken for a human team to identify and resolve a disruption versus the AI-agent response time.
-        \item \textit{Justification:} In global logistics, response velocity is critical to prevent cascading delays. Reducing identify-to-resolve time from days to seconds significantly improves network resilience.
-        \item \textit{Interpretation:} As seen in the ``Latency Profile'', the AI response (average ~400 seconds) versus the baseline human response (86,400 seconds / 24 hours) demonstrates an \textbf{Average Response Speedup of 11.95 Hours}.
-    \end{itemize}
-    \item \textbf{Total Cost Savings (USD):}
-    \textit{Definition:} The cumulative difference in landed costs between the baseline (impacted) route and the agent-optimized alternate route.
-    \item \textbf{Justification:} Provides a direct measure of the economic viability and effectiveness of the agentic optimization.
-    \item \textit{Interpretation:} Across 10 simulated events (BM001 to BM010), the system achieved a \textbf{Total Cost Savings of \$19,275.80}. The ``Landed Cost Comparison'' chart shows that for nearly every event, the AI-recommended landed cost was significantly lower than the projected human-led reactionary cost.
-    \item \textbf{Transit Day Delta:} \textit{Definition:} The variance in shipping duration between baseline and optimized paths. \textit{Justification:} Essential for inventory planning and ensuring customer SLAs are met. \textit{Interpretation:} The ``Strategic Paths and Transit Times'' chart illustrates that the AI consistently identifies paths that keep transit times stable, even when absorbing shock penalties, ensuring a reliable supply chain.
-\end{itemize}
+\textbf{Response Speedup (Latency Reduction):} Comparison between the time taken for a human team to identify and resolve a disruption versus the AI-agent response time. In global logistics, response velocity is critical to prevent cascading delays. Reducing identify-to-resolve time from days to seconds significantly improves network resilience. As seen in the Latency Profile, the AI response (average ~400 seconds) versus the baseline human response (86,400 seconds / 24 hours) demonstrates an \textbf{Average Response Speedup of 11.95 Hours}.
+
+\textbf{Total Cost Savings (USD):} The cumulative difference in landed costs between the baseline (impacted) route and the agent-optimized alternate route. Provides a direct measure of the economic viability and effectiveness of the agentic optimization. Across 10 simulated events (BM001 to BM010), the system achieved a \textbf{Total Cost Savings of \$19,275.80}. The Landed Cost Comparison chart shows that for nearly every event, the AI-recommended landed cost was significantly lower than the projected human-led reactionary cost.
+
+\textbf{Transit Day Delta:} The variance in shipping duration between baseline and optimized paths. Essential for inventory planning and ensuring customer SLAs are met. The Strategic Paths and Transit Times chart illustrates that the AI consistently identifies paths that keep transit times stable, even when absorbing shock penalties, ensuring a reliable supply chain.
 
 \section[Summary]{Summary}
 This chapter presented a detailed analysis of the experimental results, demonstrating the system's ability to significantly reduce response latency and landed costs during maritime disruptions. The comparison against the human baseline highlighted a significant speedup in decision-making and substantial financial savings for SMEs. These findings validate the effectiveness of the agentic AI framework in enhancing supply chain resilience through proactive, data-driven optimization.
