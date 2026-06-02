@@ -14,6 +14,8 @@ The process was structured around two fundamental paradigms:
 \subsection{Unit Testing}
 Unit testing involves testing individual components or functions of the system in absolute isolation to guarantee that the core logic functions correctly before integration. The primary modules subjected to unit testing include the Layer 4 NetworkX graph routing functions, the Sunil Chopra safety stock calculator, and the Layer 1 Friction Sentry metadata extraction functions.
 
+Table~\ref{tab:ut01} records the execution of test case UT-01, which isolated the Layer~4 NetworkX Dijkstra router and verified that it resolves the shortest path across the 14-node logistics graph with complete deterministic accuracy and sub-millisecond latency under baseline, unshocked edge weights.
+
 \begin{table}[H]
     \centering
     \caption{Unit Test Case UT-01: NetworkX Dijkstra Router Execution}
@@ -32,6 +34,8 @@ Unit testing involves testing individual components or functions of the system i
     \end{tabular}
 \end{table}
 
+Table~\ref{tab:ut02} documents test case UT-02, which validated the programmatic implementation of the Sunil~Chopra safety stock formula by supplying controlled demand and lead-time variance parameters and confirming that the computed safety stock buffer exactly matched the analytically derived expected value.
+
 \begin{table}[H]
     \centering
     \caption{Unit Test Case UT-02: Dynamic Inventory Safety Stock Calculation}
@@ -49,6 +53,8 @@ Unit testing involves testing individual components or functions of the system i
         \textbf{Remarks} & \textbf{PASSED (First Iteration).} The system precisely captures the holding cost penalty associated with operational communication lag. \\ \hline
     \end{tabular}
 \end{table}
+
+Table~\ref{tab:ut03} presents test case UT-03, which examined the Layer~1 Friction Sentry's ability to parse a fully capitalised, unstructured news-alert string and extract the correct shock location, signal type, and severity multiplier. The test uncovered a case-sensitivity defect in the regex compiler that required a targeted patch before the module passed in its second iteration.
 
 \begin{table}[H]
     \centering
@@ -72,6 +78,8 @@ Unit testing involves testing individual components or functions of the system i
 \subsection{Integration Testing}
 Integration testing evaluates the data flow and communication interfaces between distinct modules when combined. The focus is ensuring that the probabilistic decisions made by the multi-agent orchestration layer (CrewAI) safely map onto the rigid constraints of the Layer 4 deterministic validation layer.
 
+Table~\ref{tab:it01} captures integration test case IT-01, which verified the end-to-end data pipeline between the Friction Sentry module and the NetworkX execution engine, confirming that a parsed severity multiplier is correctly propagated to the corresponding chokepoint edge weight inside the live in-memory graph without disturbing adjacent nodes.
+
 \begin{table}[H]
     \centering
     \caption{Integration Test Case IT-01: Friction-to-Execution Engine Graph Mutation}
@@ -89,6 +97,8 @@ Integration testing evaluates the data flow and communication interfaces between
         \textbf{Remarks} & \textbf{PASSED (First Iteration).} The data interface successfully bridges the risk signal parser with the underlying mathematical spatial model. \\ \hline
     \end{tabular}
 \end{table}
+
+Table~\ref{tab:it02} details integration test case IT-02, which simulated an LLM hallucination scenario by injecting a fabricated route array into the validation interceptor. The test confirmed that the deterministic guardrail layer correctly triggers the Dijkstra fallback when the agent output payload is malformed, following a markdown-stripping patch introduced after a \texttt{KeyError} crash was observed in the first iteration.
 
 \begin{table}[H]
     \centering
@@ -114,6 +124,8 @@ Integration testing evaluates the data flow and communication interfaces between
 System testing checks the completely integrated application end-to-end to ensure the platform satisfies all technical requirements, business rules, and performance benchmarks under active simulation constraints.
 
 \subsection{Functional Testing}
+Table~\ref{tab:stfn01} records system functional test case ST-FN-01, which evaluated the multi-objective routing behaviour of the integrated pipeline under an identical chokepoint crisis by toggling the optimisation preference between time and cost, confirming that the Pareto frontier strategy selection correctly produces two distinct, trade-off-balanced route outputs.
+
 \begin{table}[H]
     \centering
     \caption{System Test Case ST-FN-01: Multi-Objective Optimization Constraint Swapping}
@@ -131,6 +143,8 @@ System testing checks the completely integrated application end-to-end to ensure
         \textbf{Remarks} & \textbf{PASSED (First Iteration).} Proves that the multi-agent engine effectively realigns its objective function based on variable business constraints. \\ \hline
     \end{tabular}
 \end{table}
+
+Table~\ref{tab:stfn02} presents system functional test case ST-FN-02, which validated the autonomous inventory depletion safeguard by driving the Days~of~Cover metric below the 5.0-day critical threshold and confirming that the Emergency Restock Tool is automatically engaged to switch procurement to backup inland suppliers without requiring manual intervention.
 
 \begin{table}[H]
     \centering
@@ -151,6 +165,8 @@ System testing checks the completely integrated application end-to-end to ensure
 \end{table}
 
 \subsection{Input and Output Validation Testing}
+Table~\ref{tab:stio01} documents system I/O test case ST-IO-01, which stress-tested the ingestion sanitization layer by submitting a structurally corrupted JSON payload containing a null shock location and an invalid string in a numerical field, confirming that the Pydantic BaseModel schema enforcement introduced in the second iteration correctly rejects malformed data with an HTTP~422 response instead of crashing the server.
+
 \begin{table}[H]
     \centering
     \caption{System Test Case ST-IO-01: Malformed and Incomplete Inbound Log Resiliency}
@@ -169,6 +185,8 @@ System testing checks the completely integrated application end-to-end to ensure
         \textbf{Remarks} & \textbf{FAILED inside Iteration 1} due to missing schema validation rules on the FastAPI request body layer when handling garbage string input in numerical fields. The standard dictionary ingestion was replaced with strict \textit{Pydantic} BaseModels enforced with explicit type casting and fallback defaults. \textbf{PASSED inside Iteration 2}. \\ \hline
     \end{tabular}
 \end{table}
+
+Table~\ref{tab:stio02} captures system I/O test case ST-IO-02, which validated that the final output payload generated by the Communicator Agent conforms to the exact field schema expected by the dashboard rendering engine, ensuring that all required keys — including alert title, summary text, visual flags, and the recommended path array — are present and correctly typed.
 
 \begin{table}[H]
     \centering
@@ -189,6 +207,8 @@ System testing checks the completely integrated application end-to-end to ensure
 \end{table}
 
 \subsection{Performance and Reliability Testing}
+Table~\ref{tab:stpr01} presents system performance test case ST-PR-01, which measured the end-to-end pipeline execution time across two concurrent port-strike events and verified that the automated framework completes its full reasoning and re-routing cycle within the five-minute target threshold, demonstrating a speed advantage of more than two orders of magnitude over the twelve-hour human administrative baseline.
+
 \begin{table}[H]
     \centering
     \caption{System Test Case ST-PR-01: Pipeline Response Velocity Under Logarithmic Constraints}
@@ -206,6 +226,8 @@ System testing checks the completely integrated application end-to-end to ensure
         \textbf{Remarks} & \textbf{PASSED (First Iteration).} The system delivers a massive operational advantage, freeing resource-constrained local markets from severe response delays. \\ \hline
     \end{tabular}
 \end{table}
+
+Table~\ref{tab:stpr02} records system performance test case ST-PR-02, which monitored backend memory consumption and CPU utilization during 100~consecutive multi-scenario simulation requests over a sustained one-hour window, confirming that the decoupled architecture maintains stable memory usage below 150~MB with no detectable resource leaks.
 
 \begin{table}[H]
     \centering
