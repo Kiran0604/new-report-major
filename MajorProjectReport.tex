@@ -112,11 +112,10 @@
 %% Use it only after Biblatex
 %% Uncomment the following lines for watermarking and run it more than 2 times for proper alignment
 \usepackage{background}
-\backgroundsetup{scale=1, angle=0, firstpage = false, opacity=0.5, contents={
-\begin{tikzpicture}[remember picture, overlay]
-\node at ([yshift=0pt, xshift=0pt]current page.center){\includegraphics[width=0.6\textwidth]{Figures/RVlogoVecW}};
-\end{tikzpicture}
-}}
+\backgroundsetup{scale=1, angle=0, firstpage=false, opacity=0.35,
+  position=current page.center,
+  contents={\includegraphics[width=0.6\textwidth]{Figures/RVlogoVecW}}
+}
 
 \begin{document}
 	\NoBgThispage% Don't remove this command, even if you want logo on the first page.	
