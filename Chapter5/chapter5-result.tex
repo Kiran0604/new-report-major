@@ -151,6 +151,7 @@ The logical flow of signal processing and validation within the Friction Sentry 
     \item \textbf{Dependencies:} \texttt{networkx}, \texttt{InventoryManager} subclass.
     \item \textbf{Interaction with Other Modules:} Receives parameters from Friction Sentry and provides the active network state to the Logistics Optimizer for path-finding.
 \end{itemize}
+The step-by-step internal processing flow of the Networked Digital Twin, from shock ingestion through inventory assessment to graph output, is depicted in Figure~\ref{fig:flow_digital_twin}.
 
 \subsubsection{Flowchart: Networked Digital Twin Module}
 \begin{figure}[H]
@@ -204,6 +205,7 @@ The logical flow of signal processing and validation within the Friction Sentry 
     \item \textbf{Dependencies:} \texttt{crewai}, \texttt{networkx}, \texttt{google-genini-sdk}.
     \item \textbf{Interaction with Other Modules:} Receives graph structures from the Networked Digital Twin and sends calculation results to the Interactive Dashboard via API.
 \end{itemize}
+The end-to-end decision logic of the Logistics Optimizer, spanning Dijkstra routing, CrewAI agent orchestration, emergency restocking, and baseline benchmarking, is illustrated in Figure~\ref{fig:flow_optimizer}.
 
 \subsubsection{Flowchart: Logistics Optimizer Module}
 \begin{figure}[H]
@@ -258,6 +260,7 @@ The logical flow of signal processing and validation within the Friction Sentry 
     \item \textbf{Dependencies:} \texttt{React}, \texttt{react-leaflet}, \texttt{axios}, \texttt{lucide-react}, \texttt{framer-motion}.
     \item \textbf{Interaction with Other Modules:} Triggers operations by sending optimization requests to the FastAPI backend and displays processing outcomes returned by the Logistics Optimizer.
 \end{itemize}
+The user interaction cycle of the Interactive Dashboard, from strategy selection and API dispatch through response validation to map and metric rendering, is shown in Figure~\ref{fig:flow_dashboard}.
 
 \subsubsection{Flowchart: Interactive Dashboard Module}
 \begin{figure}[H]
