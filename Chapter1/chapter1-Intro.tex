@@ -1,4 +1,4 @@
-\chapter{Introduction}
+\chapter{Introduction to Agentic Logistic Mitigation}
 A comprehensive introduction to the proposed project is provided here, outlining the background of the problem domain, the significance of the work, the objectives, the scope, and the methodology adopted. Research gaps are identified based on a review of existing literature, and the overall organisation of the report is outlined. The purpose of this introduction is to provide readers with a clear understanding of the motivation, need, and approach of the proposed work.
 
 \section[Introduction]{\textbf{Introduction}}
@@ -33,7 +33,7 @@ This section defines the key technical terms, abbreviations, and domain-specific
 \section[Literature Review]{\textbf{Literature Review}}
 This section provides a detailed review of existing research, systems, technologies, and methodologies related to the project domain.
 
-\subsection[Recent Works]{\textbf{Recent Works}}
+\subsection[Related Works]{\textbf{Related Works}}
 
 A body of recent literature has positioned agentic AI as a transformative force in supply chain management, shifting the focus from passive prediction to autonomous execution. The integration of real-time inventory management with agentic systems using distributed cloud architectures has been demonstrated, showing that forecasting can be effectively combined with operational action \cite{Tiwari2025}. In retail contexts, agentic AI has been applied for predictive analytics, autonomous customer interaction, and supply chain automation, particularly where responsiveness and personalisation are essential \cite{Kalisetty2024,KalisettySingireddy2023}. Autonomous decision-making has also been extended to food supply chains, where agentic frameworks are proposed as mechanisms for improving control in complex, time-sensitive environments \cite{Pamisetty2024}.
 
@@ -82,10 +82,10 @@ The primary purpose of this project is to bridge the critical gap between disrup
 
 The motivation for this work stems from several fundamental challenges identified in existing systems:
 \begin{itemize}
-    \item \textbf{Neglect of Upstream Maritime Shocks:} Existing predictive systems have been found to focus predominantly on downstream retail inventory and e-commerce environments, failing to account for critical upstream disruptions at maritime chokepoints such as the Suez Canal or the Red Sea.
-    \item \textbf{The Detection-to-Action Gap:} Current multi-agent frameworks have been observed to excel at producing analytical reports from global signals, yet still require manual human execution to implement responses, leading to costly delays.
-    \item \textbf{Reliance on Historical Data:} Modern replenishment models are known to depend heavily on historical datasets, leaving them unable to simulate or mitigate unpredictable, real-time geopolitical transit shocks that have no historical precedent.
-    \item \textbf{Underutilisation of Agentic Tool Coordination:} While autonomous supply chain models have been proposed in the literature, they have often been found to fail in leveraging the full power of Agentic AI to coordinate diverse toolkits for the automated execution of complex user tasks, such as simultaneous rerouting and inventory restocking.
+    \item \textbf{Neglect of Upstream Maritime Shocks:} Existing systems focus on downstream retail inventory, ignoring critical upstream disruptions at major maritime chokepoints like the Suez Canal.
+    \item \textbf{The Detection-to-Action Gap:} Current frameworks produce analytical reports but require slow, manual human execution to implement response strategies.
+    \item \textbf{Reliance on Historical Data:} Standard replenishment models depend on historical datasets, failing to simulate or mitigate unprecedented real-time transit shocks.
+    \item \textbf{Underutilised Agentic Coordination:} Autonomous models fail to leverage Agentic AI to coordinate diverse tools for automated execution of complex tasks.
 \end{itemize}
 
 By addressing these limitations, this project holds immense industrial and societal importance, transforming traditional reactive supply chain management into a proactive, agent-driven digital twin capable of ensuring global trade resilience.
@@ -132,7 +132,7 @@ The project integrates several advanced domains to create a robust supply-chain 
 \begin{itemize}
     \item \textbf{Digital Twin:} A virtual, real-time representation of the physical supply-chain network---covering suppliers, ports, chokepoints, and warehouses---is used to simulate shocks and test responses.
     \item \textbf{Agentic Orchestration:} Multi-agent workflows are employed wherein specialised LLM-based autonomous agents collaborate via role-playing and prompt chaining to solve complex routing problems.
-    \item \textbf{Graph Theory \& Network Optimisation:} Logistics lanes are modelled as directed graphs and \textbf{Dijkstra's Algorithm} is applied to calculate optimal paths based on dynamic weights such as transit days and landed costs.
+    \item \textbf{Graph Theory and Network Optimisation:} Logistics lanes are modelled as directed graphs and \textbf{Dijkstra's Algorithm} is applied to calculate optimal paths based on dynamic weights such as transit days and landed costs.
     \item \textbf{Stochastic Inventory Management:} The \textbf{Chopra Safety Stock Equation} is implemented to model lead-time variability and calculate buffer stocks required to avoid stockouts during shocks.
 \end{itemize}
 
@@ -159,16 +159,16 @@ The scope of this project is concentrated on the development of an agentic digit
 
 The project holds high industrial relevance by offering SMEs technological tools previously reserved for multinational corporations, reducing the financial impact of the Bullwhip Effect. Academically, it contributes to the evolving field of agentic AI by demonstrating goal-oriented tool coordination for complex problem-solving. Societally, it fosters economic resilience through stabilised export-import flows, ensuring that vital supply chains remain operational despite geopolitical shocks.
 
-\section[Brief Methodology of the project]{\textbf{Brief Methodology of the project}}
+\section[Methodology]{\textbf{Methodology}}
 The methodology for this project is structured into five distinct phases, transitioning from network modelling to autonomous execution and validation.
 
 
 \begin{itemize}
-    \item \textbf{Stage 1: Network Model Construction \& Baseline Development:} A multi-tier logistics graph is developed using \texttt{NetworkX}, mapping critical nodes from international maritime chokepoints (e.g., Mundra, Dubai) to inland Indian SME clusters. A Manual Human Planner baseline is simultaneously established using Chopra inventory formulas to provide a performance benchmark for traditional, reactive supply chain management.
+    \item \textbf{Stage 1: Network Model Construction and Baseline Development:} A multi-tier logistics graph is developed using \texttt{NetworkX}, mapping critical nodes from international maritime chokepoints (e.g., Mundra, Dubai) to inland Indian SME clusters. A Manual Human Planner baseline is simultaneously established using Chopra inventory formulas to provide a performance benchmark for traditional, reactive supply chain management.
     \item \textbf{Stage 2: Multi-Agent Orchestration (Intelligence Layer):} Specialised autonomous agents are designed and deployed using \texttt{LangChain} and \texttt{CrewAI}. This includes a Friction Sentry for real-time monitoring of maritime signals (e.g., verification delays, insurance spikes, or congestion) and a Logistics Optimiser for executing autonomous rerouting and dynamic buffer-stock calculations.
-    \item \textbf{Stage 3: Stress-Testing \& Friction Propagation:} One simulated Friction Shock---ranging from administrative bottlenecks to regional blockades---is injected into the graph model. The agents identify these disruption signals, propagate the impact across the multi-tier supply chain, and evaluate the mathematical trade-offs of various mitigation strategies.
-    \item \textbf{Stage 4: Autonomous Mitigation \& Execution:} The agentic pipeline autonomously selects the most efficient recovery path, such as pivoting to multimodal transport or identifying backup suppliers, to minimise Total Landed Cost and operational downtime. This phase transitions the system from simple detection to executable action.
-    \item \textbf{Stage 5: Visualisation \& Performance Validation:} The agentic output is integrated into an interactive Dashboard for real-time decision support. The framework's effectiveness is validated by comparing its response latency and cost-efficiency against the previously established manual baseline, targeting a measurable reduction in stockouts and overstocking.
+    \item \textbf{Stage 3: Stress-Testing and Friction Propagation:} One simulated Friction Shock---ranging from administrative bottlenecks to regional blockades---is injected into the graph model. The agents identify these disruption signals, propagate the impact across the multi-tier supply chain, and evaluate the mathematical trade-offs of various mitigation strategies.
+    \item \textbf{Stage 4: Autonomous Mitigation and Execution:} The agentic pipeline autonomously selects the most efficient recovery path, such as pivoting to multimodal transport or identifying backup suppliers, to minimise Total Landed Cost and operational downtime. This phase transitions the system from simple detection to executable action.
+    \item \textbf{Stage 5: Visualisation and Performance Validation:} The agentic output is integrated into an interactive Dashboard for real-time decision support. The framework's effectiveness is validated by comparing its response latency and cost-efficiency against the previously established manual baseline, targeting a measurable reduction in stockouts and overstocking.
 \end{itemize}
 
 
@@ -182,7 +182,7 @@ The remainder of this report is organised as follows:
     \item \textbf{Chapter 5 -- Detailed Design:} The internal functional design, interaction protocols, and specific data structures used within the modular digital twin framework are focused upon.
     \item \textbf{Chapter 6 -- Implementation Details:} The coding standards, module connectivity, and the end-to-end integration of the backend services with the interactive dashboard are documented.
     \item \textbf{Chapter 7 -- Software Testing:} The verification of modules and system workflows through unit, integration, and performance benchmarking suites is presented.
-    \item \textbf{Chapter 8 -- Results and Discussion:} The system's performance metrics are analysed and the agentic optimisation results are validated against human benchmarks.
+    \item \textbf{Chapter 8 -- Results and Discussion:} The systemreals performance metrics are analysed and the agentic optimisation results are validated against human benchmarks.
     \item \textbf{Chapter 9 -- Conclusion and Future Scope:} The project's contributions are summarised, current limitations are identified, and a roadmap for future technical enhancements is proposed.
 \end{itemize}
 

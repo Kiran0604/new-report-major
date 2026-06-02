@@ -1,4 +1,4 @@
-\chapter[Software Requirement Specification]{Software Requirement Specification}
+\chapter[Software Requirement Specification for Agentic Logistic Mitigation Framework]{Software Requirement Specification for Agentic Logistic Mitigation Framework}
 
 Detailed requirements and specifications of the proposed system are described in this section. The functionalities the system must perform, the performance expectations, operational constraints, and the hardware and software resources required for development and execution are defined herein. The Software Requirement Specification (SRS) serves as a formal reference document for system design, development, testing, deployment, and maintenance.
 
@@ -6,7 +6,7 @@ Detailed requirements and specifications of the proposed system are described in
 
 The proposed Agentic AI framework is designed as a proactive decision-support and execution system for Indian Small and Medium Enterprises (SMEs) engaged in global trade. The overall system provides a bridge between high-level geopolitical disruptions and ground-level logistics operations. By integrating unstructured data signals with a mathematical digital twin, the system enables SMEs to visualize risk and execute mitigation strategies—such as rerouting shipments or adjusting safety stocks—that were previously only accessible to large-scale enterprises with massive logistics departments.
 
-The system is structured as a modular pipeline that begins with the \textbf{Friction Sentry}, which continuously parses and quantifies unstructured signals from news and maritime alerts. These quantified shocks are then injected into the \textbf{Networked Digital Twin}, which uses graph-theoretic algorithms like Dijkstra's to calculate the propagation of friction across the supply chain. The \textbf{Logistics Optimizer}, powered by a multi-agent orchestration layer (CrewAI), evaluates these impacts to generate actionable recovery plans. Finally, the \textbf{Interactive Dashboard} provides a geospatial interface for users to review these plans and perform ``What-If'' simulations. This comprehensive approach ensures that Indian SMEs can maintain operational continuity and cost-competitiveness even in the face of significant maritime chokepoint disruptions.
+The system is structured as a modular pipeline that begins with the Friction Sentry, which continuously parses and quantifies unstructured signals from news and maritime alerts. These quantified shocks are then injected into the Networked Digital Twin, which uses graph-theoretic algorithms like Dijkstra's to calculate the propagation of friction across the supply chain. The Logistics Optimizer, powered by a multi-agent orchestration layer (CrewAI), evaluates these impacts to generate actionable recovery plans. Finally, the Interactive Dashboard provides a geospatial interface for users to review these plans and perform What-If simulations. This comprehensive approach ensures that Indian SMEs can maintain operational continuity and cost-competitiveness even in the face of significant maritime chokepoint disruptions.
 
 \subsection{Product Perspective}
 
@@ -18,11 +18,11 @@ In terms of external interactions, the system utilizes the Google Gemini API as 
 
 The core functionalities of the system include:
 \begin{itemize}
-    \item \textbf{Shock Signal Parsing \& Translation:} Translates raw textual or unstructured disruption notifications (e.g., news alerts) into structured, quantitative shock parameters such as location, mode, and severity multipliers using semantic mapping rules.
+    \item \textbf{Shock Signal Parsing and Translation:} Translates raw textual or unstructured disruption notifications (e.g., news alerts) into structured, quantitative shock parameters such as location, mode, and severity multipliers using semantic mapping rules.
     \item \textbf{Dynamic Dijkstra Route Optimization:} Re-evaluates the directed graph topology under a shocked state to calculate the mathematically shortest path based on specific cost or time preferences.
     \item \textbf{Real-time Inventory Monitoring:} Tracks the daily inventory status, consumption rates, and Days of Cover ($DoC$) for target SME markets within the networked digital twin.
     \item \textbf{Autonomous Stockout Prevention:} Detects impending stockouts during transit delays and automatically executes simulated emergency restocking procedures.
-    \item \textbf{Human vs. AI Comparative Benchmarking:} Runs deterministic pipelines comparing a reactive human baseline (subject to the ``Cost of Inaction'') against the proactive agentic AI response, exporting comparative datasets for business intelligence.
+    \item \textbf{Human vs. AI Comparative Benchmarking:} Runs deterministic pipelines comparing a reactive human baseline (subject to the Cost of Inaction) against the proactive agentic AI response, exporting comparative datasets for business intelligence.
     \item \textbf{Geospatial Route Visualization:} Renders baseline routes alongside AI-recommended alternate paths on an interactive geographical dashboard.
 \end{itemize}
 \section[Specific Requirements]{Specific Requirements}
@@ -31,9 +31,9 @@ This section describes the detailed requirements of the proposed system, detaili
 \begin{itemize}
 \item \textbf{FR1: Knowledge Graph Construction}: The system must allow the creation of a directed graph mapping international ports to inland Indian SME hubs using NetworkX, supporting dynamic updates to edge weights.
 \item \textbf{FR2: Geopolitical Signal Ingestion (Friction Sentry)}: The system must utilize an LLM agent to ingest unstructured text and extract specific disruption parameters: Location, Severity Level, and Estimated Delay.
-\item \textbf{FR3: Friction Propagation}: The system must inject extracted delay parameters into the network graph to simulate a ``shock'' and calculate the cascading downstream impact on SME inventory.
+\item \textbf{FR3: Friction Propagation}: The system must inject extracted delay parameters into the network graph to simulate a shock and calculate the cascading downstream impact on SME inventory.
 \item \textbf{FR4: Autonomous Optimization}: Upon detecting a critical friction threshold, the Logistics Optimizer agent must autonomously execute a shortest-path algorithm to output a specific, actionable alternative route.
-\item \textbf{FR5: Comparative Baseline Calculation}: The system must mathematically compute the ``AI Landed Cost'' and compare it against a pre-programmed ``Human Baseline Cost'' (using Chopra inventory formulas) to quantify savings.
+\item \textbf{FR5: Comparative Baseline Calculation}: The system must mathematically compute the AI Landed Cost and compare it against a pre-programmed Human Baseline Cost (using Chopra inventory formulas) to quantify savings.
 \end{itemize}
 \subsection[Non-Functional Requirements]{Non-Functional Requirements}
 \begin{itemize}
@@ -45,12 +45,12 @@ This section describes the detailed requirements of the proposed system, detaili
 \begin{itemize}
     \item \textbf{Operating System}: Windows 10/11, macOS, or Linux (Ubuntu 20.04+).
     \item \textbf{Programming Language}: Python 3.9 or higher
-    \item \textbf{AI \& LLM Services}: Google Gemini API (for core natural language reasoning and agent logic).
+    \item \textbf{AI and LLM Services}: Google Gemini API (for core natural language reasoning and agent logic).
     \item \textbf{Agentic Frameworks}: CrewAI and LangChain (for orchestrating the multi-agent system and tool calling).
-    \item \textbf{Mathematical \& Graph Modeling}: NetworkX (for building the Multi-Tier Logistics Digital Twin), alongside Pandas and NumPy for data structuring.
-    \item \textbf{Visualization}: Tableau (for the interactive ``What-If'' scenario dashboard).
+    \item \textbf{Mathematical and Graph Modeling}: NetworkX (for building the Multi-Tier Logistics Digital Twin), alongside Pandas and NumPy for data structuring.
+    \item \textbf{Visualization}: Tableau (for the interactive What-If scenario dashboard).
     \item \textbf{Development Environment (IDE)}: Visual Studio Code (VS Code)
-    \item \textbf{Frontend tools}: React (v19.x), Axios (v1.x), Leaflet \& React-Leaflet (v5.x)
+    \item \textbf{Frontend tools}: React (v19.x), Axios (v1.x), Leaflet and React-Leaflet (v5.x)
     \item \textbf{Version Control}: Git and GitHub
 \end{itemize}
 

@@ -1,4 +1,4 @@
-\chapter[Implementation Details]{Implementation Details}
+\chapter[Implementation Details for Agentic Logistic Mitigation Framework]{Implementation Details for Agentic Logistic Mitigation Framework}
 \sloppy
 
 Detailed information regarding the implementation of the proposed system is provided here. How the system design discussed in previous chapters was transformed into a working solution using appropriate technologies, tools, frameworks, and development practices is explained herein.
@@ -19,12 +19,12 @@ This section specifies the hardware and software requirements necessary for the 
 \begin{itemize}
     \item \textbf{Operating System}: Windows 10/11, macOS, or Linux (Ubuntu 20.04+).
     \item \textbf{Programming Language}: Python 3.9 or higher
-    \item \textbf{AI \& LLM Services}: Google Gemini API (for core natural language reasoning and agent logic).
+    \item \textbf{AI and LLM Services}: Google Gemini API (for core natural language reasoning and agent logic).
     \item \textbf{Agentic Frameworks}: CrewAI and LangChain (for orchestrating the multi-agent system and tool calling).
-    \item \textbf{Mathematical \& Graph Modeling}: NetworkX (for building the Multi-Tier Logistics Digital Twin), alongside Pandas and NumPy for data structuring.
-    \item \textbf{Visualization}: Tableau (for the interactive ``What-If'' scenario dashboard).
+    \item \textbf{Mathematical and Graph Modeling}: NetworkX (for building the Multi-Tier Logistics Digital Twin), alongside Pandas and NumPy for data structuring.
+    \item \textbf{Visualization}: Tableau (for the interactive What-If scenario dashboard).
     \item \textbf{Development Environment (IDE)}: Visual Studio Code (VS Code)
-    \item \textbf{Frontend tools}: React (v19.x), Axios (v1.x), Leaflet \& React-Leaflet (v5.x)
+    \item \textbf{Frontend tools}: React (v19.x), Axios (v1.x), Leaflet and React-Leaflet (v5.x)
     \item \textbf{Version Control}: Git and GitHub
 \end{itemize}
 
@@ -146,7 +146,7 @@ The runtime and execution specifications of the system are defined as follows:
 \begin{itemize}
     \item \textbf{Supported Operating Systems:}
     \begin{itemize}
-        \item \textbf{Development \& Hosting Server:} Cross-platform compatibility. Supported on Windows (10/11), macOS, and Linux (Ubuntu 20.04+).
+        \item \textbf{Development and Hosting Server:} Cross-platform compatibility. Supported on Windows (10/11), macOS, and Linux (Ubuntu 20.04+).
         \item \textbf{Client Devices:} Any OS equipped with a modern web browser, including Windows, macOS, Linux, iOS, and Android.
     \end{itemize}
     \item \textbf{Runtime Environment:}
@@ -289,7 +289,7 @@ The integration strategy adopts a \textbf{Sandwiched API integration} pattern (F
     \item \textbf{Inter-Module Communication:} Performed locally via standard function calls and class instantiation in Python, and remotely using HTTP request-response actions between the client and server.
     \item \textbf{Data Exchange Mechanisms:} Structured \textbf{JSON (JavaScript Object Notation)} serves as the universal data contract. All modules consume and output validated JSON objects matching predefined schemas.
     \item \textbf{Request-Response Workflow:} 
-    \begin{enumerate}
+    \begin{enumerate}[label=(\roman*)]
         \item The user selects a routing strategy (e.g., cost) and clicks the action trigger on the client dashboard.
         \item The browser dispatches a POST request to \texttt{/api/optimize}.
         \item The server runs the backend pipeline (Sentry $\rightarrow$ Digital Twin $\rightarrow$ Optimizer) synchronously.
@@ -309,7 +309,7 @@ The application adopts a light, high-performance in-memory database and configur
         \item Spatial node coordinates are stored in a static key-value map within both the client and server configurations.
     \end{itemize}
     \item \textbf{Query Execution Process:} 
-    Queries for node details, edge values, or matching rules are handled via direct hash map lookups (e.g., \texttt{rules[``signal\_type\_rules''][signal\_type]}), executing in $O(1)$ constant time.
+    Queries for node details, edge values, or matching rules are handled via direct hash map lookups (e.g., \texttt{rules[signal\_type\_rules][signal\_type]}), executing in $O(1)$ constant time.
     \item \textbf{Transaction Handling:} 
     Since the operational digital twin does not require multi-user transactional writes to a database, operations are read-only. Updates to graph weights and inventory counts during a shock are managed within isolated, in-memory session instances, removing the need for transaction rollbacks.
     \item \textbf{Data Consistency Management:} 

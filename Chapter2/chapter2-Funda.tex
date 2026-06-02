@@ -1,8 +1,8 @@
-\chapter{Theoretical Foundations and Core Concepts}
+\chapter{Theoretical Foundations and Core Concepts of Supply Chain Logistics}
 
 The academic and technical foundation for the proposed agentic AI framework is established in this section. The stochastic nature of inventory management under uncertainty is explored, along with the mathematical modelling of logistics networks through graph theory and the mechanics of disruption propagation. Furthermore, the role of multi-agent systems in autonomous orchestration and the conceptual shift towards strategic digital twins for proactive risk management are detailed.
 
-\section{Stochastic Inventory Control (Chopra \& Meindl Framework)}
+\section{Stochastic Inventory Control}
 In classical supply chain theory, inventory management must account for uncertainty in both demand and supply lead times. This project implements this using the \textbf{Chopra Inventory Model}:
 
 \begin{itemize}
@@ -19,7 +19,7 @@ In classical supply chain theory, inventory management must account for uncertai
     \item \textbf{The Concept:} Traditional systems assume static lead times. This theory proves that as lead time ($\bar{L}$) and lead time uncertainty ($\sigma_L$) grow due to disruptions, the required safety stock increases exponentially to maintain service levels, directly driving up holding costs.
 \end{itemize}
 
-\section{Dynamic Network Flow \& Dijkstra's Algorithm}
+\section{Dynamic Network Flow and Dijkstra's Algorithm}
 The physical transport network is represented mathematically as a \textbf{Weighted Directed Graph} $G = (V, E)$, where $V$ represents nodes (Suppliers, Ports, Warehouses, Markets) and $E$ represents directed routes.
 
 \begin{itemize}
@@ -36,7 +36,7 @@ The physical transport network is represented mathematically as a \textbf{Weight
     \item \textbf{The Concept:} Local disruptions (e.g., blockades in the Strait of Hormuz) alter global network paths, shifting bottleneck dynamics to other nodes (like Mundra or Nhava Sheva ports).
 \end{itemize}
 
-\section{Supply Chain Disruption \& Cost of Inaction (CoI)}
+\section{Supply Chain Disruption and Cost of Inaction (CoI)}
 A comparative baseline is introduced in this project between a \textbf{Human Planner} (static/reactive) and an \textbf{AI Orchestrator} (dynamic/proactive).
 
 \begin{itemize}
@@ -46,7 +46,7 @@ A comparative baseline is introduced in this project between a \textbf{Human Pla
         \item Congestion surcharges.
         \item Overtime warehouse labour.
     \end{itemize}
-    \item \textbf{Friction Propagation \& Decay:} 
+    \item \textbf{Friction Propagation and Decay:} 
     Disruptions do not remain isolated; they cascade. This is modelled via cascade multipliers:
     \begin{equation}
     \text{Severity}_{\text{cascaded}} = \text{Severity}_{\text{direct}} \cdot \text{Decay Factor}
@@ -54,28 +54,28 @@ A comparative baseline is introduced in this project between a \textbf{Human Pla
     For instance, a blockade in the Red Sea cascades to port congestions in Western Indian ports (Mundra, Nhava Sheva) with a decay factor (e.g., 0.60).
 \end{itemize}
 
-\section{Multi-Agent Systems (MAS) \& LLM Orchestration}
+\section{Multi-Agent Systems (MAS) and LLM Orchestration}
 Instead of using traditional rigid coding paradigms to solve exceptions, the project leverages \textbf{Agentic AI} using the \textbf{CrewAI} framework:
 
 \begin{itemize}
     \item \textbf{Role-Playing Agents:} Labour is divided into isolated, specialised cognitive agents:
     \begin{itemize}
         \item[\textbf{(i)}] \textit{Logistics Optimiser (The Solver):} Mathematical routing is performed.
-        \item[\textbf{(ii)}] \textit{Cost \& Strategy Analyst (The Evaluator):} Tactical inventory checks and replenishment are managed.
+        \item[\textbf{(ii)}] \textit{Cost and Strategy Analyst (The Evaluator):} Tactical inventory checks and replenishment are managed.
         \item[\textbf{(iii)}] \textit{SME Communicator (The Presenter):} Complex telemetry is translated into visual dashboard payloads.
     \end{itemize}
-    \item \textbf{Prompt Chaining \& Sequential Context:} The outputs of mathematical tools (Dijkstra) are piped sequentially as context to downstream agents. This prevents hallucination by feeding structured JSON outputs directly into the reasoning loop of the next agent.
+    \item \textbf{Prompt Chaining and Sequential Context:} The outputs of mathematical tools (Dijkstra) are piped sequentially as context to downstream agents. This prevents hallucination by feeding structured JSON outputs directly into the reasoning loop of the next agent.
 \end{itemize}
 
 \section{Strategic Logistics Digital Twin}
 A Digital Twin is a dynamic digital representation of a physical system. In a strategic context, it is used for:
 
 \begin{itemize}
-    \item \textbf{Concept of Strategic Digital Twin:} Unlike operational digital twins that focus on short-term execution, a Strategic Digital Twin is designed for long-term scenario planning and risk assessment. A ``sandboxed'' version of the supply chain network is created to simulate ``What-If'' scenarios---such as geopolitical blockades or sudden maritime congestion.
+    \item \textbf{Concept of Strategic Digital Twin:} Unlike operational digital twins that focus on short-term execution, a Strategic Digital Twin is designed for long-term scenario planning and risk assessment. A sandboxed version of the supply chain network is created to simulate What-If scenarios---such as geopolitical blockades or sudden maritime congestion.
     \item \textbf{Application:} By injecting synthetic events (such as the simulated benchmark shocks), the Digital Twin acts as a risk simulation sandbox, allowing managers to visualise the downstream effects on landed costs and stockout timings before they occur in the real world. This transforms supply chain management from a reactive effort into a proactive resilience strategy.
 \end{itemize}
 
 \vspace{0.75cm}
 
 \section{Summary}
-This chapter provided a comprehensive overview of the five theoretical pillars that form the backbone of the project. By integrating stochastic inventory models with dynamic network flow and agentic orchestration, the framework is designed to address the ``Cost of Inaction'' in volatile maritime corridors. These concepts set the stage for the detailed system design and implementation phases discussed in the following chapters.
+This chapter provided a comprehensive overview of the five theoretical pillars that form the backbone of the project. By integrating stochastic inventory models with dynamic network flow and agentic orchestration, the framework is designed to address the Cost of Inaction in volatile maritime corridors. These concepts set the stage for the detailed system design and implementation phases discussed in the following chapters.

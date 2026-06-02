@@ -1,4 +1,4 @@
-\chapter[Software Testing]{Software Testing}
+\chapter[Software Testing  for Agentic Logistic Mitigation Framework]{Software Testing for Agentic Logistic Mitigation Framework}
 
 The testing and validation process carried out for the proposed system is presented here. The purpose of software testing is to ensure that the implemented system functions correctly, satisfies the specified requirements, and performs reliably under different operating conditions.
 
@@ -6,7 +6,7 @@ The testing and validation process carried out for the proposed system is presen
 The testing process for this framework follows an agile, multi-tier verification lifecycle. Testing an AI-agent-driven application poses unique challenges because it combines deterministic code paths (e.g., NetworkX graph updates and classical inventory formulas) with probabilistic model outputs (e.g., CrewAI reasoning steps and Gemini text responses). 
 
 The process was structured around two fundamental paradigms:
-\begin{enumerate}
+\begin{enumerate}[label=(\roman*)]
     \item \textbf{Deterministic Verification:} Ensuring that the backend math, graph data parsing, and fallback layers compute exactly, predictably, and with zero variance.
     \item \textbf{Behavioral Alignment Testing:} Ensuring that the language model agent chains operate within defined guardrails, accurately extract metadata, and call the correct system tools without hallucinating non-existent logistics nodes or paths.
 \end{enumerate}
@@ -14,7 +14,7 @@ The process was structured around two fundamental paradigms:
 \subsection{Unit Testing}
 Unit testing involves testing individual components or functions of the system in absolute isolation to guarantee that the core logic functions correctly before integration. The primary modules subjected to unit testing include the Layer 4 NetworkX graph routing functions, the Sunil Chopra safety stock calculator, and the Layer 1 Friction Sentry metadata extraction functions.
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{Unit Test Case UT-01: NetworkX Dijkstra Router Execution}
     \label{tab:ut01}
@@ -32,7 +32,7 @@ Unit testing involves testing individual components or functions of the system i
     \end{tabular}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{Unit Test Case UT-02: Dynamic Inventory Safety Stock Calculation}
     \label{tab:ut02}
@@ -50,7 +50,7 @@ Unit testing involves testing individual components or functions of the system i
     \end{tabular}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{Unit Test Case UT-03: Friction Sentry Alert Ingestion}
     \label{tab:ut03}
@@ -64,15 +64,15 @@ Unit testing involves testing individual components or functions of the system i
         \textbf{Sample Input} & String: \texttt{"CRITICAL: Export quota restrictions imposed at Saudi Arabia ports, causing expected logistics delays of up to 30\% effective immediately."} \\ \hline
         \textbf{Expected Output} & \texttt{Shock\_Location} = \texttt{"saudi\_arabia"}, \texttt{Signal\_Type} = \texttt{"export\_quota\_restriction"}, \texttt{Severity\_Multiplier} = \texttt{1.30}. \\ \hline
         \textbf{Actual Output} & \textbf{Iteration 1:} \texttt{Shock\_Location} = \texttt{"null"}, \texttt{Signal\_Type} = \texttt{"unknown"}, \texttt{Severity\_Multiplier} = \texttt{1.00}.\newline \textbf{Iteration 2 (Retest):} \texttt{Shock\_Location} = \texttt{"saudi\_arabia"}, \texttt{Signal\_Type} = \texttt{"export\_quota\_restriction"}, \texttt{Severity\_Multiplier} = \texttt{1.30}. \\ \hline
+        \textbf{Change done} & The regular expression compiler was updated to include the \texttt{re.IGNORECASE} flag, ensuring uppercase and mixed-case prefixes are parsed correctly. \\ \hline
         \textbf{Remarks} & \textbf{FAILED inside Iteration 1} due to a case-sensitivity mismatch in the custom regex pattern parser when handling fully capitalized prefixes (\texttt{"CRITICAL:"}). The string extraction failed to trigger grouping indices. The parser logic was updated with a case-insensitive validation flag (\texttt{re.IGNORECASE}). \textbf{PASSED inside Iteration 2} following the patch. \\ \hline
     \end{tabular}
 \end{table}
 
-\clearpage
 \subsection{Integration Testing}
 Integration testing evaluates the data flow and communication interfaces between distinct modules when combined. The focus is ensuring that the probabilistic decisions made by the multi-agent orchestration layer (CrewAI) safely map onto the rigid constraints of the Layer 4 deterministic validation layer.
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{Integration Test Case IT-01: Friction-to-Execution Engine Graph Mutation}
     \label{tab:it01}
@@ -90,7 +90,7 @@ Integration testing evaluates the data flow and communication interfaces between
     \end{tabular}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{Integration Test Case IT-02: Multi-Agent Orchestration to Validation Fallback Interface}
     \label{tab:it02}
@@ -104,16 +104,17 @@ Integration testing evaluates the data flow and communication interfaces between
         \textbf{Sample Input} & CrewAI Output Payload containing a hallucinated path array: \texttt{["oman", "non\_existent\_port\_xyz", "bengaluru\_market"]}. \\ \hline
         \textbf{Expected Output} & \texttt{Fallback\_Triggered} = \texttt{TRUE}, system bypasses the LLM payload, calculates clean ground truth routing from \texttt{network\_topology.json}, and outputs a stable path. \\ \hline
         \textbf{Actual Output} & \textbf{Iteration 1:} System threw an uncaught \texttt{KeyError} during JSON parsing and crashed without running fallback calculations.\newline \textbf{Iteration 2 (Retest):} \texttt{Fallback\_Triggered} = \texttt{TRUE}, system logged validation failure and generated a valid fallback route payload smoothly. \\ \hline
-        \textbf{Remarks} & \textbf{FAILED inside Iteration 1} because the raw string output from the LLM included unexpected markdown code block ticks (\texttt{```json ... ```}), which broke the JSON strict parser before reaching the validation interceptor. The handler was wrapped in an isolated try-except block with a markdown string-stripping utility. \textbf{PASSED inside Iteration 2} following formatting sanitization. \\ \hline
+        \textbf{Change done} & Implemented a sanitization utility to strip leading and trailing markdown backticks (\texttt{`json} and \texttt{`}) from the agent's string response before parsing. \\ \hline
+        \textbf{Remarks} & \textbf{FAILED inside Iteration 1} because the raw string output from the LLM included unexpected markdown code block ticks (\texttt{`json ... `}), which broke the JSON strict parser before reaching the validation interceptor. The handler was wrapped in an isolated try-except block with a markdown string-stripping utility. \textbf{PASSED inside Iteration 2} following formatting sanitization. \\ \hline
     \end{tabular}
 \end{table}
 
-\clearpage
+
 \section{System Testing}
 System testing checks the completely integrated application end-to-end to ensure the platform satisfies all technical requirements, business rules, and performance benchmarks under active simulation constraints.
 
 \subsection{Functional Testing}
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{System Test Case ST-FN-01: Multi-Objective Optimization Constraint Swapping}
     \label{tab:stfn01}
@@ -131,7 +132,7 @@ System testing checks the completely integrated application end-to-end to ensure
     \end{tabular}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{System Test Case ST-FN-02: Stateful Emergency Restock Tool Triggering}
     \label{tab:stfn02}
@@ -149,9 +150,8 @@ System testing checks the completely integrated application end-to-end to ensure
     \end{tabular}
 \end{table}
 
-\clearpage
 \subsection{Input and Output Validation Testing}
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{System Test Case ST-IO-01: Malformed and Incomplete Inbound Log Resiliency}
     \label{tab:stio01}
@@ -165,11 +165,12 @@ System testing checks the completely integrated application end-to-end to ensure
         \textbf{Sample Input} & JSON missing critical fields: \texttt{\{"Event\_ID": "BM011", "Shock\_Location": null, "Severity\_Multiplier": "INVALID\_STRING"\}}. \\ \hline
         \textbf{Expected Output} & Ingestion engine rejects the packet with a structured 422 validation error code; system state remains unchanged without entering an infinite loop. \\ \hline
         \textbf{Actual Output} & \textbf{Iteration 1:} System threw an uncaught \texttt{ValueError: Could not cast string to float} and entered an unhandled exception hang.\newline \textbf{Iteration 2 (Retest):} System caught the malformed field gracefully and returned a clean HTTP 422 validation response. \\ \hline
+        \textbf{Change done} & Replaced basic dictionary parameter parsing with structured \textit{Pydantic} BaseModels to enforce strict type checking and automated default formatting on incoming data. \\ \hline
         \textbf{Remarks} & \textbf{FAILED inside Iteration 1} due to missing schema validation rules on the FastAPI request body layer when handling garbage string input in numerical fields. The standard dictionary ingestion was replaced with strict \textit{Pydantic} BaseModels enforced with explicit type casting and fallback defaults. \textbf{PASSED inside Iteration 2}. \\ \hline
     \end{tabular}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{System Test Case ST-IO-02: UI Payload Schema Compliance}
     \label{tab:stio02}
@@ -187,9 +188,8 @@ System testing checks the completely integrated application end-to-end to ensure
     \end{tabular}
 \end{table}
 
-\clearpage
 \subsection{Performance and Reliability Testing}
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{System Test Case ST-PR-01: Pipeline Response Velocity Under Logarithmic Constraints}
     \label{tab:stpr01}
@@ -207,7 +207,7 @@ System testing checks the completely integrated application end-to-end to ensure
     \end{tabular}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
     \centering
     \caption{System Test Case ST-PR-02: Long-Term Server Memory Stability Under Load}
     \label{tab:stpr02}

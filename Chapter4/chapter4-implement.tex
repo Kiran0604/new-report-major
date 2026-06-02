@@ -1,4 +1,4 @@
-\chapter[High-level Design]{High-Level Design}
+\chapter[High-Level Design of Agentic Logistic Mitigation Framework]{High-Level Design of Agentic Logistic Mitigation Framework}
 
 The overall design and architecture of the proposed system are presented here. A high-level representation of the system structure, major modules, component interactions, and data flow within the system is provided. The High-Level Design (HLD) phase transforms the requirements specified in Chapter 3 into a conceptual blueprint that guides the implementation process. System organisation, architecture strategies, module interactions, and workflow representation are focused upon without going into implementation-level or database-level details.
 
@@ -31,12 +31,12 @@ Here are the general design factors rewritten as prescriptive principles and req
 \subsubsection{Security}
 \begin{itemize}
     \item \textbf{Credential Isolation:} The storage of third-party API keys and server credentials must be restricted to local environment files rather than hardcoded in the codebase.
-    \item \textbf{Access Control \& Sandboxing:} Cognitive agents must operate with restricted permissions, modifying system variables or accessing database records only through structured, predefined interfaces.
+    \item \textbf{Access Control and Sandboxing:} Cognitive agents must operate with restricted permissions, modifying system variables or accessing database records only through structured, predefined interfaces.
 \end{itemize}
 
 \subsubsection{User-Friendliness}
 \begin{itemize}
-    \item \textbf{Geospatial \& Visual Simplification:} Complex textual routes and network logs must be represented as interactive, spatial visual pathways.
+    \item \textbf{Geospatial and Visual Simplification:} Complex textual routes and network logs must be represented as interactive, spatial visual pathways.
     \item \textbf{Consolidated Telemetry:} Key operational metrics (such as delays, financial deltas, and inventory warnings) must be displayed via clear, intuitive visual widgets.
 \end{itemize}
 
@@ -69,15 +69,15 @@ The development methodology is divided into the following phases:
 
 \begin{itemize}
     \item \textbf{Stage 1: Digital Twin Construction (Week 1)}: Mapping global maritime nodes to domestic SME hubs using \texttt{networkx}; establishing baseline edge weights such as transit time and logistics cost.
-    \item \textbf{Stage 2: Domain Logic \& Data Generation (Week 2)}: Quantifying ``Grey Zone'' friction variables (insurance spikes, port delays) and building the Semantic Mapping Library to link geopolitical keywords to specific graph nodes.
-    \item \textbf{Stage 3: Agentic Intelligence \& Monitoring (Week 3)}: Developing the \textit{Friction Sentry Agent} using LangChain and CrewAI to autonomously ingest unstructured news data and extract critical location and severity metrics.
-    \item \textbf{Stage 4: Autonomous Mitigation \& Execution (Weeks 4--5)}: Developing the \textit{Logistics Optimizer Agent}; injecting friction shocks into the graph and executing shortest-path algorithms (Dijkstra's) to calculate optimal rerouting and dynamic buffer stocks.
-    \item \textbf{Stage 5: Visualization \& Baseline Validation (Week 6)}: Calculating the ``Human Baseline'' using Chopra inventory formulas and deploying an interactive dashboard to visualize AI cost-savings versus manual planning.
+    \item \textbf{Stage 2: Domain Logic and Data Generation (Week 2)}: Quantifying Grey Zone friction variables (insurance spikes, port delays) and building the Semantic Mapping Library to link geopolitical keywords to specific graph nodes.
+    \item \textbf{Stage 3: Agentic Intelligence and Monitoring (Week 3)}: Developing the \textit{Friction Sentry Agent} using LangChain and CrewAI to autonomously ingest unstructured news data and extract critical location and severity metrics.
+    \item \textbf{Stage 4: Autonomous Mitigation and Execution (Weeks 4--5)}: Developing the \textit{Logistics Optimizer Agent}; injecting friction shocks into the graph and executing shortest-path algorithms (Dijkstra's) to calculate optimal rerouting and dynamic buffer stocks.
+    \item \textbf{Stage 5: Visualization and Baseline Validation (Week 6)}: Calculating the Human Baseline using Chopra inventory formulas and deploying an interactive dashboard to visualize AI cost-savings versus manual planning.
 \end{itemize}
 
 To manage this sequential flow effectively within a decoupled architecture, the team adheres to an \textbf{Immutable Handover Protocol}, where each module must pass unit-testing before being consumed by the next:
 \begin{itemize}
-    \item \textbf{Network to AI (M1 to M3 \& M2)}: The Network Architect hands over the finalized logistics graph, which serves as the immutable environment for all agents.
+    \item \textbf{Network to AI (M1 to M3 and M2)}: The Network Architect hands over the finalized logistics graph, which serves as the immutable environment for all agents.
     \item \textbf{Domain to Monitoring (M3 to M2)}: The Domain Specialist hands over the Semantic Dictionary; the AI Engineer cannot finalize the parsing agent until keyword mappings are locked.
     \item \textbf{Monitoring to Visualization (M2 to M4)}: The AI Engineer passes the final validated JSON payloads to the Dashboard Analyst for front-end integration.
 \end{itemize}
@@ -87,20 +87,20 @@ This section explains the architectural and technological strategies adopted dur
 \subsection[Programming Language]{Programming Language}
 The system utilizes a split-stack architecture, leveraging Python for the backend logic and React (JavaScript/ES6+) for the frontend visualization dashboard.
 
-\subsubsection{Python (Backend \& Agentic Engine)}
+\subsubsection{Python (Backend and Agentic Engine)}
 Python was selected as the core engine due to its dominance in Artificial Intelligence and operations research. It provides a seamless bridge between cognitive AI frameworks (CrewAI, LangChain) and scientific computing libraries (NetworkX). Its high-level syntax and asynchronous capabilities via FastAPI allow for rapid prototyping of complex multi-agent workflows and real-time graph optimization.
 
-\subsubsection{React \& JavaScript (Frontend Dashboard)}
+\subsubsection{React and JavaScript (Frontend Dashboard)}
 React is employed to build the interactive User Interface. For a logistics digital twin, real-time telemetry and dynamic geospatial rendering are critical. React’s component-based architecture and Virtual DOM enable efficient updates of complex map visualizations (via React-Leaflet) and performance metrics without full page reloads, ensuring a responsive user experience during simulation shocks.
 
 \subsection[Future Plans and Scalability]{Future Plans and Scalability}
 This subsection outlines the strategic roadmap for evolving the system from a high-fidelity prototype to a production-grade autonomous logistics engine.
 
 \begin{itemize}
-    \item \textbf{Transition to Real-Time Data Pipelines:} While the current framework demonstrates autonomous reasoning on simulated or static historical data, future iterations will integrate \textbf{Live Telemetry Ingestion}. By connecting the \textit{Friction Sentry Agent} to real-time APIs (e.g., Lloyds List for maritime news, port congestion trackers, and satellite Automatic Identification System (AIS) data), the system will move from manual simulation to a ``Live Sentry'' mode, providing under-60-minute detection-to-mitigation cycles for Exim logistics.
-    \item \textbf{Multi-Dimensional Friction Modeling:} The architecture is designed to scale from single-point shocks to \textbf{Compound Risk Scenarios}. Future enhancements will focus on the agent's ability to process and correlate multiple simultaneous friction signals—such as a geopolitical blockade in a chokepoint occurring concurrently with a domestic labor strike. This involves developing cross-impact matrices where agents reason about how separate shocks propagate through the network and amplify total logistics cost.
-    \item \textbf{Predictive ``Friction Forecasting'':} Leveraging the data captured during the current implementation, future versions could incorporate \textbf{Predictive Analytics Engines}. By training machine learning models on historical friction patterns, the system could transition from being reactive (mitigating current shocks) to proactive (recommending route adjustments based on high-probability future disruptions).
-    \item \textbf{Cloud-Native Enterprise Scaling:} To handle global-scale supply chains with thousands of nodes, the system can be migrated to a \textbf{Kubernetes-based Microservices Architecture}. This would allow the agentic swarm to scale horizontally, assigning dedicated agent clusters to specific geographic regions or product categories, ensuring low-latency optimization for multi-national logistics networks.
+    \item \textbf{Transition to Real-Time Data Pipelines:} While the current framework demonstrates autonomous reasoning on simulated or static historical data, future iterations will integrate Live Telemetry Ingestion. By connecting the \textit{Friction Sentry Agent} to real-time APIs (e.g., Lloyds List for maritime news, port congestion trackers, and satellite Automatic Identification System (AIS) data), the system will move from manual simulation to a Live Sentry mode, providing under-60-minute detection-to-mitigation cycles for Exim logistics.
+    \item \textbf{Multi-Dimensional Friction Modeling:} The architecture is designed to scale from single-point shocks to Compound Risk Scenarios. Future enhancements will focus on the agent's ability to process and correlate multiple simultaneous friction signals—such as a geopolitical blockade in a chokepoint occurring concurrently with a domestic labor strike. This involves developing cross-impact matrices where agents reason about how separate shocks propagate through the network and amplify total logistics cost.
+    \item \textbf{Predictive Friction Forecasting:} Leveraging the data captured during the current implementation, future versions could incorporate Predictive Analytics Engines. By training machine learning models on historical friction patterns, the system could transition from being reactive (mitigating current shocks) to proactive (recommending route adjustments based on high-probability future disruptions).
+    \item \textbf{Cloud-Native Enterprise Scaling:} To handle global-scale supply chains with thousands of nodes, the system can be migrated to a Kubernetes-based Microservices Architecture. This would allow the agentic swarm to scale horizontally, assigning dedicated agent clusters to specific geographic regions or product categories, ensuring low-latency optimization for multi-national logistics networks.
 \end{itemize}
 
 \section[System Architecture]{System Architecture}
@@ -116,7 +116,7 @@ The High Level System Architecture as shown in Figure \ref{fig:hldd} illustrates
     \label{fig:hldd}
 \end{figure}
 
-The framework is designed as a modular, five-layer system that separates data ingestion, state management, autonomous intelligence, communication APIs, and presentation. Figure~\ref{c3:fig_arch} conceptually shows this layered representation, and the details of each layer are explained below:
+The framework is designed as a modular, five-layer system that separates data ingestion, state management, autonomous intelligence, communication APIs, and presentation. Figure~\ref{fig:hldd} conceptually shows this layered representation, and the details of each layer are explained below:
 
 \begin{description}
     \item[Layer 1: Data Ingestion (Data Inputs):] This layer represents the static and dynamic files that serve as the project's source of truth. It contains:
@@ -153,7 +153,7 @@ The Context Diagram (Level 0) as shown in Figure \ref{fig:dfd0}  represents the 
 
 \subsection[Data Flow Diagram Level 1]{Data Flow Diagram Level 1}
 The Level 1 DFD as shown in Figure \ref{fig:dfd1} decomposes the system into its primary functional processes, illustrating the flow of data between knowledge graph construction, signal ingestion, shock propagation, and mitigation execution.
-
+Figure~\ref{fig:dfd1} illustrates the overall data flow of the Agentic Logistic Network. The process begins with the construction of a knowledge graph representing the logistics network topology and the ingestion of external friction signals obtained from the maritime environment. These disruption indicators are propagated through the network to model the impact of delays and operational disturbances. The resulting disrupted network state, together with baseline performance metrics, is stored in dedicated data repositories. An autonomous mitigation module then evaluates alternative routing and recovery strategies using both the disrupted network topology and baseline operational data. Finally, the generated mitigation outcomes and performance assessments are presented through an analytics dashboard, enabling decision-makers to monitor network conditions and evaluate recommended actions.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\textwidth]{Figures/DFD1.png}
@@ -163,7 +163,7 @@ The Level 1 DFD as shown in Figure \ref{fig:dfd1} decomposes the system into its
 
 \subsection[Data Flow Diagram Level 2]{Data Flow Diagram Level 2}
 The Level 2 DFD provides a granular view of the Autonomous Mitigation process (Process 4.0) as shown in Figure \ref{fig:dfd2}, detailing the sub-processes involved in identifying risks, pathfinding optimization, and strategy assembly.
-
+Figure~\ref{fig:dfd2s} presents the internal workflow of the Autonomous Mitigation module. The process starts by identifying blocked or high-risk network edges from the disrupted graph state. These identified disruptions are supplied to a pathfinding optimization component that generates feasible alternative routes while considering baseline operational costs. The optimized routes are then used to compute dynamic buffer stock requirements for maintaining service continuity. A comparative cost analysis evaluates the trade-offs between mitigation alternatives and baseline operating conditions. Based on this assessment, the system selects the most effective executable strategy, which is subsequently delivered to the analytics dashboard for visualization and decision support.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\textwidth]{Figures/DFD2.png}
@@ -174,7 +174,7 @@ The Level 2 DFD provides a granular view of the Autonomous Mitigation process (P
 \section[UML Diagrams]{UML Diagrams}
 Unified Modeling Language (UML) diagrams are presented in this section to illustrate the behavioral and structural characteristics of the system. In particular, the sequence of operations and chronological message passing between frontend, backend, and external APIs are detailed. This representation helps visualize the execution lifecycle of a simulation shock.
 \subsection[Sequence Diagram]{Sequence Diagram}
-The Sequence Diagram illustrated in Figure \ref{fig:sequence} shows the chronological flow of messages and operations across the system lifecycles, from initialization to final analytics delivery. The sequence begins when the \textbf{Client application (Frontend UI)} issues an execution request upon a simulated or detected chokepoint disruption. This event triggers an HTTP POST request containing location data and disruption details to the \textbf{FastAPI Web Server}. The Web Server validates the incoming payload and invokes the \textbf{Friction Sentry} module to translate the real-world textual event details into numerical severity metrics. The Friction Sentry maps the geographic location to a specific node within the logistics network topology and calculates a cascading friction multiplier based on chokepoint vulnerability tiers. Once this calculation is complete, a structured shock payload is returned to the FastAPI Web Server, which then forwards the state changes to the \textbf{Networked Digital Twin}. The Digital Twin applies these updates to its in-memory network representation, altering the travel time and shipping costs of the affected edges. Simultaneously, it evaluates the downstream impact on inventory levels, computing the Days of Cover (DoC) for the target destination markets. If the calculated DoC falls below safety thresholds, the Digital Twin alerts the Web Server, which triggers the \textbf{Logistics Optimizer} to execute routing optimization. The Optimizer queries the Digital Twin for the current state of the network graph and executes Dijkstra's pathfinding algorithm to calculate the baseline mathematically optimal path. It then forwards the computed path, inventory shortages, and node metrics to the \textbf{CrewAI Orchestrator} to initiate the agentic reasoning phase. The CrewAI Orchestrator invokes three specialized agents: the \textit{Logistics Analyst Agent}, the \textit{Logistics Optimizer Agent}, and the \textit{SME Communicator Agent}. The Analyst Agent assesses geopolitical risks and potential cascading failures; the Optimizer Agent validates the path constraints and assesses the Cost of Inaction (CoI) to determine emergency replenishment triggers; and the Communicator Agent formats these insights into a structured, actionable logistics advisory. These agents query tools (such as routing and restocking databases) and call the external \textbf{Gemini LLM} to interpret risk profiles. Once the agents reach a consensus, the final advisory is serialized as a JSON object, returned through the Web Server, and rendered on the user's \textbf{Interactive Dashboard}.
+The Sequence Diagram illustrated in Figure \ref{fig:sequence} shows the chronological flow of messages and operations across the system lifecycles, from initialization to final analytics delivery. The sequence begins when the Client application (Frontend UI) issues an execution request upon a simulated or detected chokepoint disruption. This event triggers an HTTP POST request containing location data and disruption details to the FastAPI Web Server. The Web Server validates the incoming payload and invokes the Friction Sentry module to translate the real-world textual event details into numerical severity metrics. The Friction Sentry maps the geographic location to a specific node within the logistics network topology and calculates a cascading friction multiplier based on chokepoint vulnerability tiers. Once this calculation is complete, a structured shock payload is returned to the FastAPI Web Server, which then forwards the state changes to the Networked Digital Twin. The Digital Twin applies these updates to its in-memory network representation, altering the travel time and shipping costs of the affected edges. Simultaneously, it evaluates the downstream impact on inventory levels, computing the Days of Cover (DoC) for the target destination markets. If the calculated DoC falls below safety thresholds, the Digital Twin alerts the Web Server, which triggers the Logistics Optimizer to execute routing optimization. The Optimizer queries the Digital Twin for the current state of the network graph and executes Dijkstra's pathfinding algorithm to calculate the baseline mathematically optimal path. It then forwards the computed path, inventory shortages, and node metrics to the CrewAI Orchestrator to initiate the agentic reasoning phase. The CrewAI Orchestrator invokes three specialized agents: the \textit{Logistics Analyst Agent}, the \textit{Logistics Optimizer Agent}, and the \textit{SME Communicator Agent}. The Analyst Agent assesses geopolitical risks and potential cascading failures; the Optimizer Agent validates the path constraints and assesses the Cost of Inaction (CoI) to determine emergency replenishment triggers; and the Communicator Agent formats these insights into a structured, actionable logistics advisory. These agents query tools (such as routing and restocking databases) and call the external Gemini LLM to interpret risk profiles. Once the agents reach a consensus, the final advisory is serialized as a JSON object, returned through the Web Server, and rendered on the user's Interactive Dashboard.
 
 \begin{figure}[H]
     \centering

@@ -1,9 +1,9 @@
-\chapter[Detailed Design]{Detailed Design}
+\chapter[Detailed Design of Agentic Logistic Mitigation Framework]{Detailed Design of Agentic Logistic Mitigation Framework}
 
 The detailed design of the proposed system is presented here. The internal organisation of modules, the workflow of system operations, the database structure, interface design, and the detailed interaction between components are explained herein. Unlike the High-Level Design chapter, which focuses on the overall architecture and conceptual organisation of the system, this section focuses on the internal structural and functional design of the system components.
 
 
- \section[Structure Chart]{Structure Chart}
+\section[Structure Chart]{Structure Chart}
 This section presents the structural decomposition and organization of the system into modules and sub-modules. By breaking the digital twin application down into self-contained components, we ensure high cohesion and low coupling across the codebase. The functional divisions and control hierarchy are detailed in the following subsections.
 \subsection[Functional Decomposition]{Functional Decomposition}
 To manage complexity, the system is decomposed into four distinct, logical modules. Each module encapsulates a specific domain of operations, ensuring high cohesion and low coupling.
@@ -14,7 +14,26 @@ This module is responsible for the ingestion, parsing, and structured interpreta
 
 \textbf{ii. Contribution to Overall System} \\
 It protects the downstream optimization algorithms from dealing with raw text or unstructured data by translating news signals into standardized variables (severity multipliers, location targets, and cost impacts).
+\subsection[Module Hierarchy]{Module Hierarchy}
+The system is organized into a modular control hierarchy where responsibilities are distributed between the user interface, the API orchestration layer, and local computation engines, as illustrated in Figure~\ref{fig:hierarchy}.
 
+\begin{figure}[htbp]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1.1\textwidth]{Figures/Module hierarchy.png}}
+    \caption{System Module Hierarchy and Control Structure}
+    \label{fig:hierarchy}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Parent-Child Relationships:} The FastAPI Server acts as the central controller orchestration parent. It accepts inputs from the frontend Interactive Dashboard, coordinates signal transformations inside the Friction Sentry, updates network parameters inside the Networked Digital Twin, and executes path-finding inside the Logistics Optimizer.
+    \item \textbf{Control Hierarchy:} Operations are strictly top-down. The user initiates requests from the Interactive Dashboard (Child). The FastAPI Controller (Parent) intercepts the request, routes it sequentially through the computing modules, and returns the unified response.
+    \item \textbf{Distribution of Responsibilities:}
+    \begin{itemize}
+        \item \textbf{Frontend:} Handles user interaction, rendering Leaflet coordinates, and strategy state.
+        \item \textbf{Backend API Layer:} Manages execution flow, processes HTTP inputs, and parses JSON parameters.
+        \item \textbf{Algorithmic/Agentic Engine:} Resolves mathematical routing and handles multi-agent reasoning loops.
+    \end{itemize}
+\end{itemize}
 \subsubsection{B. Networked Digital Twin Module}
 \textbf{i. Purpose} \\
 This module maintains the in-memory representation of the logistics network (directed graph topology) and models inventory health. It simulates the physical reaction of the supply chain network when a shock is injected.
@@ -27,7 +46,7 @@ It computes the real-world impact of delays on safety stock and inventory levels
 This module serves as the execution and decision-making engine of the system, responsible for mathematical path routing and orchestrating autonomous LLM agents to resolve supply chain exceptions.
 
 \textbf{ii. Contribution to Overall System} \\
-It acts as the system's ``brain.'' It calculates alternate paths bypassing disruptions, coordinates agent tasks (Optimizer, Analyst, and Communicator), and executes corrective replenishment actions to prevent stockouts.
+It acts as the system's brain. It calculates alternate paths bypassing disruptions, coordinates agent tasks (Optimizer, Analyst, and Communicator), and executes corrective replenishment actions to prevent stockouts.
 
 \subsubsection{D. Interactive Dashboard Module}
 \textbf{i. Purpose} \\
@@ -48,9 +67,9 @@ Modules interact asynchronously and sequentially to process disruptions and upda
 \end{figure}
 
 \begin{itemize}
-    \item \textbf{Triggering of Operations:} System execution is event-triggered, initiated either by a simulated news alert or by the user selecting a strategic preference (cost/time) and clicking ``Run Optimization'' on the dashboard.
+    \item \textbf{Triggering of Operations:} System execution is event-triggered, initiated either by a simulated news alert or by the user selecting a strategic preference (cost/time) and clicking Run Optimization on the dashboard.
     \item \textbf{Data Exchange Flow:}
-    \begin{enumerate}
+    \begin{enumerate}[label=(\roman*)]
         \item The API requests rules parsing.
         \item The parsed rules feed directly into the graph-modification engine to create a shocked state.
         \item The shocked state is evaluated for stockout risks.
@@ -98,6 +117,7 @@ The logical flow of signal processing and validation within the Friction Sentry 
 \node (calc) [process, below=of dec, yshift=-0.4cm] {Calculate Severity Multipliers\\and Cascade Decay Factors};
 \node (out) [process, below=of calc] {Build Structured JSON\\Shock Payload};
 \node (err) [process, right=3cm of dec] {Return Error:\\Unknown Node};
+\node (dummy) [process, left=3cm of dec, draw=none, fill=none] {};
 \node (end) [startstop, below=of out] {Output: Shock Payload\\to Digital Twin};
 \draw[arrow] (start) -- (loc);
 \draw[arrow] (loc) -- (type);
@@ -178,7 +198,7 @@ The logical flow of signal processing and validation within the Friction Sentry 
         \item Executes Dijkstra's algorithm to find alternate paths that bypass blocked chokepoints.
         \item Orchestrates a \texttt{CrewAI} execution pipeline (Logistics Solver $\rightarrow$ Cost Analyst $\rightarrow$ UX Communicator).
         \item Triggers the \texttt{EmergencyRestockTool} to inject replenishment inventory if analyst agents identify an imminent stockout.
-        \item Benchmarks the dynamic optimized route against a static human baseline (subject to the "Cost of Inaction").
+        \item Benchmarks the dynamic optimized route against a static human baseline (subject to the Cost of Inaction).
     \end{itemize}
     \item \textbf{Outputs:} Optimized alternate route sequence, recalculated landed costs, optimized transit days, restock logs, and benchmark metrics.
     \item \textbf{Dependencies:} \texttt{crewai}, \texttt{networkx}, \texttt{google-genini-sdk}.
@@ -317,7 +337,7 @@ The following diagram illustrates the logical relationships between the core ope
 \textbf{Field Name} & \textbf{Data Type} & \textbf{Constraints} & \textbf{Field Purpose} \\ \hline
 \texttt{id} & String & Primary Key, Unique, Not Null & Unique identifier for the network node (e.g., \texttt{nhava\_sheva}). \\ \hline
 \texttt{type} & String & Enums: \texttt{supplier}, \texttt{port}, \texttt{warehouse}, \texttt{market} & Categorizes the operational nature of the facility. \\ \hline
-\texttt{name} & String & Not Null & User-friendly geographical name (e.g., ``Nhava Sheva Port''). \\ \hline
+\texttt{name} & String & Not Null & User-friendly geographical name (e.g., Nhava Sheva Port). \\ \hline
 \texttt{latitude} & Float & Range: $-90.0$ to $90.0$ & Latitude coordinate for geographical mapping. \\ \hline
 \texttt{longitude} & Float & Range: $-180.0$ to $180.0$ & Longitude coordinate for geographical mapping. \\ \hline
 \end{tabular}
@@ -374,7 +394,7 @@ The user interface is designed as an interactive, single-page command-and-contro
     \begin{enumerate}[label=\alph*)]
         \item \textbf{Top Banner (Notification Panel):} Renders critical shock alerts (e.g., location, event type, severity multiplier) detected by the Friction Sentry.
         \item \textbf{Left Panel (Geospatial Digital Twin Map):} Displays two visual maps in a split container: the \textit{Baseline Network Map} showing undisrupted transit routes, and the \textit{Optimized Alternate Route Map} highlighting the new routing paths calculated by the system.
-        \item \textbf{Right Panel (Control \& Telemetry Panel):} Hosts the strategy configuration controls, optimization triggers, and dynamic performance cards (e.g., Transit Time Delta, Cost Delta, Stockout Alarms, Executive Summaries).
+        \item \textbf{Right Panel (Control and Telemetry Panel):} Hosts the strategy configuration controls, optimization triggers, and dynamic performance cards (e.g., Transit Time Delta, Cost Delta, Stockout Alarms, Executive Summaries).
     \end{enumerate}
     \item \textbf{Navigation Flow:} \\
     As a Single Page Application (SPA), the user does not leave the dashboard. The navigation flow is structural:
@@ -390,7 +410,7 @@ The user interface is designed as an interactive, single-page command-and-contro
     \end{itemize}
     \item \textbf{Output Displays:}
     \begin{itemize}
-        \item \textbf{Alert Banner:} Dynamic color-coded notifications showing active network shocks (e.g., ``Verification Delay: Multiplier 1.35x'').
+        \item \textbf{Alert Banner:} Dynamic color-coded notifications showing active network shocks (e.g., Verification Delay: Multiplier 1.35x).
         \item \textbf{Dynamic Map Overlay:} Renders physical nodes (markers) and interactive polylines (dashed gray for baseline routes, bold purple for optimized agent routes).
         \item \textbf{Metric Cards:} Renders computed values for the optimized paths, including \textit{New Transit Days} and \textit{Cost Delta}.
         \item \textbf{Executive Summary:} A dynamic text block generated by the Communicator Agent explaining the reasoning behind the recommended actions.
@@ -458,7 +478,7 @@ This subsection details how incoming requests and disruption signals are parsed 
     \item \textbf{Input Acquisition:} \\
     The system acquires inputs from two channels:
     \begin{enumerate}
-        \item \textbf{User Action:} The frontend client transmits optimization preferences (e.g., \texttt{\{"optimize\_by": "cost"\}}) via asynchronous HTTP POST requests.
+        \item \textbf{User Action:} The frontend client transmits optimization preferences (e.g., \texttt{\{optimize\_by: cost\}}) via asynchronous HTTP POST requests.
         \item \textbf{External File Stream:} The Friction Sentry ingests shock events (event date, target node location, signal type, severity classification) from configuration inputs.
     \end{enumerate}
     \item \textbf{Input Validation:} \\
@@ -468,7 +488,7 @@ This subsection details how incoming requests and disruption signals are parsed 
         \item \textbf{Bounds Verification:} Severity multipliers are checked to ensure they are numeric values $\geq 1.0$.
     \end{itemize}
     \item \textbf{Input Formatting:} \\
-    Incoming raw strings are stripped of whitespace and converted to standardized, lowercase system identifiers. For example, user inputs or news locations (e.g., ``Nhava Sheva'') are mapped to graph node IDs (e.g., \texttt{nhava\_sheva}).
+    Incoming raw strings are stripped of whitespace and converted to standardized, lowercase system identifiers. For example, user inputs or news locations (e.g., Nhava Sheva) are mapped to graph node IDs (e.g., \texttt{nhava\_sheva}).
     \item \textbf{Data Verification:} \\
     Before executing calculations, the backend verifies that the requested shock location and target market IDs exist in the active \texttt{network\_topology.json} model to prevent reference key errors.
 \end{itemize}
@@ -493,10 +513,10 @@ This subsection details the processing stages executed once inputs are verified,
         \item \textbf{Path Optimization:} Dijkstra's algorithm computes the shortest path arrays (sequence of node IDs) based on the current active weight.
         \item \textbf{Agent Prompt Construction:} The computed path sequences, delta days, and inventory snapshots are injected into the LLM system prompt templates for the CrewAI task configurations.
     \end{itemize}
-    \item \textbf{Module Coordination \& Sequence:} \\
+    \item \textbf{Module Coordination and Sequence:} \\
     Execution follows a strict sequential pipeline:
     \begin{equation}
-    \text{Friction Ingestion} \rightarrow \text{Graph Shock Calculation} \rightarrow \text{Dijkstra Routing} \rightarrow \text{Agentic Analysis \& Stock Check} \rightarrow \text{Payload Consolidation}
+    \text{Friction Ingestion} \rightarrow \text{Graph Shock Calculation} \rightarrow \text{Dijkstra Routing} \rightarrow \text{Agentic Analysis and Stock Check} \rightarrow \text{Payload Consolidation}
     \end{equation}
 \end{itemize}
 

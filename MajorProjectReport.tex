@@ -7,7 +7,7 @@
 \title{Mitigating Logistics Friction in Global Chokepoints: An Agentic AI Framework for Indian Export-Import Resilience}
 \subCode{CD481P}
 % Note: While using the template for IDP, the \Department cmd is not used (discarded automatically) in IDP. The Certificate page uses \guideDeptA[]{} cmd in IDP.
-\Department[CSE]{Computer Science and Engineering}
+\Department[CSE]{Computer Science and Engineering (Data Science)}
 \academicYear{2025-26}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,8 +43,8 @@
 %% Internal Guide %%
 % Have to give both short form and long of Department Name
 \guideNameA{Dr. Soumya A}
-\guideDesignationA{Professor and Program Coordinator}
-\guideDeptA[CSE]{Computer Science and Engineering (Data Science)}
+\guideDesignationA{Professor and Program Coordinator \textit{(Data Science)}}
+\guideDeptA[CSE]{Computer Science and Engineering}
 \guideOrgA{RV College of Engineering}
 
 %% External Guides
@@ -74,7 +74,7 @@
 \projectCoOrdDeptB[CSE]{Computer Science and Engineering}
 % Not used for IDP and Internship
 \projectCoOrdNameA{Dr. Sindhu D V}
-\projectCoOrdDesigA{Assistant Professor}
+\projectCoOrdDesigA{Associate Professor}
 \projectCoOrdDeptA[CSE(DS)]{Computer Science and Engineering (Data Science)}
 %\projectCoOrdNameC{Prof. Subramanya K N}
 %\projectCoOrdDesigC{Assistant Professor}
@@ -150,12 +150,14 @@
 	\begin{spacing}{1.5}
 		\clearpage
 		\addcontentsline{toc}{chapter}{\listfigurename}
-		\listoffigures	
+		\addtocontents{lof}{\noindent\textbf{No.}\hspace{1.5em}\textbf{Figure Name}\hfill\textbf{Pg No.}\par\vspace{0.5em}}
+		\listoffigures
 	\end{spacing}
 	\begin{spacing}{1.5}
 		\clearpage
 		\addcontentsline{toc}{chapter}{\listtablename}
-		\listoftables	
+		\addtocontents{lot}{\noindent\textbf{No.}\hspace{1.5em}\textbf{Table Name}\hfill\textbf{Pg No.}\par\vspace{0.5em}}
+		\listoftables
 	\end{spacing}
 	
 	\printglossary[type=\acronymtype, title= Abbreviations, toctitle=Abbreviations]
