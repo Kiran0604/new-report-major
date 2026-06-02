@@ -156,7 +156,7 @@ The Level 1 DFD as shown in Figure \ref{fig:dfd1} decomposes the system into its
 Figure~\ref{fig:dfd1} illustrates the overall data flow of the Agentic Logistic Network. The process begins with the construction of a knowledge graph representing the logistics network topology and the ingestion of external friction signals obtained from the maritime environment. These disruption indicators are propagated through the network to model the impact of delays and operational disturbances. The resulting disrupted network state, together with baseline performance metrics, is stored in dedicated data repositories. An autonomous mitigation module then evaluates alternative routing and recovery strategies using both the disrupted network topology and baseline operational data. Finally, the generated mitigation outcomes and performance assessments are presented through an analytics dashboard, enabling decision-makers to monitor network conditions and evaluate recommended actions.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{Figures/DFD1.png}
+    \includegraphics[width=1.1\textwidth]{Figures/DFD1.png}
     \caption{Data Flow Diagram Level 1}
     \label{fig:dfd1}
 \end{figure}
@@ -166,7 +166,7 @@ The Level 2 DFD provides a granular view of the Autonomous Mitigation process (P
 Figure~\ref{fig:dfd2s} presents the internal workflow of the Autonomous Mitigation module. The process starts by identifying blocked or high-risk network edges from the disrupted graph state. These identified disruptions are supplied to a pathfinding optimization component that generates feasible alternative routes while considering baseline operational costs. The optimized routes are then used to compute dynamic buffer stock requirements for maintaining service continuity. A comparative cost analysis evaluates the trade-offs between mitigation alternatives and baseline operating conditions. Based on this assessment, the system selects the most effective executable strategy, which is subsequently delivered to the analytics dashboard for visualization and decision support.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\textwidth]{Figures/DFD2.png}
+    \includegraphics[width=1.1\textwidth]{Figures/DFD2.png}
     \caption{Data Flow Diagram Level 2}
     \label{fig:dfd2}
 \end{figure}

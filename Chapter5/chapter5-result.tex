@@ -34,21 +34,21 @@ The system is organized into a modular control hierarchy where responsibilities 
         \item \textbf{Algorithmic/Agentic Engine:} Resolves mathematical routing and handles multi-agent reasoning loops.
     \end{itemize}
 \end{itemize}
-\subsubsection{B. Networked Digital Twin Module}
+\subsubsection{A. Networked Digital Twin Module}
 \textbf{i. Purpose} \\
 This module maintains the in-memory representation of the logistics network (directed graph topology) and models inventory health. It simulates the physical reaction of the supply chain network when a shock is injected.
 
 \textbf{ii. Contribution to Overall System} \\
 It computes the real-world impact of delays on safety stock and inventory levels. By calculating stockout risks and daily consumption depletion, it provides the operational context needed to trigger emergency actions.
 
-\subsubsection{C. Logistics Optimizer Module}
+\subsubsection{B. Logistics Optimizer Module}
 \textbf{i. Purpose} \\
 This module serves as the execution and decision-making engine of the system, responsible for mathematical path routing and orchestrating autonomous LLM agents to resolve supply chain exceptions.
 
 \textbf{ii. Contribution to Overall System} \\
 It acts as the system's brain. It calculates alternate paths bypassing disruptions, coordinates agent tasks (Optimizer, Analyst, and Communicator), and executes corrective replenishment actions to prevent stockouts.
 
-\subsubsection{D. Interactive Dashboard Module}
+\subsubsection{C. Interactive Dashboard Module}
 \textbf{i. Purpose} \\
 This module provides the user interface (UI) to visualize the state of the logistics network, display alternate route simulations, and present comparative benchmark metrics.
 
